@@ -14,6 +14,6 @@ namespace VSDA.Connection
 
         void Shutdown();
 
-        void SendCommand(string command);
+        Task<string> SendCommand(string command);
     }
 }
