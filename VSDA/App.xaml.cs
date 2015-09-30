@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using VSDA.Communication;
 
 namespace VSDA
 {
@@ -33,6 +34,12 @@ namespace VSDA
                 Microsoft.ApplicationInsights.WindowsCollectors.Session);
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            List<IModule> modules = new List<IModule>();
+            modules.Add(new DTCModule());
+
+            Communication.IHost host = new Host(modules);
+            host.Initialize();
         }
 
         /// <summary>

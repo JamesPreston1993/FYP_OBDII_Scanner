@@ -99,6 +99,15 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Connection\BluetoothDataConnection.cs" />
+    <Compile Include="Communication\DTCCommunicationSystem.cs" />
+    <Compile Include="Communication\DTCModule.cs" />
+    <Compile Include="Communication\Host.cs" />
+    <Compile Include="Communication\Interfaces\ICommunicationSystem.cs" />
+    <Compile Include="Connection\ConnectionManager.cs" />
+    <Compile Include="Connection\Interfaces\IDataConnection.cs" />
+    <Compile Include="Communication\Interfaces\IHost.cs" />
+    <Compile Include="Communication\Interfaces\IModule.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
