@@ -8,6 +8,8 @@ namespace VSDA.Communication
 {
     public interface IHost
     {
+        List<IModule> Modules { get; }
+
         IModule CurrentModule { get; set; }
 
         void Initialize();        

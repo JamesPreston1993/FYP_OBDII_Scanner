@@ -9,12 +9,12 @@ namespace VSDA.Communication
 {
     public class Host : IHost
     {
-        private List<IModule> modules;
+        public List<IModule> Modules { get; private set; }
 
         public Host(List<IModule> modules)
         {
-            this.modules = modules;
-            this.CurrentModule = modules[0];
+            this.Modules = modules;
+            this.CurrentModule = modules[0];      
         }
     
         public IModule CurrentModule { get; set; }

@@ -8,6 +8,8 @@ namespace VSDA.Communication
 {
     public interface IModule
     {
+        string Name { get; }        
+
         void Initialize();
 
         void Notify();

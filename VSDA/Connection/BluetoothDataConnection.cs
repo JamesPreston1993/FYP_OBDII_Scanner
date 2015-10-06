@@ -34,15 +34,9 @@ namespace VSDA.Connection
 
                 if (services.Count > 0)
                 {
-                    try
-                    {
-                        string name = services[0].Name;
-                        this.service = await RfcommDeviceService.FromIdAsync(services[0].Id);
-                    }
-                    catch (InvalidOperationException e)
-                    {
-                        string s = e.StackTrace;
-                    }
+                    // Temporary set up - connects to first bluetooth device
+                    this.service = await RfcommDeviceService.FromIdAsync(services[0].Id);                    
+                    
                     if (this.service != null)
                     {
                         this.socket = new StreamSocket();
@@ -70,8 +64,6 @@ namespace VSDA.Connection
                 result = this.SendCommand("ATSP0");
                 result.Wait();
                 result = this.SendCommand("ATAL");
-                result.Wait();
-                result = this.SendCommand("0100");
                 result.Wait();
             }
         }
@@ -104,6 +96,10 @@ namespace VSDA.Connection
                     else
                         response += s;
                 }                        
+            }
+            else
+            {
+                response = "No connection!";
             }
             return response;
         }

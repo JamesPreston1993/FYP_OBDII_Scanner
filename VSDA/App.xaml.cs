@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using VSDA.Communication;
+using VSDA.UI;
 
 namespace VSDA
 {
@@ -23,6 +24,7 @@ namespace VSDA
     /// </summary>
     sealed partial class App : Application
     {
+        private IHost host;
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -38,8 +40,8 @@ namespace VSDA
             List<IModule> modules = new List<IModule>();
             modules.Add(new DTCModule());
 
-            Communication.IHost host = new Host(modules);
-            host.Initialize();
+            this.host = new Host(modules);
+            this.host.Initialize();
         }
 
         /// <summary>
@@ -81,8 +83,8 @@ namespace VSDA
             {
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
-                // parameter
-                rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                // parameter                
+                rootFrame.Content = new HostView(this.host);
             }
             // Ensure the current window is active
             Window.Current.Activate();
