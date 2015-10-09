@@ -53,18 +53,14 @@ namespace VSDA.Connection
             }            
         }
 
-        public void Reset()
+        public async void Reset()
         {
             if(this.isInitialized)
             {
-                var result = this.SendCommand("ATZ");
-                result.Wait();
-                result = this.SendCommand("ATE0");
-                result.Wait();
-                result = this.SendCommand("ATSP0");
-                result.Wait();
-                result = this.SendCommand("ATAL");
-                result.Wait();
+                var result = await this.SendCommand("ATZ");                
+                result = await this.SendCommand("ATE0");                
+                result = await this.SendCommand("ATSP0");                
+                result = await this.SendCommand("ATAL");                
             }
         }
 
@@ -77,10 +73,10 @@ namespace VSDA.Connection
         }
 
         public async Task<string> SendCommand(string command)
-        {
+        {            
             string response = string.Empty;
             if (this.isInitialized)
-            {
+            {                
                 // Write
                 this.writer.WriteString(command + "\r");
                 await this.socket.OutputStream.WriteAsync(this.writer.DetachBuffer());
