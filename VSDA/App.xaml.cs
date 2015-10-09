@@ -40,8 +40,7 @@ namespace VSDA
             List<IModule> modules = new List<IModule>();
             modules.Add(new DTCModule());
 
-            this.host = new Host(modules);
-            this.host.Initialize();
+            this.host = new Host(modules);            
         }
 
         /// <summary>

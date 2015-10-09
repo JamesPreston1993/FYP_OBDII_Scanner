@@ -30,6 +30,8 @@ namespace VSDA.UI
             this.host = host;            
 
             this.InitializeComponent();
+
+            this.host.Initialize();
             
             foreach (IModule module in this.host.Modules)
             {
@@ -41,6 +43,6 @@ namespace VSDA.UI
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
         {
             this.SideMenu.IsPaneOpen = !this.SideMenu.IsPaneOpen;
-        }
+        }        
     }
 }
