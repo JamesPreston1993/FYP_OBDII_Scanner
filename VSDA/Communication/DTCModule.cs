@@ -7,13 +7,15 @@ using VSDA.Connection;
 
 namespace VSDA.Communication
 {
-    public class DTCModule : IModule
+    public class DTCModule : IDtcModule
     {
-        private ICommunicationSystem commsSystem;
-        
+        public string Name { get; private set; }
 
+        private IDtcCommsSystem commsSystem;
+        
         public DTCModule()
         {
+            this.Name = "Codes";
             this.commsSystem = new DTCCommunicationSystem();
         }
 
@@ -25,6 +27,26 @@ namespace VSDA.Communication
         public void Notify()
         {
 
+        }
+
+        public async Task<IList<ICode>> GetCurrentCodes()
+        {
+            return await this.commsSystem.GetCurrentCodes();
+        }
+
+        public void GetHistoryCodes()
+        {
+            this.commsSystem.GetHistoryCodes();
+        }
+
+        public void GetPermanentCodes()
+        {
+            this.commsSystem.GetPermanentCodes();
+        }
+
+        public void ClearCodes()
+        {
+            this.commsSystem.ClearCodes();
         }
     }
 }

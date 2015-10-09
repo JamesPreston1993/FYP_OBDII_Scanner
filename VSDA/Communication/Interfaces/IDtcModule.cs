@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace VSDA.Communication
 {
-    public interface ICommunicationSystem
+    public interface IDtcModule : IModule
     {
-        void Initialize();
+        Task<IList<ICode>> GetCurrentCodes();
 
-        void Update();
+        void GetHistoryCodes();
 
-        void Shutdown();        
+        void GetPermanentCodes();
     }
 }
