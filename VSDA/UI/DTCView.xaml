@@ -1,0 +1,19 @@
+﻿<UserControl
+    x:Class="VSDA.UI.DTCView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:VSDA.UI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="50"
+    d:DesignWidth="400">
+
+    <Grid Background="LightGray" Margin="10,10,10,0">
+        <StackPanel Orientation="Horizontal" Margin="10,10,10,10">
+            <TextBlock x:Name="CodeName" Text="P0100" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24"/>
+            <TextBlock Text="-" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24" Margin="8,0,8,0"/>
+            <TextBlock x:Name="CodeDescription" Text="Mass Air Flow (MAF) Circuit Malfunction" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
