@@ -31,15 +31,21 @@ namespace VSDA.UI
 
             this.InitializeComponent();
 
+            this.TitleBar.Text = this.host.CurrentModule.Name;
+
             this.host.Initialize();
-            
+
             foreach (IModule module in this.host.Modules)
             {
                 // TODO: Add buttons for each module
             }
-            
-        }
 
+            if (this.host.CurrentModule is IDtcModule)
+            {
+                this.ModulePage.Children.Add(new DTCPage(this.host.CurrentModule as IDtcModule));
+            }                                        
+        }
+        
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
         {
             this.SideMenu.IsPaneOpen = !this.SideMenu.IsPaneOpen;
