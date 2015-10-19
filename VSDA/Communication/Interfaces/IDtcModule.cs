@@ -10,8 +10,8 @@ namespace VSDA.Communication
     {
         Task<IList<ICode>> GetCurrentCodes();
 
-        void GetHistoryCodes();
+        Task<IList<ICode>> GetPendingCodes();
 
-        void GetPermanentCodes();
+        Task<IList<ICode>> GetPermanentCodes();
     }
 }

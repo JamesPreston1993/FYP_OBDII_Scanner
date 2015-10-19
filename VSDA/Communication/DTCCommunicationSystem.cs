@@ -29,14 +29,7 @@ namespace VSDA.Communication
         public void Shutdown()
         {
 
-        }
-
-        public string SendCommand(string command)
-        {
-            var result = this.dataConnection.SendCommand(command);
-            result.Wait();
-            return result.Result;
-        }
+        }        
 
         public async Task<IList<ICode>> GetCurrentCodes()
         {
@@ -65,14 +58,60 @@ namespace VSDA.Communication
             return codes;
         }
 
-        public void GetHistoryCodes()
+        public async Task<IList<ICode>> GetPendingCodes()
         {
-            string hex = this.SendCommand("07");
+            //string hex = this.SendCommand("07").Result;
+            string hex = await this.dataConnection.SendCommand("07");
+
+            // Remove return carriages and extra words            
+            hex = hex.Replace("SEARCHING...", "");
+            hex = hex.Replace("\r", "");
+            hex = hex.Replace(" ", "");
+
+            IList<ICode> codes = new List<ICode>();
+
+            if (hex.StartsWith("47"))
+            {
+                string code = string.Empty;
+                hex = hex.Substring(2);
+                switch (hex.Substring(0, 1))
+                {
+                    case "0": code = "P0"; break;
+                }
+
+                code += hex.Substring(1, 3);
+                codes.Add(new Code(code));
+            }
+
+            return codes;
         }
 
-        public void GetPermanentCodes()
+        public async Task<IList<ICode>> GetPermanentCodes()
         {
-            string hex = this.SendCommand("0A");
+            //string hex = this.SendCommand("0A").Result;
+            string hex = await this.dataConnection.SendCommand("0A");
+
+            // Remove return carriages and extra words            
+            hex = hex.Replace("SEARCHING...", "");
+            hex = hex.Replace("\r", "");
+            hex = hex.Replace(" ", "");
+
+            IList<ICode> codes = new List<ICode>();
+
+            if (hex.StartsWith("4A"))
+            {
+                string code = string.Empty;
+                hex = hex.Substring(2);
+                switch (hex.Substring(0, 1))
+                {
+                    case "0": code = "P0"; break;
+                }
+
+                code += hex.Substring(1, 3);
+                codes.Add(new Code(code));
+            }
+
+            return codes;
         }
 
         public void ClearCodes()

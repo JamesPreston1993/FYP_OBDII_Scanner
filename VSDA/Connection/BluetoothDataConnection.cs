@@ -86,7 +86,7 @@ namespace VSDA.Connection
                 while (true)
                 {
                     uint size = await this.reader.LoadAsync(1);
-                    string s = reader.ReadString(size);
+                    string s = this.reader.ReadString(size);
                     if (s.Equals(">"))
                         break;
                     else

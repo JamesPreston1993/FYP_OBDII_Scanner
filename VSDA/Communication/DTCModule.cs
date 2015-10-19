@@ -34,14 +34,14 @@ namespace VSDA.Communication
             return await this.commsSystem.GetCurrentCodes();
         }
 
-        public void GetHistoryCodes()
+        public async Task<IList<ICode>> GetPendingCodes()
         {
-            this.commsSystem.GetHistoryCodes();
+            return await this.commsSystem.GetPendingCodes();
         }
 
-        public void GetPermanentCodes()
+        public async Task<IList<ICode>> GetPermanentCodes()
         {
-            this.commsSystem.GetPermanentCodes();
+            return await this.commsSystem.GetPermanentCodes();
         }
 
         public void ClearCodes()
