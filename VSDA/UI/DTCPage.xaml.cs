@@ -28,9 +28,9 @@ namespace VSDA.UI
         public DTCPage(IDtcModule module)
         {
             this.module = module;
-            this.InitializeComponent();
+            this.InitializeComponent();            
             this.DisplayCodes();
-        }
+        }        
 
         private async void DisplayCodes()
         {
@@ -42,7 +42,6 @@ namespace VSDA.UI
             foreach(ICode code in storedCodes)
             {
                 DTCView view = new DTCView(code);
-                view.Height = 80;
                 this.StoredCodesGrid.Children.Add(view);
             }
 
@@ -50,7 +49,6 @@ namespace VSDA.UI
             foreach (ICode code in pendingCodes)
             {
                 DTCView view = new DTCView(code);
-                view.Height = 80;
                 this.PendingCodesGrid.Children.Add(view);
             }
             
@@ -58,13 +56,18 @@ namespace VSDA.UI
             foreach (ICode code in permanentCodes)
             {
                 DTCView view = new DTCView(code);
-                view.Height = 80;
                 this.PermanentCodesGrid.Children.Add(view);
             }
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
+        private void RefreshClick(object sender, RoutedEventArgs e)
         {
+            this.DisplayCodes();
+        }
+
+        private async void ClearCodesClick(object sender, RoutedEventArgs e)
+        {
+            await this.module.ClearCodes();
             this.DisplayCodes();
         }
     }
