@@ -6,14 +6,25 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="50"
-    d:DesignWidth="400">
+    d:DesignHeight="280"
+    d:DesignWidth="640">
 
-    <Grid Background="LightGray" Margin="10,10,10,0">
-        <StackPanel Orientation="Horizontal" Margin="10,10,10,10">
-            <TextBlock x:Name="CodeName" Text="P0100" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24"/>
-            <TextBlock Text="-" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24" Margin="8,0,8,0"/>
-            <TextBlock x:Name="CodeDescription" Text="Mass Air Flow (MAF) Circuit Malfunction" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24"/>
-        </StackPanel>
+    <Grid Margin="10,10,10,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Height="80" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="LightGray">
+            <StackPanel Orientation="Horizontal" Margin="10,10,10,10">
+                <TextBlock x:Name="CodeName" Text="P0100" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24"/>
+                <TextBlock Text="-" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24" Margin="8,0,8,0"/>
+                <TextBlock x:Name="CodeDescription" Text="Mass Air Flow (MAF) Circuit Malfunction" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24"/>
+            
+            </StackPanel>
+            <Button Background="Transparent" x:Name="Expand" FontFamily="Segoe MDL2 Assets" FontSize="24" Content="&#xE011;" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="ExpandClick" />
+        </Grid>
+        <Grid>
+            
+        </Grid>
     </Grid>
 </UserControl>

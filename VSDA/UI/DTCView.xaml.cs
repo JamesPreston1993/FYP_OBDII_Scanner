@@ -29,5 +29,10 @@ namespace VSDA.UI
             this.CodeName.Text = this.code.Name;
             this.CodeDescription.Text = this.code.Description;
         }
+
+        private void ExpandClick(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }
