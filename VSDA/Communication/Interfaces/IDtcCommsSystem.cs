@@ -14,6 +14,6 @@ namespace VSDA.Communication
 
         Task<IList<ICode>> GetPermanentCodes();
 
-        void ClearCodes();
+        Task<bool> ClearCodes();
     }
 }

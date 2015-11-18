@@ -44,9 +44,9 @@ namespace VSDA.Communication
             return await this.commsSystem.GetPermanentCodes();
         }
 
-        public void ClearCodes()
+        public async Task<bool> ClearCodes()
         {
-            this.commsSystem.ClearCodes();
+            return await this.commsSystem.ClearCodes();
         }
     }
 }

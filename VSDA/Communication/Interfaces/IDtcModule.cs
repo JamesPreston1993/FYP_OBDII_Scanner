@@ -13,5 +13,7 @@ namespace VSDA.Communication
         Task<IList<ICode>> GetPendingCodes();
 
         Task<IList<ICode>> GetPermanentCodes();
+
+        Task<bool> ClearCodes();
     }
 }
