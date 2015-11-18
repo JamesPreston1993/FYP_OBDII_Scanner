@@ -35,88 +35,132 @@ namespace VSDA.Communication
         {
             string hex = await this.dataConnection.SendCommand("03");            
 
-            // Remove return carriages and extra words            
-            hex = hex.Replace("SEARCHING...", "");
-            hex = hex.Replace("\r", "");
+            // Remove spaces and extra words            
+            hex = hex.Replace("SEARCHING...", "");            
             hex = hex.Replace(" ", "");
+            
+            // Split codes into batches
+            string[] batches = hex.Split('\r');
 
             IList<ICode> codes = new List<ICode>();
 
-            if(hex.StartsWith("43"))
+            foreach (string batch in batches)
             {
-                string code = string.Empty;
-                hex = hex.Substring(2);
-                switch(hex.Substring(0,1))
+                if (batch.StartsWith("43"))
                 {
-                    case "0": code = "P0"; break;
-                }
+                    string codesHex = batch.Substring(2);
+                    for (int i = 0; i < 3; i++)
+                    {
+                        string code = string.Empty;
+                        code = codesHex.Substring(i * 4, 4);
 
-                code += hex.Substring(1, 3);
-                codes.Add(new Code(code));
+                        if (code != "0000")
+                        {
+                            switch (code.Substring(0, 1))
+                            {
+                                case "0": code = "P" + code; break;
+                            }
+                            codes.Add(new Code(code));
+                        }
+                    }
+                }
             }
 
             return codes;
         }
 
         public async Task<IList<ICode>> GetPendingCodes()
-        {
-            //string hex = this.SendCommand("07").Result;
+        {            
             string hex = await this.dataConnection.SendCommand("07");
-
-            // Remove return carriages and extra words            
-            hex = hex.Replace("SEARCHING...", "");
-            hex = hex.Replace("\r", "");
+           
+            // Remove spaces and extra words            
+            hex = hex.Replace("SEARCHING...", "");            
             hex = hex.Replace(" ", "");
+
+            // Split codes into batches
+            string[] batches = hex.Split('\r');
 
             IList<ICode> codes = new List<ICode>();
 
-            if (hex.StartsWith("47"))
+            foreach (string batch in batches)
             {
-                string code = string.Empty;
-                hex = hex.Substring(2);
-                switch (hex.Substring(0, 1))
+                if (batch.StartsWith("47"))
                 {
-                    case "0": code = "P0"; break;
-                }
+                    string codesHex = batch.Substring(2);
+                    for(int i = 0; i < 3; i++)
+                    {
+                        string code = string.Empty;
+                        code = codesHex.Substring(i * 4, 4);
 
-                code += hex.Substring(1, 3);
-                codes.Add(new Code(code));
+                        if (code != "0000")
+                        {
+                            switch (code.Substring(0, 1))
+                            {
+                                case "0": code = "P" + code; break;
+                            }
+                            codes.Add(new Code(code));
+                        }
+                    }                    
+                }
             }
 
             return codes;
         }
 
         public async Task<IList<ICode>> GetPermanentCodes()
-        {
-            //string hex = this.SendCommand("0A").Result;
+        {            
             string hex = await this.dataConnection.SendCommand("0A");
+
+            // Remove spaces and extra words            
+            hex = hex.Replace("SEARCHING...", "");
+            hex = hex.Replace(" ", "");
+
+            // Split codes into batches
+            string[] batches = hex.Split('\r');
+
+            IList<ICode> codes = new List<ICode>();
+
+            foreach (string batch in batches)
+            {
+                if (batch.StartsWith("4A"))
+                {
+                    string codesHex = batch.Substring(2);
+                    for (int i = 0; i < 3; i++)
+                    {
+                        string code = string.Empty;
+                        code = codesHex.Substring(i * 4, 4);
+
+                        if (code != "0000")
+                        {
+                            switch (code.Substring(0, 1))
+                            {
+                                case "0": code = "P" + code; break;
+                            }
+                            codes.Add(new Code(code));
+                        }
+                    }
+                }
+            }
+
+            return codes;
+        }
+
+        public async Task<bool> ClearCodes()
+        {
+            string hex = await this.dataConnection.SendCommand("04");
 
             // Remove return carriages and extra words            
             hex = hex.Replace("SEARCHING...", "");
             hex = hex.Replace("\r", "");
             hex = hex.Replace(" ", "");
 
-            IList<ICode> codes = new List<ICode>();
-
-            if (hex.StartsWith("4A"))
+            bool result = false;
+            if (hex.StartsWith("44"))
             {
-                string code = string.Empty;
-                hex = hex.Substring(2);
-                switch (hex.Substring(0, 1))
-                {
-                    case "0": code = "P0"; break;
-                }
-
-                code += hex.Substring(1, 3);
-                codes.Add(new Code(code));
+                result = true;   
             }
 
-            return codes;
-        }
-
-        public void ClearCodes()
-        {
-
+            return result;
         }
     }
 }
