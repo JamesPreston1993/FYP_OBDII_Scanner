@@ -1,12 +1,14 @@
 \documentclass[12pt]{report}
 \usepackage[a4paper, top=3cm, bottom=3cm]{geometry}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
 
 \begin{document}
 
 \begin{titlepage}
 	\begin{center}		
 		\vspace*{5cm}
-		\textbf{\Large{Vehicle Self Diagnosis Application}}\\
+		\textbf{\LARGE{Vehicle Self Diagnosis Application}}\\
 		\vspace{5cm}		
 		\textbf{Name:} James Preston\\
 		\textbf{ID:} 12159247\\
@@ -21,131 +23,23 @@
 	\newpage
 	
 	\chapter{Introduction}
-		\section{Summary}
-			\paragraph{}{
-			This project will be to create an application capable of communicating with a vehicle and providing feedback on potential issues with it. The information that the application gathers can then be used by the end user to perform an informal diagnosis of the vehicle before seeking professional assistance. The intention is an end user with no technical or mechanical knowledge about their car can perform a self check to get an estimation of the severity of the issues with the vehicle along with the cost associated with fixing them.
-			}
-			\paragraph{}{
-			The project will provide a number of benefits for the target audience: the average vehicle owner. Firstly, it will provide them with a better knowledge of the state of their vehicle. They will be able to use this information to give them a better knowledge of the inner workings of their vehicle and to determine if the car needs a check up in the near future. It will also save the end user time and money, by allowing them to self check the car rather than paying for a professional to do it for them.
-			}
-			\paragraph{}
-			{
-			The architecture will be highly extensible allowing for new functionality to be added with relative ease. It will also allow for the application to be ported to other operating systems, such as Android and iOS. The extensibility of the architecture of the application will be evaluated by porting a subset of the features to Android. This will be accomplished using the Xamarin Framework, which allows for writing Android and iOS applications using C{\#}.
-			}
-			\paragraph{}
-			{
-			The application will be evaluated by thorough field testing. I will use my application to connect to live vehicles. This testing will involve establishing and maintaining communications with the vehicle and gathering the relevant data from it. The data gathered will then be compared to that of similar applications to verify that my application functions correctly.
-			}
-		\section{Overview of Domain}
-			\paragraph{}{
-			Over the years, cars have transformed from purely mechanical tools to more sophisticated technical machines. Most modern vehicles now contain built in computers, called Engine Control Units (ECU), that monitor and control its various subsystems, for example the Anti-lock Brake System (ABS). As the complexity of vehicles grew, it became harder to track defects. While issues in earlier vehicles could be narrowed down to a mechanical failure, modern vehicles can have mechanical or electrical faults. Now, all modern vehicles have an On-board Diagnostics (OBDII) port, which allows diagnostic tools to connect to the vehicle. The OBDII standard also defines a subset of data that must be retrievable from all compliant vehicles, and the messaging format of the data.
-			 
-			}
-			\paragraph{}{
-			I will be using an ELM327 Bluetooth dongle to connect to and communicate with the vehicle. It is a micro-controller that connects to the OBDII port found in modern vehicles. The ELM327 abstracts the communication process by including it's own commands that are passed to the vehicle. This means that I do not need to be concerned with the low level communication between my application and the vehicle.	The ELM327 also has a number of benefits for the end user. Firstly, they are inexpensive and widely available, meaning the end user doesn't have to spend time or money sourcing the device from a specific vendor. The device also requires no setup, as the application will handle this automatically. Overall, the ELM327 benefits the developer by having a universal communication system, and benefits the end user by being cheap and easy to use.
-			}
-			\paragraph{}{
-			The application will be developed as a Windows Universal App. With the release of Windows 10, Microsoft allowed developers to create applications that would run on all Windows 10 devices. While a similar concept was seen with Windows 8.1, these applications only require a single codebase. This provides the developer with the ability to deploy on multiple devices, such as phones, laptops and tablets, while also promoting maintainability of the code. As Windows is the de facto standard operating system for home users, it made sense to create an application for Windows.
-			}
-			\paragraph{}{
-			As I am creating a Windows 10 application, portability is an issue. If I am to create a native Windows application, it would require a partial or full rewrite of the code to port it to Android or iOS, which is impossible given the timeframe of this project. Fortunately, the Xamarin framework allows for the creation of native applications for Android and iOS, using the C{\#} language. This means the code written for the Windows application may be used for an Android port, with only a new UI needing to be created. This feature is of great importance to the project, not only to demonstrate the portability of the code, but to target more users.
-			}
-		\newpage
-		\section{Objectives}
-			\paragraph{}{
-			The primary objective of this project is to create an application that will allow a user to communicate with and diagnose their vehicle. However, it is of paramount importance that the application is easy to use and comprehend without the user having any technical knowledge of their vehicle.  
-			}
-			\paragraph{}
-			{
-			This will be the most challenging aspect, as I will need to find a balance between the correct level of abstraction for an average user to understand, whilst also providing enough detail that they have all the information they need to perform a diagnosis. There are existing applications that provide similar services, but they are more directed at mechanics and repair technicians, who have an in depth understanding of the technical aspects of vehicles.
-			}
-			\paragraph{}{
-			As a secondary objective, I aim to gain experience working with new technologies such as the design and development of Windows 10 Universal Apps. This will involved learning how to use C{\#} and XAML for development and researching the UI design guidelines for Windows Universal Apps to ensure my application has the aesthetics and usability that it is expected of modern applications.
-			}
-		\section{Methodology}
-			\paragraph{}{
-			For this project, I intend to follow a Scrum development process. The project will operate on week long sprints, with a retrospective with the project supervisor at the end of the week.
-			}
-			\paragraph{}{
-			Planning will take place at the start of the project. During this phase, I will create the project roadmap, outlining the tasks and deliverables for each sprint. However, as requirements change and new information comes to light, it will be important to update the project plan over the course of the development cycle. This will occur during the retrospective, if necessary.
-			}
-			\paragraph{}
-			{
-			I will design the basic system architecture at the start of the project. I intend to create an extensible, modular architecture and, while I am not an advocate of up front design, I believe this will give me a template to follow throughout the development cycle. After the basic architecture has been designed, all further design work will be done on a per module basis. This includes system and UI design work.
-			}
-			\paragraph{}
-			{
- 			My approach to implementation will be similar to that of design. I will work on a basic proof of concept and some prototypes at the start of the project, before moving to an iterative approach. There will be a focus on writing code that has high readability and reusability. The code will be stored in a source control repository, to ensure that I have a backup, and to keep track of my changes. Testing is an important aspect in my project, so I will be writing unit tests that will run before committing my code to source control. I will also put my application through field testing as mentioned above. I will test a variety of vehicle makes and models to find any defects and ensure my application functions as expected. 
-			}
-		\section{Motivation}
-		\paragraph{}{
-		In recent years, it has become more commonplace for end users to self diagnose issues with their personal belongings. If an end user has an issue with a laptop or phone, they will usually search the internet for a solution or workaround, rather than contacting the customer care service directly. This project intends to allow end users to apply that process to issues with their cars.
-		}
-		\paragraph{}{
-		If a vehicle is taken to a mechanic for diagnosis or repair, they will usually connect to the car using a commercial scan tool. This will gather data from the vehicle in order to help diagnose the problems with the vehicle. My application will allow the end user to perform the same steps the mechanic performs with the commercial scan tool and provide them with the appropriate information before they go to the mechanic.
-		}
-		\paragraph{}
-		{
-		The average vehicle owner may not have technical knowledge of the inner workings of their vehicle. This makes it very difficult to estimate the cost of repairs. In order to estimate the cost of repair, one first needs to find the problematic parts of the vehicle. Once these parts have been identified, these parts can be sourced online. However, without technical knowledge or guidance from someone with it, the parts cannot be identified, let alone categorized into functional and faulty. By providing a list of possible causes and parts that may need to be replaced, the application gives the end user a starting point from which they can estimate the total cost of repairs. 
-		}
-		\section{Overview of Report}
-			\paragraph{}{
-			In this report, I will discuss my findings from my research into vehicle communication, Windows 10 development and the Xamarin framework, as well my existing knowledge of these areas. A brief description of the functional and non-functional requirements will be given, along with details regarding the tactics used to support them. 
-			}
-			\paragraph{}{
-			There will be an outline of the overall system design and user interface design. These will include diagrams and mock-ups, as well as a discussion on my motivation behind my design choices. This will be followed by the implementation and testing process adopted for this project, which will include the project plan and information on problems that occurred and how they were resolved. Finally, I will evaluate the end product, critique my development process and discuss future plans for the project.
-			}
-	\newpage
+		\input{Chapters/Chapter1_Introduction}
+	\newpage 
 	
 	\chapter{Background}
-		\section{Introduction}
-			\paragraph{}{
-			[Intro]As of 1996 in the United States and 2000 in the European Union, all vehicles must support these standards.  
-			}
-			\paragraph{}{
-			ECU
-			}
-		\section{OBD Standards}
-			\subsection{Documents}{
-			
-			}
-			\subsection{Codes}{
-			
-			}
-			\subsection{Clear Codes}{
-
-			}
-			\subsection{PID Data}{
-
-			}
-			\subsection{Other Modes}{
-
-			}
-		\section{OBD Protocols}
-			\paragraph{}{
-			ELM327 Abstraction
-			}
-		\section{Technology}
-			\subsection{Windows 10}{}{
-			
-			}
-			\subsection{Xamarin}{
-			
-			}
-		\section{Similar Applications}
-		\section{Architectural Patterns}
+		\input{Chapters/Chapter2_Background}
 	\newpage
 
 	\chapter{Requirements}
-
+		\input{Chapters/Chapter3_Requirements}
 	\newpage	
 
 	\chapter{Design}
-	
+		\input{Chapters/Chapter4_Design}
 	\newpage
 	
 	\chapter{Implementation and Testing}
-	
+		\input{Chapters/Chapter5_ImplementationAndTesting}
 	\newpage
 	
 	\chapter{Evaluation}
@@ -156,7 +50,11 @@
 	
 	\newpage	
 	
-	\chapter{References}
 	
+	\begin{thebibliography}{9}
+		\bibitem{Cabala} Čabala, M., Gamec, J. (2012) 'Wireless Real-Time Vehicle Monitoring Based on Android Mobile Device', Acta Electrotechnica et Informatica, 12(4).
+		\bibitem{ELM327} ELM Electronics Inc. (2014) ELM327 AT Commands [online], available: 	$http://elmelectronics.com/ELM327/AT_Commands.pdf$ [accessed 7 Sep 2015]
+
+	\end{thebibliography}	
 	\newpage
 \end{document}
