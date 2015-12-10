@@ -1,16 +1,34 @@
 \section{Introduction}
 	\paragraph{}{
+	
 	}		
-\section{Functional Requirements}
+	
+\section{Functional Requirements}	
 	\paragraph{}{
+	A key aspect of capturing the requirements for this project was deciding which OBDII modes to support. Due to the time frame of this project, it was impossible to include all modes, so I had to select the modes that would be best suited for the target audience.
 	}
+	\paragraph{}{
+	After reviewing similar applications, I decided to include diagnostic data and DTCs in my application. This corresponds to modes 01, 03, 07 and 0A in the OBDII standard.
+	}
+
 \section{Non-Functional Requirements}
 	\subsection{Portability}
 		\paragraph{}{
+		To be able to target a large user base, it is important to release the application on multiple systems. For this reason, the system I develop must be portable, so it can be redeployed as an Android or iOS application. I intend to leverage the Xamarin framework to achieve this, as well as separating the core functionality of the application from the UI and system dependent features of the application.
 		}
 	\subsection{Extensibility}
 		\paragraph{}{
+		Due to the time frame of the project, it is impossible to include all features intended. Also, as new technology becomes available, the application may need to be extended to support it. The system design should consider a modular design where new features, such as supporting a new mode, can be integrated without requiring a restructure of the architecture.
 		}
+	\subsection{Security}
+		\paragraph{}{
+		As this application is communicating directly with a vehicle, there may be a danger of damage being done to the vehicle and its components. I must ensure that no harm can be caused by accidental misuse of the application. This will include proper handling of communication, in the event that a user unplugs the ELM327 device during a procedure, as well as providing the user with information on how to use the application correctly.
+		}		
 	\subsection{Usability}
 		\paragraph{}{
+		The application must be intuitive and easy to use for someone with limited technical knowledge of vehicles. This will include limiting the use of technical terms and creating a coherent UI. The application will follow Microsoft's user experience guidelines, so that users of other Windows 10 application will find it easy to use.
+		}
+	\subsection{Performance}
+		\paragraph{}{
+		The application must be able to run on a wide range of devices, from low end tablets to high end laptops. If the application is eventually ported to mobile devices, the hardware is limited compared to laptops, but the application should perform equally on these devices.
 		}

@@ -128,7 +128,11 @@
 						
 		}
 		\paragraph{}{
-		As an example, we call 0120, to request the next 32 supported PIDs from 21 to 40. In this example, we receive the hexadecimal response \textit{1A300100}. When this response has been converted to binary, we get the following string: \[0001 1010 0011 0000 0000 0001 0000 0000\] The most significant bit represents PID $21 _{16}$ and the least significant bit represents PID $40 _{16}$. If we look at the bits that are set to one, we determine that PIDs 24, 25, 27, 2B, 2C and 38 are supported.
+		As an example, we call 0120, to request the next 32 supported PIDs from 21 to 40. In this example, we receive the hexadecimal response \textit{1A300100}. When this response has been converted to binary, we get the following string:
+		\begin{center}
+			0001 1010 0011 0000 0000 0001 0000 0000\\
+		\end{center}
+		The most significant bit represents PID 21 and the least significant bit represents PID 40. If we look at the bits that are set to one, we determine that PIDs 24, 25, 27, 2B, 2C and 38 are supported.
 		}
 		\paragraph{}{
 		Once the list of supported PIDs has been established, the user can request the data for these PIDs. This will return a single data value, so in order for the scan tool to display live data, it must repeat this call. The response must be converted from hexadecimal to the appropriate human readable value, either a string or number. Each PID has a different conversion method, although some PIDs may share them, for example engine coolant temperature and intake air temperature.
@@ -150,7 +154,7 @@
 	}
 
 \section{Technology}
-	\subsection{ELM327}{}{
+	\subsection{ELM327}
 		\paragraph{}{
 		The ELM327 device I will use for this project is a compact and inexpensive Bluetooth dongle that can connect to the OBDII port on modern vehicles. It supports all OBDII protocols and abstracts the data transfer process by including its own set of commands to handle communication.				
 		}
@@ -165,32 +169,81 @@
 					\includegraphics[width=0.4\textwidth]{ELM327.jpg}
 					\caption{ELM327 Bluetooth Dongle}											
 				\end{center}
-			\end{figure}		
-	}	
-	\subsection{Windows 10}{}{
-		\paragraph{}{
-		}	
-	}
-	\subsection{Xamarin}{
-		\paragraph{}{
-		}	
-	}
+		\end{figure}		
 
+	\subsection{Windows 10}
+		\paragraph{}{
+		This project will be deployed on Windows 10 using Microsoft's Universal Windows Platform (UWP). This will allow me as a developer to target all Windows 10 devices, such as phones, tablets and laptops, using a single code base.
+		}
+		\paragraph{}{
+		Windows is the de facto standard for home users. Most PCs and laptops are sold with Windows pre-installed. Windows 10, the latest iteration of the Windows operating system, is available as a free download to all owners of Windows 7 and Windows 8. Due to it's availability and pricing, it appears that Windows 10 may be a popular choice for home users, and as of October 2015 there are over 110 million devices running Windows 10.
+		}
+		\paragraph{}{
+		With the release of Windows 10 came the Universal Windows Platform (UWP). This allowed developers to create applications that could be deployed on all Windows 10 devices, without having to create separate code bases. A similar concept was available in Windows 8.1, but it had it's limitations. Deployment was limited to Windows 8.1 phones and Windows 8 tablets/PCs, and there were separate code bases for the phone and desktop/tablet projects, making maintainability and extensibility of the system more complex.
+		}
+		\paragraph{}{
+		The UWP also includes APIs for features such as Bluetooth, printing and WiFi. There is also documentation available for these APIs, allowing the developer to easily implement systems that work across all devices with relative ease. Microsoft also provides design guidelines for UWP apps, allowing developers, who may not have an indepth knowledge of user interface and user experience design, to create applications with high usability and are aesthetically pleasing.
+		}
+		\paragraph{}{
+		UWP apps can be published through the Windows Store that is accessible on all Windows 10 devices. This allows developers to reach a large user base without concerning themselves with the distribution of the application through multiple markets. Software updates can also be released through the Windows Store, ensuring new features and defect fixes can be deployed to the end user frequently and discreetly.
+		}	
+		
+	\subsection{Xamarin}
+		\paragraph{}{
+		Xamarin is a framework that can be used for creating native apps for Android, iOS and Mac using the C{\#} programming language. This allows for native Windows applications to be ported to other operating systems, with minimal changes to the code bases, creating a portable, extensible manageable system.
+		}
+		\paragraph{}{
+		Xamarin allows developers to create applications with the same functionality and UI components of Android, iOS and Mac applications, using a C{\#} codebase. For example, Android UI elements such as buttons will appear and function in the same way as if they were created natively using Java. By creating a shared C{\#} library that contains the core functionality and then creating a platform specific presentation layer for each new operating system, it allows developers to target a large user base with a manageable codebase. 
+		}
+		\paragraph{}{
+		Xamarin can be downloaded through the Visual Studio IDE, allowing Xamarin applications to be developed in the same IDE as the original C{\#} code. This benefits the developer, who does not have to track multiple projects over multiple IDEs. It also means any updates to the Xamarin framework can be downloaded seamlessly, without having to manually check if an update is available and downloading it from an external source. 
+		}
+		\paragraph{}{
+		Xamarin has a developer community on their website, that provides assistance with the development of Xamarin applications. There are a number of guides ranging from the initial setup to performance best practises. Developers can also view Xamarin API documentation and sample applications on how to best use Xamarin and leverage the platform and device specific elements, such as the accelerometer and touch gestures. The website community also has a forum to post questions and find answers from other users, adding more support for the developer.
+		}	
+%\newpage
 \section{Similar Applications}
 	\paragraph{}{
-	When looking at similar applications, I opted to look at applications developed using the same technology and deployed on the same platform that I intended to use. This lead me to find two similar applications available on Windows 10 through the Windows Store. I investigated what modes these applications included, their communication process, the hardware required and the general look and feel of the user interface.
+	When looking at similar applications, I opted to look at applications developed using the same technology and deployed on the same platform that I intended to use. This lead me to find two similar applications available on Windows 10 through the Windows Store. I investigated what modes these applications included, their communication process, the hardware required and the amount of technical information used.
 	}
 	\subsection{Diagnose your car}
 		\paragraph{}{
-		Modes included, Connection, UI etc
+		Diagnose your car is a Windows application available for Windows phones and PCs. It is a paid application, with a free version available that removes some features and includes adverts. I will focus on the PC version when discussing the application in this section.
 		}
+		\paragraph{}{
+		The application requires an ELM327 device and a PC capable of Bluetooth connection. There is information on the ELM327, where to buy it and how much it costs. The user must pair their ELM327 device with their PC before using the application. Once they have completed this step, they can connect to the device by entering the device name, and the application will automatically connect to it.
+		}
+		\paragraph{}{
+		Diagnose your car allows access to DTCs and diagnostic data in the paid version. In the free version, diagnostic data is omitted and DTCs are displayed without their description. The diagnostic data that is provided is limited to a few generic PIDs, such as engine speed, vehicle speed and engine oil temperature. The data only displays the current value, so it does not track the data values over the period of communication. The application can also display DTCs, run the clear codes command and display the vehicle's VIN and the on/off status of the MIL.		
+		}
+		\paragraph{}{
+		The application attempts to restrict its use of technical terms. For example, the DTCs option is named "Read Defects" and it's icon is that of the MIL, implying that this option correlates to turning off the MIL. However, when the user selects an option, the technical terms begin to appear, with defects now being called stored pending and permanent DTCs, without an explanation of each type. 
+		}		
 	\subsection{OBDdash}
 		\paragraph{}{
-		Modes included, Connection, UI etc
+		OBDdash is a free Windows application available for PC.	Like Diagnose your car, the application requires an ELM327 device and a PC capable of Bluetooth connection. Information on how to connect the device to the vehicle and use it with the application. The Bluetooth device must be paired with the PC before using OBDdash. The user can select their device from a list of suitable paired devices on opening the application.	
+		%Modes included, Connection, UI etc
+		}
+		\paragraph{}{
+		[CONTINUE]
 		}	
-	
+
 \section{Architectural Patterns}
-	\paragraph{Intro}{
-	}	
-	\paragraph{MVVM}{
+	\paragraph{}{
+	When considering architectural patterns for the project, it made sense to utilise the model-view-viewmodel (MVVM) architectural pattern. The MVVM architectural pattern is based on Martin Fowler's presentation model design pattern and abstracts the user interface's state from it's behaviour. It was introduced by Microsoft in 2005 to be used with the Windows Presentation Foundation (WPF) platform and is used in UWP development.
+			\begin{figure}[h]
+				\begin{center}											
+					\includegraphics[width=\textwidth]{MVVM.png}
+					\caption{Model-view-viewmodel diagram}											
+				\end{center}
+			\end{figure}
 	}
+	\paragraph{}{
+	The model represents the data to be displayed. An example of a model may be a stopwatch. The model can notify the viewmodel of any changes that have been made to the data, such as when the seconds on the stopwatch increase. Likewise, the viewmodel can also update the model with changes made by the view, such as pressing a reset button to set the timer to zero. It is important that the model does not contain logic relating to the user interface, such as formatting strings to appear more aesthetically pleasing.
+	}
+	\paragraph{}{
+	The view represents the user interface and how the end user sees the data found in the model. It manages inputs and events, and notifies the viewmodel of these events. This is accomplished by data binding and commands, which allows properties and functions to be bound to certain UI elements, whilst also separating the logic from the view itself. In UWP, the view is created using Extensible Application Markup Language (XAML).
+	}
+	\paragraph{}{
+	The viewmodel is the liaison between the view and the model. The view may want to update the model, or vice versa, and it must pass these requests to the viewmodel to be handled. For example, a  user may enter text into a field to set a property of the model. This field will be bound to a property on the viewmodel, that will then validate and format the data and pass it back to the model through exposed methods and properties.
+	}	
