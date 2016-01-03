@@ -1,20 +1,29 @@
 \section{Introduction}
 	\paragraph{}{
-	
+	This chapter will outline the functional and non-functional requirements of the project, and how they will be supported in the system.
 	}		
 	
 \section{Functional Requirements}	
 	\paragraph{}{
-	A key aspect of capturing the requirements for this project was deciding which OBDII modes to support. Due to the time frame of this project, it was impossible to include all modes, so I had to select the modes that would be best suited for the target audience.
+	A key aspect of capturing the requirements for this project was deciding which OBDII modes to support. Due to the time frame of this project, it was impossible to include all modes, so a subset of modes that would be best suited for the target audience had to be selected.
 	}
 	\paragraph{}{
-	After reviewing similar applications, I decided to include diagnostic data and DTCs in my application. This corresponds to modes 01, 03, 07 and 0A in the OBDII standard.
+	After reviewing similar applications, it was decided that the application would include diagnostic data and DTCs. This corresponds to modes 01, 03, 07 and 0A in the OBDII standard. These modes provide a suitable amount of information to allow a user to diagnose their vehicle, but they also allow the developer to abstract technical information without sacrificing precision.
+	}
+	\paragraph{}{
+	Modes 03, 07 and 0A, representing current, pending and permanent DTCs respectively, provide the means to quickly assess the severity of the issues with the vehicle. The application must display the severity of each DTC type to the end user. If the user needs more information before making a decision, the application must provide additional information on each DTC with minimal use of technical terms.
+	}
+	\paragraph{}{
+	Mode 01, representing current diagnostic data, is more technical than DTCs. However, with the correct level of abstraction and assistance, it can provide the end user with critical information on the issues with their vehicle. The application must display the data in graphical format, so that it can be tracked over a period of time and potentially erroneous or abnormal values must be highlighted for the end user, to assist in their diagnosis.
+	}
+	\paragraph{}{
+	Given the correct guidance, which will be provided by the application, the end user must be able to make an informed decision about the severity of the issues and the cost to repair them, without any technical knowledge.
 	}
 
 \section{Non-Functional Requirements}
 	\subsection{Portability}
 		\paragraph{}{
-		To be able to target a large user base, it is important to release the application on multiple systems. For this reason, the system I develop must be portable, so it can be redeployed as an Android or iOS application. I intend to leverage the Xamarin framework to achieve this, as well as separating the core functionality of the application from the UI and system dependent features of the application.
+		To be able to target a large user base, it is important to release the application on multiple systems. For this reason, the system must be portable, so it can be redeployed as an Android or iOS application. To achieve this, the system should leverage the Xamarin framework, and should separate the core functionality of the application from the UI and system dependent features of the application.
 		}
 	\subsection{Extensibility}
 		\paragraph{}{
@@ -22,13 +31,9 @@
 		}
 	\subsection{Security}
 		\paragraph{}{
-		As this application is communicating directly with a vehicle, there may be a danger of damage being done to the vehicle and its components. I must ensure that no harm can be caused by accidental misuse of the application. This will include proper handling of communication, in the event that a user unplugs the ELM327 device during a procedure, as well as providing the user with information on how to use the application correctly.
+		As this application is communicating directly with a vehicle, there may be a danger of damage being done to the vehicle and its components. It must be ensured that no harm can be caused by accidental misuse of the application. This will include proper handling of communication, in the event that a user unplugs the ELM327 device during a procedure, as well as providing the user with information on how to use the application correctly.
 		}		
 	\subsection{Usability}
 		\paragraph{}{
 		The application must be intuitive and easy to use for someone with limited technical knowledge of vehicles. This will include limiting the use of technical terms and creating a coherent UI. The application will follow Microsoft's user experience guidelines, so that users of other Windows 10 application will find it easy to use.
-		}
-	\subsection{Performance}
-		\paragraph{}{
-		The application must be able to run on a wide range of devices, from low end tablets to high end laptops. If the application is eventually ported to mobile devices, the hardware is limited compared to laptops, but the application should perform equally on these devices.
 		}
