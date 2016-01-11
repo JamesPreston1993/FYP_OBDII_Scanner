@@ -10,7 +10,7 @@ namespace VSDA.Communication
     {
         string Name { get; }        
 
-        void Initialize();
+        Task<bool> Initialize();
 
         void Notify();
     }

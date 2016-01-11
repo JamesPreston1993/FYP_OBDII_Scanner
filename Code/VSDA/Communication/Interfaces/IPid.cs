@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace VSDA.Communication
 {
-    public interface IPid
+    public interface IPid :  INotifyPropertyChanged
     {
-        IList<string> DataItems { get; }
+        ObservableCollection<string> DataItems { get; }
 
         string Name { get; }
 

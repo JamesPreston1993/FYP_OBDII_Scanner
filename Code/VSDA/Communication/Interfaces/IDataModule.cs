@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace VSDA.Communication
 {
-    public interface IDataModule : IModule
+    public interface IDataModule : IModule, INotifyPropertyChanged
     {
-        IList<IPid> Pids { get; }
+        ObservableCollection<IPid> Pids { get; }
 
-        Task<IList<IPid>> GetSupportedPids();
+        bool IsRecording { get; set; }
+
+        Task<ObservableCollection<IPid>> GetSupportedPids();
 
         Task<bool> UpdateData(IPid pid);
 
