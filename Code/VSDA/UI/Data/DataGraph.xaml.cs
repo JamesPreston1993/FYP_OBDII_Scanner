@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using VSDA.Communication.Data;
+using System.ComponentModel;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -32,7 +33,17 @@ namespace VSDA.UI
             this.Loaded += delegate
             {
                 ((DataGraphViewModel)this.pidViewModel).GraphHeight = this.GraphArea.ActualHeight;
-            };                        
-        }        
+                ((DataGraphViewModel)this.pidViewModel).GraphWidth = this.GraphArea.ActualWidth;                
+            };
+            this.pidViewModel.PropertyChanged += this.ScrollToPosition;
+        }
+
+        public void ScrollToPosition(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == "CursorPosition")
+            {
+                this.Scroller.ChangeView(this.pidViewModel.CursorPosition, null, null);
+            }
+        }
     }
 }

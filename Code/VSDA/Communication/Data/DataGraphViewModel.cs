@@ -28,7 +28,7 @@ namespace VSDA.Communication.Data
             set
             {
                 this.currentSample = value;
-                this.CursorPosition = this.currentSample * this.xScale;
+                this.CursorPosition = this.currentSample * this.xScale;               
                 this.RaisePropertyChanged("CurrentSample");
             }
         }
@@ -63,11 +63,33 @@ namespace VSDA.Communication.Data
             }
         }
 
-        // Graph Related       
+        // Graph Related
+        private double graphWidth;
+        public double GraphWidth
+        {
+            get
+            {
+                return this.graphWidth;
+            }
+            set
+            {
+                this.graphWidth = value;
+                this.xScale = this.graphWidth / 10;
+            }
+        }
+
+        private double graphHeight;
         public double GraphHeight
         {
-            get;
-            set;
+            get
+            {
+                return this.graphHeight;
+            }
+            set
+            {
+                this.graphHeight = value;
+                this.RaisePropertyChanged("GraphHeight");
+            }
         }
 
         /* Collection of Points */
@@ -110,9 +132,9 @@ namespace VSDA.Communication.Data
             this.MinPossibleValue = pid.MinPossibleValue;
             this.DataItems = pid.DataItems;
             this.graphRange = this.PidModel.MaxPossibleValue - this.PidModel.MinPossibleValue;
-            this.xScale = 20;
+            this.xScale = 0;
             this.points = new PointCollection();
-            this.PidModel.PropertyChanged += this.RaiseModelPropertyChanged;
+            this.PidModel.PropertyChanged += this.RaiseModelPropertyChanged;            
         }
 
         public void StepBack()
@@ -164,8 +186,9 @@ namespace VSDA.Communication.Data
                 // Add points, Update cursor and scroll
                 //this.CursorPosition = this.ScrollPosition = this.CurrentSample * this.xScale;
                 //this.ScrollPosition += this.xScale;
-                this.Points.Add(new Point(this.CurrentSample * this.xScale,
-                                          this.GraphHeight - (this.GraphHeight * (Double.Parse(this.DataItems.Last()) - this.MinPossibleValue) / this.graphRange)));
+                Point point = new Point(this.CurrentSample * this.xScale,
+                                        this.GraphHeight - (this.GraphHeight * (Double.Parse(this.DataItems.Last()) - this.MinPossibleValue) / this.graphRange));
+                this.Points.Add(point);                                                         
             }
         }        
     }    
