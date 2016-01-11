@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using VSDA.Communication;
+using VSDA.Communication.Data;
 using VSDA.UI;
 
 namespace VSDA
@@ -38,6 +39,8 @@ namespace VSDA
             this.Suspending += OnSuspending;
 
             List<IModule> modules = new List<IModule>();
+            
+            modules.Add(new DataModule());
             modules.Add(new DTCModule());
 
             this.host = new Host(modules);            
