@@ -99,27 +99,52 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Communication\Code.cs" />
+    <Compile Include="Communication\Data\DataGraphViewModel.cs" />
+    <Compile Include="Communication\Data\DataListViewModel.cs" />
+    <Compile Include="Communication\Data\DataModuleViewModel.cs" />
+    <Compile Include="Communication\Data\IDataGraphViewModel.cs" />
+    <Compile Include="Communication\Data\IDataListViewModel.cs" />
+    <Compile Include="Communication\Data\IDataModuleViewModel.cs" />
+    <Compile Include="Communication\Data\IDataViewModel.cs" />
+    <Compile Include="Communication\DTC\Code.cs" />
+    <Compile Include="Communication\Data\DataCommunicationSystem.cs" />
+    <Compile Include="Communication\Data\DataConverter.cs" />
+    <Compile Include="Communication\Data\DataModule.cs" />
+    <Compile Include="Communication\IHostViewModel.cs" />
     <Compile Include="Communication\Interfaces\ICode.cs" />
+    <Compile Include="Communication\Interfaces\IDataCommsSystem.cs" />
+    <Compile Include="Communication\Interfaces\IDataModule.cs" />
     <Compile Include="Communication\Interfaces\IDtcCommsSystem.cs" />
     <Compile Include="Communication\Interfaces\IDtcModule.cs" />
+    <Compile Include="Communication\Interfaces\IPid.cs" />
+    <Compile Include="Communication\Data\Pid.cs" />
+    <Compile Include="Communication\Data\PidFactory.cs" />
+    <Compile Include="Communication\ModuleSelectionViewModel.cs" />
+    <Compile Include="Communication\RelayCommand.cs" />
     <Compile Include="Connection\BluetoothDataConnection.cs" />
-    <Compile Include="Communication\DTCCommunicationSystem.cs" />
-    <Compile Include="Communication\DTCModule.cs" />
+    <Compile Include="Communication\DTC\DTCCommunicationSystem.cs" />
+    <Compile Include="Communication\DTC\DTCModule.cs" />
     <Compile Include="Communication\Host.cs" />
     <Compile Include="Communication\Interfaces\ICommunicationSystem.cs" />
     <Compile Include="Connection\ConnectionManager.cs" />
     <Compile Include="Connection\Interfaces\IDataConnection.cs" />
     <Compile Include="Communication\Interfaces\IHost.cs" />
     <Compile Include="Communication\Interfaces\IModule.cs" />
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Connection\SimulationDataConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\DTCPage.xaml.cs">
+    <Compile Include="UI\Data\DataGraph.xaml.cs">
+      <DependentUpon>DataGraph.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Data\DataPage.xaml.cs">
+      <DependentUpon>DataPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Data\DataView.xaml.cs">
+      <DependentUpon>DataView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\DTC\DTCPage.xaml.cs">
       <DependentUpon>DTCPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\DTCView.xaml.cs">
+    <Compile Include="UI\DTC\DTCView.xaml.cs">
       <DependentUpon>DTCView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\HostView.xaml.cs">
@@ -147,15 +172,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UI\DTCPage.xaml">
+    <Page Include="UI\Data\DataGraph.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\DTCView.xaml">
+    <Page Include="UI\Data\DataPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Data\DataView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\DTC\DTCPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\DTC\DTCView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
