@@ -59,15 +59,15 @@ namespace VSDA.Communication
 
         public HostViewModel(IHost hostModel)
         {
-            this.HostModel = hostModel;            
-            this.CurrentModuleName = hostModel.CurrentModule.Name;            
+            this.HostModel = hostModel;
+            this.CurrentModuleName = hostModel.CurrentModule.Name;
             this.Modules = new List<IModuleViewModel>();
-            foreach(IModule module in this.HostModel.Modules)
+            foreach (IModule module in this.HostModel.Modules)
             {
-                switch(module.Name)
+                switch (module.Name)
                 {
                     case "Data": this.Modules.Add(new DataModuleViewModel(module as IDataModule)); break;
-                    //case "Data": this.Modules.Add(new DataModuleViewModel(module as IDataModule)); break;
+                        //case "Data": this.Modules.Add(new DataModuleViewModel(module as IDataModule)); break;
                 }
             }
             this.CurrentModule = this.Modules.First(m => m.Name == this.CurrentModuleName);
@@ -79,5 +79,6 @@ namespace VSDA.Communication
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
-        }        
+        }
+    }        
 }
