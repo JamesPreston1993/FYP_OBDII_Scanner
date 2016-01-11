@@ -110,7 +110,9 @@
     <Compile Include="Communication\Data\DataCommunicationSystem.cs" />
     <Compile Include="Communication\Data\DataConverter.cs" />
     <Compile Include="Communication\Data\DataModule.cs" />
+    <Compile Include="Communication\HostViewModel.cs" />
     <Compile Include="Communication\IHostViewModel.cs" />
+    <Compile Include="Communication\IModuleViewModel.cs" />
     <Compile Include="Communication\Interfaces\ICode.cs" />
     <Compile Include="Communication\Interfaces\IDataCommsSystem.cs" />
     <Compile Include="Communication\Interfaces\IDataModule.cs" />
@@ -119,7 +121,6 @@
     <Compile Include="Communication\Interfaces\IPid.cs" />
     <Compile Include="Communication\Data\Pid.cs" />
     <Compile Include="Communication\Data\PidFactory.cs" />
-    <Compile Include="Communication\ModuleSelectionViewModel.cs" />
     <Compile Include="Communication\RelayCommand.cs" />
     <Compile Include="Connection\BluetoothDataConnection.cs" />
     <Compile Include="Communication\DTC\DTCCommunicationSystem.cs" />

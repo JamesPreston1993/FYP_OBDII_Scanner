@@ -13,6 +13,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using VSDA.Communication;
+using VSDA.Communication.Data;
+using System.ComponentModel;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -23,32 +25,36 @@ namespace VSDA.UI
     /// </summary>
     public sealed partial class HostView : Page
     {
-        private IHost host;
+        private IHostViewModel host;
 
-        public HostView(IHost host)
-        {
-            this.host = host;            
-
+        public HostView(IHostViewModel host)
+        {            
+            this.host = host;
+            this.DataContext = this.host;
             this.InitializeComponent();
+            this.host.PropertyChanged += this.RaiseCurrentViewModelChanged;
 
-            this.TitleBar.Text = this.host.CurrentModule.Name;
-
-            this.host.Initialize();
-
-            foreach (IModule module in this.host.Modules)
-            {
-                // TODO: Add buttons for each module
-            }
-
-            if (this.host.CurrentModule is IDtcModule)
-            {
-                this.ModulePage.Children.Add(new DTCPage(this.host.CurrentModule as IDtcModule));
-            }                                        
+            // Hack
+            this.host.CurrentModule = this.host.CurrentModule;           
         }
         
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
         {
             this.SideMenu.IsPaneOpen = !this.SideMenu.IsPaneOpen;
-        }        
+        }
+        
+        public void RaiseCurrentViewModelChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == "CurrentModule")
+            {
+                switch(this.host.CurrentModuleName)
+                {
+                    case "Data":
+                        this.ModulePage.Children.Clear();
+                        this.ModulePage.Children.Add(new DataPage(this.host.CurrentModule as IDataModuleViewModel));
+                        break;
+                }
+            }
+        }               
     }
 }

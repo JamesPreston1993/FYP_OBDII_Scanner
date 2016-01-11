@@ -7,17 +7,36 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <SplitView x:Name="SideMenu" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" DisplayMode="CompactInline">
+    <SplitView x:Name="SideMenu" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CompactPaneLength="50" DisplayMode="CompactInline">
         <SplitView.Pane>
-            <StackPanel x:Name="ModuleIcons" Background="Gray" Orientation="Vertical">
+            <StackPanel Background="Gray">
                 <Button VerticalAlignment="Center" x:Name="HamburgerButton" FontFamily="Segoe MDL2 Assets" Content="&#xE700;" Width="50" Height="50" Background="Transparent" Foreground="Black" Click="HamburgerButton_Click" />
+                <ItemsControl x:Name="ModuleIcons" ItemsSource="{Binding Modules}" >
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Height="50">
+                                <Button Width="50" VerticalAlignment="Stretch" Content="1" />
+                                <TextBlock HorizontalAlignment="Stretch" VerticalAlignment="Center" Text="{Binding Name}" Margin="15,0,0,0" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </StackPanel>
         </SplitView.Pane>
-        <StackPanel>
-            <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="50" Background="LightGray">
-                <TextBlock x:Name="TitleBar" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24" Padding="10,0,0,0" TextWrapping="Wrap" Text="Module Name"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="50" Background="LightGray">
+                <TextBlock x:Name="TitleBar" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24" Padding="10,0,0,0" TextWrapping="Wrap" Text="{Binding CurrentModuleName}"/>
             </Grid>
-            <Grid x:Name="ModulePage"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-        </StackPanel>
+            <Grid x:Name="ModulePage" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        </Grid>
     </SplitView>
 </Page>

@@ -86,7 +86,7 @@ namespace VSDA
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter                
-                rootFrame.Content = new HostView(this.host);
+                rootFrame.Content = new HostView(new HostViewModel(this.host));
             }
             // Ensure the current window is active
             Window.Current.Activate();
