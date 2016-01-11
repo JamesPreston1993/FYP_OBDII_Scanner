@@ -15,7 +15,8 @@ namespace VSDA.Connection
             get
             {
                 if (instance == null)
-                    ConnectionManager.GetBluetoothConnection();
+                    ConnectionManager.GetSimulationConnection();
+                    //ConnectionManager.GetBluetoothConnection();
 
                 return instance;
             }
@@ -24,6 +25,11 @@ namespace VSDA.Connection
         private static void GetBluetoothConnection()
         {
             instance = new BluetoothDataConnection();            
+        }
+
+        private static void GetSimulationConnection()
+        {
+            instance = new SimulationDataConnection();
         }
     }
 }

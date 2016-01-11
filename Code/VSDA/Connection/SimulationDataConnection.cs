@@ -29,10 +29,11 @@ namespace VSDA.Connection
             // Data
             if(command.StartsWith("01"))
             {
-                // Only 04, 05, 0C and 0D are supported
+                // Only 04, 05, 0A, 0C and 0D are supported
                 if(command.Equals("0100"))
                 {
-                    response = "410018180000";
+                    // Binary Value: 0001 1000 0111 1000 0000 0000 0000 0000
+                    response = "410018580000";
                 }
                 else if(command.Equals("0104"))
                 {
@@ -59,6 +60,32 @@ namespace VSDA.Connection
                     value += 40;
 
                     response = "4105" + value.ToString("X2");                    
+                }
+                else if (command.Equals("010A"))
+                {
+                    // A * 3
+                    int min = 0;
+                    int max = 765;
+                    Random r = new Random();
+                    int value = r.Next(min, max);
+
+                    // Manipulation
+                    value = value / 3;
+
+                    response = "410A" + value.ToString("X2");
+                }
+                else if (command.Equals("010B"))
+                {
+                    // A
+                    int min = 0;
+                    int max = 255;
+                    Random r = new Random();
+                    int value = r.Next(min, max);
+
+                    // Manipulation
+                    value = value / 3;
+
+                    response = "410B" + value.ToString("X2");
                 }
                 else if (command.Equals("010C"))
                 {
