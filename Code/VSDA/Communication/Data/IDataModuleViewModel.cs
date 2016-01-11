@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace VSDA.Communication.Data
 {
-    public interface IDataModuleViewModel : INotifyPropertyChanged
+    public interface IDataModuleViewModel : IModuleViewModel
     {
         IDataModule ModuleModel { get; }
 

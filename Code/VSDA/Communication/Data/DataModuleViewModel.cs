@@ -12,6 +12,8 @@ namespace VSDA.Communication.Data
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public string Name { get; private set; }
+
         public IDataModule ModuleModel { get; private set; }
 
         public IList<IDataListViewModel> ListViews { get; private set; }
@@ -28,6 +30,7 @@ namespace VSDA.Communication.Data
         public DataModuleViewModel(IDataModule module)
         {
             this.ModuleModel = module;
+            this.Name = module.Name;
             this.ListViews = new List<IDataListViewModel>();
             this.GraphViews = new List<IDataGraphViewModel>();
             this.PlayPauseCommand = new RelayCommand(this.PlayPause);
