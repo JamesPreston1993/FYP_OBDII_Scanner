@@ -24,15 +24,15 @@ namespace VSDA.UI
     /// </summary>
     public sealed partial class DataPage : Page
     {
-        private IDataModuleViewModel module;
+        private IDataModuleViewModel module;        
 
         public DataPage(IDataModuleViewModel module)
         {
-            this.module = module;
+            this.module = module;            
             this.DataContext = this.module;
             this.InitializeComponent();
             
-            this.Loaded += this.PageLoaded;
+            this.Loaded += this.PageLoaded;            
         }
                 
         public async void PageLoaded(object sender, RoutedEventArgs e)
@@ -61,18 +61,13 @@ namespace VSDA.UI
                 RowDefinition rowDef = new RowDefinition();
                 rowDef.Height = new GridLength(graphHeight);
                 this.Graph.RowDefinitions.Add(rowDef);
+
                 Grid.SetRow(dataGraph, index / 2);
                 Grid.SetColumn(dataGraph, index % 2);
                 this.Graph.Children.Add(dataGraph);
                 index++;
             }
             this.Graph.Height = graphHeight * (this.module.GraphViews.Count / 2 + this.module.GraphViews.Count % 2);
-        }
-        public async void Click(object sender, RoutedEventArgs e)
-        {
-            /* TEMP */
-            this.module.ModuleModel.IsRecording = !this.module.ModuleModel.IsRecording;
-            await this.module.ModuleModel.UpdateData();
-        }
+        }        
     }
 }
