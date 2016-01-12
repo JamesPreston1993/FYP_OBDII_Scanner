@@ -12,14 +12,24 @@ namespace VSDA.Communication
         public event EventHandler CanExecuteChanged;
 
         private Action action;
+        private Func<bool> canExecute;
 
         public RelayCommand(Action action)
         {
             this.action = action;
+            this.canExecute = null;
+        }
+
+        public RelayCommand(Action action, Func<bool> canExecute)
+        {
+            this.action = action;
+            this.canExecute = canExecute;
         }
 
         public bool CanExecute(object parameter)
         {
+            if (this.canExecute != null)
+                return canExecute();
             return true;
         }
 
