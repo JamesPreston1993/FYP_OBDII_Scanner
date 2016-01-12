@@ -49,11 +49,6 @@ namespace VSDA.Communication.Data
             return true;
         }
 
-        public void Notify()
-        {
-
-        }
-
         public async Task<ObservableCollection<IPid>> GetSupportedPids()
         {
             IList<IPid> pids = await this.commsSystem.GetSupportedPids();
