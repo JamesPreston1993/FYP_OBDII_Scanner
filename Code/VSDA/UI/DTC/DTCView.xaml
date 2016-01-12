@@ -16,9 +16,9 @@
         </Grid.RowDefinitions>
         <Grid Height="80" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="LightGray">
             <StackPanel Orientation="Horizontal" Margin="10,10,10,10">
-                <TextBlock x:Name="CodeName" Text="P0100" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24"/>
+                <TextBlock x:Name="CodeName" Text="{Binding Name}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24"/>
                 <TextBlock Text="-" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24" Margin="8,0,8,0"/>
-                <TextBlock x:Name="CodeDescription" Text="Mass Air Flow (MAF) Circuit Malfunction" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24"/>
+                <TextBlock x:Name="CodeDescription" Text="{Binding Description}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24"/>
             
             </StackPanel>
             <Button Background="Transparent" x:Name="Expand" FontFamily="Segoe MDL2 Assets" FontSize="24" Content="&#xE011;" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="ExpandClick" />

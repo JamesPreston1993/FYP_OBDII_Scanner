@@ -12,7 +12,8 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using VSDA.Communication;
+using VSDA.Communication.DTC;
+using System.ComponentModel;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -23,52 +24,39 @@ namespace VSDA.UI
     /// </summary>
     public sealed partial class DTCPage : Page
     {
-        private IDtcModule module;
+        private IDtcModuleViewModel module;
 
-        public DTCPage(IDtcModule module)
+        public DTCPage(IDtcModuleViewModel module)
         {
             this.module = module;
-            this.InitializeComponent();            
-            this.DisplayCodes();
-        }        
-
-        private async void DisplayCodes()
-        {
-            this.StoredCodesGrid.Children.Clear();
-            this.PendingCodesGrid.Children.Clear();
-            this.PermanentCodesGrid.Children.Clear();
-
-            IList<ICode> storedCodes = await this.module.GetCurrentCodes();
-            foreach(ICode code in storedCodes)
-            {
-                DTCView view = new DTCView(code);
-                this.StoredCodesGrid.Children.Add(view);
-            }
-
-            IList<ICode> pendingCodes = await this.module.GetPendingCodes();
-            foreach (ICode code in pendingCodes)
-            {
-                DTCView view = new DTCView(code);
-                this.PendingCodesGrid.Children.Add(view);
-            }
-            
-            IList<ICode> permanentCodes = await this.module.GetPermanentCodes();
-            foreach (ICode code in permanentCodes)
-            {
-                DTCView view = new DTCView(code);
-                this.PermanentCodesGrid.Children.Add(view);
-            }
+            this.DataContext = this.module;
+            this.InitializeComponent();
+            this.Loaded += this.PageLoaded;
         }
 
-        private void RefreshClick(object sender, RoutedEventArgs e)
+        public async void PageLoaded(object sender, RoutedEventArgs e)
         {
-            this.DisplayCodes();
+            await this.module.InitializeModule();
+
+            foreach (ICodeViewModel code in this.module.CurrentCodes)
+                this.CurrentCodesControl.Children.Add(new DTCView(code));
+
+            foreach (ICodeViewModel code in this.module.PendingCodes)
+                this.PendingCodesControl.Children.Add(new DTCView(code));
+
+            foreach (ICodeViewModel code in this.module.PermanentCodes)
+                this.PermanentCodesControl.Children.Add(new DTCView(code));
         }
 
-        private async void ClearCodesClick(object sender, RoutedEventArgs e)
+        public void RaiseViewModelChanged(object sender, PropertyChangedEventArgs e)
         {
-            await this.module.ClearCodes();
-            this.DisplayCodes();
+            if (e.PropertyName == "CurrentCodes")
+            {
+                this.CurrentCodesControl.Children.Clear();
+
+                foreach (ICodeViewModel code in this.module.CurrentCodes)
+                    this.CurrentCodesControl.Children.Add(new DTCView(code));
+            }
         }
     }
 }

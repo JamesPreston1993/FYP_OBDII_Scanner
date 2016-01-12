@@ -18,6 +18,9 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>VSDA_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -110,6 +113,10 @@
     <Compile Include="Communication\Data\DataCommunicationSystem.cs" />
     <Compile Include="Communication\Data\DataConverter.cs" />
     <Compile Include="Communication\Data\DataModule.cs" />
+    <Compile Include="Communication\DTC\CodeViewModel.cs" />
+    <Compile Include="Communication\DTC\DTCModuleViewModel.cs" />
+    <Compile Include="Communication\DTC\ICodeViewModel.cs" />
+    <Compile Include="Communication\DTC\IDtcModuleViewModel.cs" />
     <Compile Include="Communication\HostViewModel.cs" />
     <Compile Include="Communication\IHostViewModel.cs" />
     <Compile Include="Communication\IModuleViewModel.cs" />

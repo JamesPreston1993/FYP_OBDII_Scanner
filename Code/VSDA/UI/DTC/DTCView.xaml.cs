@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using VSDA.Communication;
+using VSDA.Communication.DTC;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -20,19 +21,19 @@ namespace VSDA.UI
 {
     public sealed partial class DTCView : UserControl
     {
-        private ICode code;
+        private ICodeViewModel code;
 
-        public DTCView(ICode code)
+        public DTCView(ICodeViewModel code)
         {
             this.code = code;
-            this.InitializeComponent();
-            this.CodeName.Text = this.code.Name;
-            this.CodeDescription.Text = this.code.Description;
+            this.DataContext = code;
+            this.InitializeComponent();            
         }
 
         private void ExpandClick(object sender, RoutedEventArgs e)
         {
             
         }
+
     }
 }

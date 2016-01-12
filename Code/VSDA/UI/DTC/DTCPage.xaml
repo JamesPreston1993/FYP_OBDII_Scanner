@@ -15,17 +15,21 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
-            <TextBlock FontSize="24" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Stored Codes" VerticalAlignment="Top"/>
-            <StackPanel x:Name="StoredCodesGrid" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
+            <!-- Current Codes -->
+            <TextBlock FontSize="24" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Current Codes" VerticalAlignment="Top"/>
+            <StackPanel x:Name="CurrentCodesControl" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
+
+            <!-- Pending Codes -->
             <TextBlock FontSize="24" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Pending Codes" VerticalAlignment="Top"/>
-            <StackPanel x:Name="PendingCodesGrid" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
+            <StackPanel x:Name="PendingCodesControl" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
+
+            <!-- Permanent Codes -->
             <TextBlock FontSize="24" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Permanent Codes" VerticalAlignment="Top"/>
-            <StackPanel x:Name="PermanentCodesGrid" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
+            <StackPanel x:Name="PermanentCodesControl" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
         </StackPanel>
         <Grid Grid.Row="1" Background="LightGray"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <StackPanel x:Name="ControlBar" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Button x:Name="Refresh" Content="Refresh" HorizontalAlignment="Center" VerticalAlignment="Center" Click="RefreshClick" Margin="2,0,2,0"/>
-                <Button x:Name="ClearCodes" Content="Clear Codes" HorizontalAlignment="Center" VerticalAlignment="Center" Click="ClearCodesClick" Margin="2,0,2,0"/>
+                <Button x:Name="ClearCodes" Content="Clear Codes" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding ClearCodesCommand}" Margin="2,0,2,0"/>
             </StackPanel>
         </Grid>
     </Grid>
