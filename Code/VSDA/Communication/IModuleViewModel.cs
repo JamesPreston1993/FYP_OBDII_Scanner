@@ -9,8 +9,12 @@ namespace VSDA.Communication
 {
     public interface IModuleViewModel : INotifyPropertyChanged
     {
+        IModule ModuleModel { get; set; }
+
         string Name { get; }
 
         Task<bool> InitializeModule();
+
+
     }
 }

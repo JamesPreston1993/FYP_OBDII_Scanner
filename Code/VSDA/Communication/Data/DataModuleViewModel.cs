@@ -14,7 +14,8 @@ namespace VSDA.Communication.Data
 
         public string Name { get; private set; }
 
-        public IDataModule ModuleModel { get; private set; }
+        private IDataModule dataModuleModel;
+        public IModule ModuleModel { get; set; }
 
         public IList<IDataListViewModel> ListViews { get; private set; }
 
@@ -30,14 +31,15 @@ namespace VSDA.Communication.Data
         public DataModuleViewModel(IDataModule module)
         {
             this.ModuleModel = module;
+            this.dataModuleModel = module;
             this.Name = module.Name;
             this.ListViews = new List<IDataListViewModel>();
             this.GraphViews = new List<IDataGraphViewModel>();
             this.PlayPauseCommand = new RelayCommand(this.PlayPause);
-            this.StepBackCommand = new RelayCommand(this.StepBack);
-            this.StepForwardCommand = new RelayCommand(this.StepForward);
-            this.SkipToEndCommand = new RelayCommand(this.SkipToEnd);
-            this.SkipToStartCommand = new RelayCommand(this.SkipToStart);
+            this.StepBackCommand = new RelayCommand(this.StepBack, this.CanStep);
+            this.StepForwardCommand = new RelayCommand(this.StepForward, this.CanStep);
+            this.SkipToEndCommand = new RelayCommand(this.SkipToEnd, this.CanStep);
+            this.SkipToStartCommand = new RelayCommand(this.SkipToStart, this.CanStep);
 
             foreach (IPid pid in module.Pids)
             {
@@ -56,14 +58,17 @@ namespace VSDA.Communication.Data
         // Graph Controls
         public async void PlayPause()
         {
-            this.ModuleModel.IsRecording = !this.ModuleModel.IsRecording;
-            await this.ModuleModel.UpdateData();
+            this.dataModuleModel.IsRecording = !this.dataModuleModel.IsRecording;
+            await this.dataModuleModel.UpdateData();
         }
         
-        public void StepBack()
+        private bool CanStep()
         {
-            
-            if (!this.ModuleModel.IsRecording)
+            return !this.dataModuleModel.IsRecording;
+        }
+        public void StepBack()
+        {            
+            if (!this.dataModuleModel.IsRecording)
             {
                 foreach(DataGraphViewModel graph in this.GraphViews)
                 {
@@ -78,7 +83,7 @@ namespace VSDA.Communication.Data
 
         public void StepForward()
         {
-            if (!this.ModuleModel.IsRecording)
+            if (!this.dataModuleModel.IsRecording)
             {
                 foreach (DataGraphViewModel graph in this.GraphViews)
                 {
@@ -93,7 +98,7 @@ namespace VSDA.Communication.Data
 
         public void SkipToStart()
         {
-            if (!this.ModuleModel.IsRecording)
+            if (!this.dataModuleModel.IsRecording)
             {
                 foreach (DataGraphViewModel graph in this.GraphViews)
                 {
@@ -108,7 +113,7 @@ namespace VSDA.Communication.Data
 
         public void SkipToEnd()
         {
-            if (!this.ModuleModel.IsRecording)
+            if (!this.dataModuleModel.IsRecording)
             {
                 foreach (DataGraphViewModel graph in this.GraphViews)
                 {
@@ -138,7 +143,7 @@ namespace VSDA.Communication.Data
 
                 this.ListViews.Clear();
                 this.GraphViews.Clear();
-                foreach (IPid pid in this.ModuleModel.Pids)
+                foreach (IPid pid in this.dataModuleModel.Pids)
                 {
                     this.ListViews.Add(new DataListViewModel(pid));
                     this.GraphViews.Add(new DataGraphViewModel(pid));

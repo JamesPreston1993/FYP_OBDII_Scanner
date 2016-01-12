@@ -10,12 +10,8 @@ namespace VSDA.Communication.Data
 {
     public interface IDataModuleViewModel : IModuleViewModel
     {
-        IDataModule ModuleModel { get; }
-
         IList<IDataListViewModel> ListViews { get; }
 
         IList<IDataGraphViewModel> GraphViews { get; }
-
-        // Commands
     }
 }
