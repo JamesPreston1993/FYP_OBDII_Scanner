@@ -8,7 +8,7 @@ using System.ComponentModel;
 
 namespace VSDA.Communication
 {
-    public interface IDataModule : IModule, INotifyPropertyChanged
+    public interface IDataModule : IModule
     {
         ObservableCollection<IPid> Pids { get; }
 
