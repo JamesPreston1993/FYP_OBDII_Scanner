@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using VSDA.Communication.Data;
+using VSDA.Communication.DTC;
 
 namespace VSDA.Communication
 {
@@ -25,6 +27,7 @@ namespace VSDA.Communication
             {
                 this.currentModule = value;
                 this.CurrentModuleName = this.currentModule.Name;
+                this.HostModel.CurrentModule = this.CurrentModule.ModuleModel;
                 this.RaisePropertyChanged("CurrentModule");
             }
         }
@@ -67,10 +70,11 @@ namespace VSDA.Communication
                 switch (module.Name)
                 {
                     case "Data": this.Modules.Add(new DataModuleViewModel(module as IDataModule)); break;
-                        //case "Data": this.Modules.Add(new DataModuleViewModel(module as IDataModule)); break;
+                    case "Codes": this.Modules.Add(new DTCModuleViewModel(module as IDtcModule)); break;
                 }
             }
             this.CurrentModule = this.Modules.First(m => m.Name == this.CurrentModuleName);
+            this.HostModel.PropertyChanged += this.RaiseModelPropertyChanged;
         }
 
         public void RaisePropertyChanged(string propertyName)
@@ -80,5 +84,10 @@ namespace VSDA.Communication
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-    }        
+
+        public void RaiseModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            this.RaisePropertyChanged(e.PropertyName);
+        }
+    }  
 }

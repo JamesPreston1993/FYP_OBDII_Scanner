@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using VSDA.Communication;
 using VSDA.Communication.Data;
 using System.ComponentModel;
+using VSDA.Communication.DTC;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -34,10 +35,26 @@ namespace VSDA.UI
             this.InitializeComponent();
             this.host.PropertyChanged += this.RaiseCurrentViewModelChanged;
 
+            foreach(IModuleViewModel module in this.host.Modules)
+            {
+                Button button = new Button()
+                {
+                    Height = 50,
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    Content = module.Name,                    
+                    Command = new RelayCommand(delegate
+                    {
+                        this.host.CurrentModule = module;
+                        this.SideMenu.IsPaneOpen = false;
+                    })
+                };
+                this.ModuleIcons.Children.Add(button);
+            }
+
             // Hack
             this.host.CurrentModule = this.host.CurrentModule;           
-        }
-        
+        }        
+
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
         {
             this.SideMenu.IsPaneOpen = !this.SideMenu.IsPaneOpen;
@@ -52,6 +69,10 @@ namespace VSDA.UI
                     case "Data":
                         this.ModulePage.Children.Clear();
                         this.ModulePage.Children.Add(new DataPage(this.host.CurrentModule as IDataModuleViewModel));
+                        break;
+                    case "Codes":
+                        this.ModulePage.Children.Clear();
+                        this.ModulePage.Children.Add(new DTCPage(this.host.CurrentModule as IDtcModuleViewModel));
                         break;
                 }
             }
