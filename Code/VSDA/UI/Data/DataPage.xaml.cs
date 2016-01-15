@@ -36,10 +36,9 @@ namespace VSDA.UI
         }
                 
         public async void PageLoaded(object sender, RoutedEventArgs e)
-        {
-            /* TEMP */
-            //await this.module.ModuleModel.GetSupportedPids();
-            await ((DataModuleViewModel)this.module).InitializeModule();
+        {            
+            await this.module.InitializeModule();
+            
             /* TEMP */
             double graphHeight = this.Graph.ActualHeight / 2;
             int index = 0;
