@@ -37,11 +37,30 @@ namespace VSDA.UI
 
             foreach(IModuleViewModel module in this.host.Modules)
             {
+                Grid grid = new Grid() { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch};
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+
+                TextBlock icon = new TextBlock() { FontFamily = new FontFamily("Segoe MDL2 Assets"), FontSize = 24, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
+                switch(module.Name)
+                {
+                    case "Codes": icon.Text = ""; break;
+                    case "Data": icon.Text = "\xE877"; break;
+                    case "Connection": icon.Text = "\xE702"; break;
+                }
+                TextBlock moduleName = new TextBlock() { Text = module.Name, FontSize = 18, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Center };
+                Grid.SetColumn(icon, 0);
+                grid.Children.Add(icon);
+                Grid.SetColumn(moduleName, 1);
+                grid.Children.Add(moduleName);
+
                 Button button = new Button()
                 {
                     Height = 50,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
-                    Content = module.Name,                    
+                    HorizontalContentAlignment = HorizontalAlignment.Left,
+                    VerticalContentAlignment = VerticalAlignment.Center,
+                    Content = grid,                    
                     Command = new RelayCommand(delegate
                     {
                         this.host.CurrentModule = module;
@@ -73,6 +92,11 @@ namespace VSDA.UI
                     case "Codes":
                         this.ModulePage.Children.Clear();
                         this.ModulePage.Children.Add(new DTCPage(this.host.CurrentModule as IDtcModuleViewModel));
+                        break;
+
+                    case "Connection":
+                        this.ModulePage.Children.Clear();
+                        this.ModulePage.Children.Add(new ConnectionPage(this.host.CurrentModule as IConnectionModuleViewModel));
                         break;
                 }
             }
