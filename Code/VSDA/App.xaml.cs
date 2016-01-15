@@ -42,6 +42,7 @@ namespace VSDA
             
             modules.Add(new DataModule());
             modules.Add(new DTCModule());
+            modules.Add(new BluetoothModule());
 
             this.host = new Host(modules);            
         }
