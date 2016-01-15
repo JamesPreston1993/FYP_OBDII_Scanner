@@ -186,9 +186,16 @@ namespace VSDA.Communication.Data
                 // Add points, Update cursor and scroll
                 //this.CursorPosition = this.ScrollPosition = this.CurrentSample * this.xScale;
                 //this.ScrollPosition += this.xScale;
-                Point point = new Point(this.CurrentSample * this.xScale,
-                                        this.GraphHeight - (this.GraphHeight * (Double.Parse(this.DataItems.Last()) - this.MinPossibleValue) / this.graphRange));
-                this.Points.Add(point);                                                         
+                try
+                {
+                    Point point = new Point(this.CurrentSample * this.xScale,
+                                            this.GraphHeight - (this.GraphHeight * (Double.Parse(this.DataItems.Last()) - this.MinPossibleValue) / this.graphRange));
+                    this.Points.Add(point);
+                }
+                catch(FormatException)
+                {
+                    
+                }
             }
         }        
     }    
