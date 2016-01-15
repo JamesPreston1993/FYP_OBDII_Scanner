@@ -32,8 +32,8 @@ namespace VSDA.Communication
         public Host(List<IModule> modules)
         {
             this.Modules = modules;
-            this.CurrentModule = modules[0];
-            ConnectionManager.Instance.Initialize();
+            this.CurrentModule = this.Modules.First(m => m.Name == "Connection");
+            ConnectionManager.Instance.PropertyChanged += this.RaiseConnectionPropertyChanged;
         }       
 
         public void RaisePropertyChanged(string propertyName)
@@ -41,6 +41,23 @@ namespace VSDA.Communication
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        private void RaiseConnectionPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == "IsInitialized")
+            {
+                switch(ConnectionManager.Instance.IsInitialized)
+                {
+                    case true:
+                        this.CurrentModule = this.Modules[0];                        
+                        break;
+
+                    case false:
+                        this.CurrentModule = this.Modules.First(m => m.Name == "Connection");
+                        break;
+                }
             }
         }
     }
