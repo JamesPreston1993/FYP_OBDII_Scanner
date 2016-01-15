@@ -1,21 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Devices.Enumeration;
 
 namespace VSDA.Connection
 {
     class SimulationDataConnection : IDataConnection
     {
-        public async void Initialize()
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public DeviceInformation Device { get; set; }
+
+        private bool isInitialized;
+        public bool IsInitialized
         {
-            await Task.Delay(100);
+            get
+            {
+                return this.isInitialized;
+            }
+            private set
+            {
+                this.isInitialized = value;
+                this.RaisePropertyChanged("IsInitialized");
+            }
+        }
+        
+        public SimulationDataConnection()
+        {
+            this.isInitialized = false;
         }
 
-        public async void Reset()
+        public async Task<bool> Initialize()
         {
+            await Task.Delay(100);
+            this.IsInitialized = true;
+            return true;
+        }        
 
+        public async Task<bool> Reset()
+        {
+            return true;
         }
 
         public void Shutdown()
@@ -133,6 +160,14 @@ namespace VSDA.Connection
             }
             await Task.Delay(100);
             return response;
+        }
+
+        public void RaisePropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }

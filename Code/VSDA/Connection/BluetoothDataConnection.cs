@@ -9,33 +9,47 @@ using Windows.Devices.Bluetooth;
 using Windows.Devices.Bluetooth.Rfcomm;
 using Windows.Storage.Streams;
 using Windows.Devices.Bluetooth.Background;
+using System.ComponentModel;
 
 namespace VSDA.Connection
 {
     public class BluetoothDataConnection : IDataConnection
     {
-        private bool isInitialized;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        private RfcommDeviceService service;
+        private RfcommDeviceService service;        
         private StreamSocket socket;
         private DataWriter writer;
         private DataReader reader;
 
+        private bool isInitialized;
+        public bool IsInitialized
+        {
+            get
+            {
+                return this.isInitialized;
+            }
+            private set
+            {
+                this.isInitialized = value;
+                this.RaisePropertyChanged("IsInitialized");
+            }
+        }
+        public DeviceInformation Device { get; set; }
+        
         public BluetoothDataConnection()
         {
+            this.Device = null;
             this.isInitialized = false;
-        }
+        }        
 
-        public async void Initialize()
+        public async Task<bool> Initialize()
         {
-            if (!this.isInitialized)
+            if (!this.IsInitialized)
             {
-                DeviceInformationCollection services = await DeviceInformation.FindAllAsync(RfcommDeviceService.GetDeviceSelector(RfcommServiceId.SerialPort));
-
-                if (services.Count > 0)
-                {
-                    // Temporary set up - connects to first bluetooth device
-                    this.service = await RfcommDeviceService.FromIdAsync(services[0].Id);                    
+               if (this.Device != null)
+                {                    
+                    this.service = await RfcommDeviceService.FromIdAsync(this.Device.Id);
                     
                     if (this.service != null)
                     {
@@ -47,26 +61,29 @@ namespace VSDA.Connection
 
                         this.isInitialized = true;
 
-                        this.Reset();
+                        await this.Reset();
+
+                        this.IsInitialized = true;
+
+                        return true;
                     }
                 }
-            }            
+            }
+            return false;            
         }
 
-        public async void Reset()
+        public async Task<bool> Reset()
         {
-            if(this.isInitialized)
-            {
-                var result = await this.SendCommand("ATZ");                
-                result = await this.SendCommand("ATE0");                
-                result = await this.SendCommand("ATSP0");                
-                result = await this.SendCommand("ATAL");                
-            }
+            await this.SendCommand("ATZ");                
+            await this.SendCommand("ATE0");                
+            await this.SendCommand("ATSP0");                
+            await this.SendCommand("ATAL");
+            return true;
         }
 
         public void Shutdown()
         {
-            if (this.isInitialized)
+            if (this.IsInitialized)
             {
 
             }
@@ -75,13 +92,12 @@ namespace VSDA.Connection
         public async Task<string> SendCommand(string command)
         {            
             string response = string.Empty;
-            if (this.isInitialized)
+            if (this.IsInitialized)
             {                
                 // Write
                 this.writer.WriteString(command + "\r");
-                await this.socket.OutputStream.WriteAsync(this.writer.DetachBuffer());
-                await Task.Delay(200);
-                
+                await this.socket.OutputStream.WriteAsync(this.writer.DetachBuffer());                
+
                 // Read
                 while (true)
                 {
@@ -98,6 +114,14 @@ namespace VSDA.Connection
                 response = "No connection!";
             }
             return response;
+        }
+
+        public void RaisePropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }
