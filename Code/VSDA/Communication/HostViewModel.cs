@@ -71,6 +71,7 @@ namespace VSDA.Communication
                 {
                     case "Data": this.Modules.Add(new DataModuleViewModel(module as IDataModule)); break;
                     case "Codes": this.Modules.Add(new DTCModuleViewModel(module as IDtcModule)); break;
+                    case "Connection": this.Modules.Add(new BluetoothModuleViewModel(module as IConnectionModule)); break;
                 }
             }
             this.CurrentModule = this.Modules.First(m => m.Name == this.CurrentModuleName);
@@ -87,7 +88,13 @@ namespace VSDA.Communication
 
         public void RaiseModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            this.RaisePropertyChanged(e.PropertyName);
+            if(e.PropertyName == "CurrentModule")
+            {
+                this.currentModule = this.Modules.First(m => m.Name == this.HostModel.CurrentModule.Name);
+                this.CurrentModuleName = this.currentModule.Name;
+                this.RaisePropertyChanged(e.PropertyName);
+            }
+            
         }
     }  
 }
