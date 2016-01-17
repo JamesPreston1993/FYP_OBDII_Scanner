@@ -34,7 +34,7 @@ namespace VSDA.UI
             
             this.Loaded += this.PageLoaded;            
         }
-                
+        
         public async void PageLoaded(object sender, RoutedEventArgs e)
         {            
             await this.module.InitializeModule();
@@ -67,6 +67,20 @@ namespace VSDA.UI
                 index++;
             }
             this.Graph.Height = graphHeight * (this.module.GraphViews.Count / 2 + this.module.GraphViews.Count % 2);
-        }        
+        }
+
+        public void ExpandCollapseListClick(object sender, RoutedEventArgs e)
+        {
+            if(this.MainPage.ColumnDefinitions[0].Width.Value == 0)
+            {
+                this.MainPage.ColumnDefinitions[0].Width = new GridLength(1, GridUnitType.Star);
+                this.ExpandCollapseList.Content = "\xE00E";
+            }
+            else
+            {
+                this.MainPage.ColumnDefinitions[0].Width = new GridLength(0);
+                this.ExpandCollapseList.Content = "\xE00F";
+            }
+        }
     }
 }
