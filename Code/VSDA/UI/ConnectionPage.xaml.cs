@@ -48,6 +48,8 @@ namespace VSDA.UI
                     Height = 50,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     HorizontalContentAlignment = HorizontalAlignment.Left,
+                    Background = App.Current.Resources["ModulePageButtonBackground"] as SolidColorBrush,
+                    Foreground = App.Current.Resources["ModulePageButtonForeground"] as SolidColorBrush,
                     Command = new RelayCommand(delegate
                     {
                         this.module.CurrentDevice = device;

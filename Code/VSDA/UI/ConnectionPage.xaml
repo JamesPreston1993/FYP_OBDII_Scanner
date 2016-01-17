@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="{StaticResource ModulePageBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
@@ -19,7 +19,7 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                    <TextBlock FontSize="24" Text="Select your device from the list below" TextWrapping="WrapWholeWords"/>
+                    <TextBlock FontSize="24" Text="Select your device from the list below" TextWrapping="WrapWholeWords" Foreground="{StaticResource ModulePageForeground}"/>
                 </StackPanel>
                 <Grid Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
@@ -27,11 +27,11 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <StackPanel x:Name="DevicesPanel" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                        <TextBlock Text="Device Name" FontSize="18" Margin="5,0,0,0"/>
+                        <TextBlock Text="Device Name" FontSize="18" Margin="5,0,0,0" Foreground="{StaticResource ModulePageForeground}"/>
                     </StackPanel>
                     <ScrollViewer Grid.Column="1" HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Disabled" VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
                         <StackPanel x:Name="InstructionsPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,10,0">
-                            <RichTextBlock x:Name="InstructionsTextBlock" FontSize="18" Margin="5,5,5,5" HorizontalAlignment="Stretch" VerticalAlignment="Top" TextWrapping="WrapWholeWords">
+                            <RichTextBlock x:Name="InstructionsTextBlock" FontSize="18" Margin="5,5,5,5" HorizontalAlignment="Stretch" VerticalAlignment="Top" TextWrapping="WrapWholeWords" Foreground="{StaticResource ModulePageForeground}">
                                 <Paragraph>
                                     1) Ensure the ELM327 dongle is paired with your device and in range
                                 </Paragraph>
@@ -45,9 +45,9 @@
                 </Grid>
             </Grid>
         </Grid>
-        <Grid Grid.Row="1" Background="LightGray"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid Grid.Row="1" Background="{StaticResource AppBarBackground}"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <StackPanel x:Name="ControlBar" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Button x:Name="ConnectButton" Content="Connect" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding ConnectCommand}" Margin="2,0,2,0"/>
+                <Button x:Name="ConnectButton" Content="Connect" Background="{StaticResource AppBarButtonBackground}" Foreground="{StaticResource AppBarButtonForeground}" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding ConnectCommand}" Margin="2,0,2,0"/>
             </StackPanel>
         </Grid>
     </Grid>
