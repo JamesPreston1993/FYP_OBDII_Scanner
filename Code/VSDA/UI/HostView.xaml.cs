@@ -16,6 +16,7 @@ using VSDA.Communication;
 using VSDA.Communication.Data;
 using System.ComponentModel;
 using VSDA.Communication.DTC;
+using Windows.UI;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -37,29 +38,45 @@ namespace VSDA.UI
 
             foreach(IModuleViewModel module in this.host.Modules)
             {
-                Grid grid = new Grid() { HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch};
+                Grid grid = new Grid(){ HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch};
                 grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50) });
                 grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-
-                TextBlock icon = new TextBlock() { FontFamily = new FontFamily("Segoe MDL2 Assets"), FontSize = 24, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center };
+                
+                TextBlock icon = new TextBlock()
+                {
+                    FontFamily = new FontFamily("Segoe MDL2 Assets"),
+                    FontSize = 24,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Width = 50,
+                    Foreground = App.Current.Resources["ModuleBarForeground"] as SolidColorBrush
+                };
                 switch(module.Name)
                 {
-                    case "Codes": icon.Text = ""; break;
+                    case "Codes": icon.Text = "\xE814"; break;
                     case "Data": icon.Text = "\xE877"; break;
                     case "Connection": icon.Text = "\xE702"; break;
                 }
-                TextBlock moduleName = new TextBlock() { Text = module.Name, FontSize = 18, HorizontalAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Center };
+                TextBlock moduleName = new TextBlock()
+                {
+                    Text = module.Name,
+                    FontSize = 18,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Foreground = App.Current.Resources["ModuleBarForeground"] as SolidColorBrush
+                };
                 Grid.SetColumn(icon, 0);
                 grid.Children.Add(icon);
                 Grid.SetColumn(moduleName, 1);
                 grid.Children.Add(moduleName);
-
+                
                 Button button = new Button()
                 {
                     Height = 50,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     HorizontalContentAlignment = HorizontalAlignment.Left,
                     VerticalContentAlignment = VerticalAlignment.Center,
+                    Background = new SolidColorBrush(Colors.Transparent),
                     Content = grid,                    
                     Command = new RelayCommand(delegate
                     {

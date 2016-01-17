@@ -9,9 +9,9 @@
 
     <SplitView x:Name="SideMenu" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CompactPaneLength="50" DisplayMode="CompactOverlay">
         <SplitView.Pane>
-            <StackPanel Background="Gray">
-                <Button VerticalAlignment="Center" x:Name="HamburgerButton" FontFamily="Segoe MDL2 Assets" Content="&#xE700;" Width="50" Height="50" Background="Transparent" Foreground="Black" Click="HamburgerButton_Click" />
-                <StackPanel x:Name="ModuleIcons" Orientation="Vertical" >
+            <StackPanel Background="{StaticResource ModuleBarBackground}">
+                <Button VerticalAlignment="Center" x:Name="HamburgerButton" FontFamily="Segoe MDL2 Assets" Content="&#xE700;" Width="50" Height="50" Background="Transparent" Foreground="{StaticResource ModuleBarForeground}" Click="HamburgerButton_Click"/>
+                    <StackPanel x:Name="ModuleIcons" Orientation="Vertical" >
                     
                 </StackPanel>
             </StackPanel>
@@ -21,8 +21,8 @@
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="50" Background="LightGray">
-                <TextBlock x:Name="TitleBar" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24" Padding="10,0,0,0" TextWrapping="Wrap" Text="{Binding CurrentModuleName}"/>
+            <Grid Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="50" Background="{StaticResource ModuleTitleBarBackground}">
+                <TextBlock x:Name="TitleBar" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24" Padding="10,0,0,0" TextWrapping="Wrap" Text="{Binding CurrentModuleName}" Foreground="{StaticResource ModuleTitleBarForeground}" />
             </Grid>
             <Grid x:Name="ModulePage" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
         </Grid>
