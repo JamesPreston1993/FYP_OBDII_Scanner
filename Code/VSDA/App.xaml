@@ -3,6 +3,63 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:VSDA"
-    RequestedTheme="Light">
+    RequestedTheme="Dark">
 
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <!-- Module Bar-->
+                    <SolidColorBrush x:Key="ModuleBarBackground" Color="DodgerBlue"/>
+                    <SolidColorBrush x:Key="ModuleBarForeground" Color="White"/>
+                    
+                    <!-- Module Page-->
+                    <SolidColorBrush x:Key="ModuleTitleBarBackground" Color="Gray"/>
+                    <SolidColorBrush x:Key="ModuleTitleBarForeground" Color="Black"/>
+                    <SolidColorBrush x:Key="ModulePageBackground" Color="White"/>
+                    <SolidColorBrush x:Key="ModulePageForeground" Color="Black"/>
+                    <SolidColorBrush x:Key="ModulePageButtonBackground" Color="Gray"/>
+                    <SolidColorBrush x:Key="ModulePageButtonForeground" Color="White"/>
+                    
+                    <!-- Graphs -->
+                    <SolidColorBrush x:Key="GraphBackground" Color="LightGray"/>
+                    <SolidColorBrush x:Key="GraphTitleBackground" Color="DodgerBlue"/>
+                    <SolidColorBrush x:Key="GraphAxisColor" Color="Black"/>
+                    <SolidColorBrush x:Key="GraphPlotColor" Color="DodgerBlue"/>
+                    <SolidColorBrush x:Key="GraphCursorColor" Color="Yellow"/>
+                    
+                    <!-- App Bar -->
+                    <SolidColorBrush x:Key="AppBarBackground" Color="Gray"/>
+                    <SolidColorBrush x:Key="AppBarButtonBackground" Color="Transparent"/>
+                    <SolidColorBrush x:Key="AppBarButtonForeground" Color="Black"/>                    
+                </ResourceDictionary>
+                
+                <ResourceDictionary x:Key="Dark">
+                    <!-- Module Bar-->
+                    <SolidColorBrush x:Key="ModuleBarBackground" Color="DodgerBlue"/>
+                    <SolidColorBrush x:Key="ModuleBarForeground" Color="White"/>
+                    
+                    <!-- Module Page-->
+                    <SolidColorBrush x:Key="ModuleTitleBarBackground" Color="#444444"/>
+                    <SolidColorBrush x:Key="ModuleTitleBarForeground" Color="White"/>
+                    <SolidColorBrush x:Key="ModulePageBackground" Color="#222222"/>
+                    <SolidColorBrush x:Key="ModulePageForeground" Color="White"/>
+                    <SolidColorBrush x:Key="ModulePageButtonBackground" Color="#666666"/>
+                    <SolidColorBrush x:Key="ModulePageButtonForeground" Color="White"/>
+
+                    <!-- Graphs -->
+                    <SolidColorBrush x:Key="GraphBackground" Color="#666666"/>
+                    <SolidColorBrush x:Key="GraphTitleBackground" Color="DodgerBlue"/>
+                    <SolidColorBrush x:Key="GraphAxisColor" Color="White"/>
+                    <SolidColorBrush x:Key="GraphPlotColor" Color="DodgerBlue"/>
+                    <SolidColorBrush x:Key="GraphCursorColor" Color="Yellow"/>
+                    
+                    <!-- App Bar -->
+                    <SolidColorBrush x:Key="AppBarBackground" Color="#444444"/>
+                    <SolidColorBrush x:Key="AppBarButtonBackground" Color="Transparent"/>
+                    <SolidColorBrush x:Key="AppBarButtonForeground" Color="White"/>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>
