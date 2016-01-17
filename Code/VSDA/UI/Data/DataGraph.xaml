@@ -9,7 +9,7 @@
     d:DesignHeight="320"
     d:DesignWidth="410">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid Background="{StaticResource ModulePageBackground}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50" />
             <ColumnDefinition Width="*" />
@@ -23,8 +23,8 @@
         </Grid.RowDefinitions>
 
         <!-- Graph Title Area -->
-        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="LightGray">
-            <TextBlock x:Name="PidName" Text="{Binding PidName}" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0,0,0"/>
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="{StaticResource GraphTitleBackground}">
+            <TextBlock x:Name="PidName" Text="{Binding PidName}" TextTrimming="CharacterEllipsis" FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0,0,0" Foreground="{StaticResource ModulePageButtonForeground}"/>
         </Grid>
 
         <!-- Y Axis -->
@@ -38,7 +38,7 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="18" />
             </Grid.RowDefinitions>
-            <Line Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" X1="0" Y1="0" X2="0" Y2="600" Stroke="Black" StrokeThickness="5" />
+            <Line Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" X1="0" Y1="0" X2="0" Y2="600" Stroke="{StaticResource GraphAxisColor}" StrokeThickness="5" />
             <TextBlock x:Name="Max" Grid.Row="0" Text="{Binding MaxPossibleValue}" FontSize="16" TextAlignment="Right" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,5,0"/>
             <TextBlock x:Name="Min" Grid.Row="2" Text="{Binding MinPossibleValue}" FontSize="16" TextAlignment="Right" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,5,0"/>
         </Grid>
@@ -51,11 +51,11 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="15" />
                 </Grid.RowDefinitions>
-                <Grid x:Name="GraphArea" Grid.Row="0" Background="LightBlue" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-                    <Line x:Name="Cursor" X1="{Binding CursorPosition}" Y1="0" X2="{Binding CursorPosition}" Y2="{Binding GraphHeight}" Stroke="Green" StrokeThickness="2"/>
-                    <Polyline x:Name="GraphPlot" Stroke="Blue" Points="{Binding Points}" />                    
+                <Grid x:Name="GraphArea" Grid.Row="0" Background="{StaticResource GraphBackground}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                    <Line x:Name="Cursor" X1="{Binding CursorPosition}" Y1="0" X2="{Binding CursorPosition}" Y2="{Binding GraphHeight}" Stroke="{StaticResource GraphCursorColor}" StrokeThickness="2"/>
+                    <Polyline x:Name="GraphPlot" Stroke="{StaticResource GraphPlotColor}" Points="{Binding Points}" />                    
                 </Grid>
-                <Line x:Name="XAxis" Grid.Row="1" X1="0" Y1="0" X2="{Binding GraphWidth}" Y2="0" Stroke="Black" StrokeThickness="2" />
+                <Line x:Name="XAxis" Grid.Row="1" X1="0" Y1="0" X2="{Binding GraphWidth}" Y2="0" Stroke="{StaticResource GraphAxisColor}" StrokeThickness="2" />
             </Grid>
         </ScrollViewer>
     </Grid>
