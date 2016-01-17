@@ -9,27 +9,55 @@
     HorizontalAlignment="Stretch"
     VerticalAlignment="Stretch">
 
-    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{StaticResource ModulePageBackground}">
         <Grid.RowDefinitions>
             <RowDefinition  Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
-            <!-- Current Codes -->
-            <TextBlock FontSize="24" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Current Codes" VerticalAlignment="Top"/>
-            <StackPanel x:Name="CurrentCodesControl" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
+        <ScrollViewer Grid.Row="0" HorizontalScrollMode="Disabled" VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- Current Codes -->
+                <TextBlock FontSize="24" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Current Codes" VerticalAlignment="Top" Foreground="{StaticResource ModulePageForeground}"/>
+                <Grid Margin="10,10,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" FontFamily="Segoe MDL2 Assets" FontSize="20" Text="&#xE814;" Foreground="Orange" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" FontSize="18" Margin="10,0,0,0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="These codes represent current issues with the vehicle&#x0a;These codes may be fixed by clicking the clear codes button below" VerticalAlignment="Top" Foreground="{StaticResource ModulePageForeground}"/>
+                </Grid>
+                <StackPanel x:Name="CurrentCodesControl" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
 
-            <!-- Pending Codes -->
-            <TextBlock FontSize="24" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Pending Codes" VerticalAlignment="Top"/>
-            <StackPanel x:Name="PendingCodesControl" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
+                <!-- Pending Codes -->
+                <TextBlock FontSize="24" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Pending Codes" VerticalAlignment="Top" Foreground="{StaticResource ModulePageForeground}"/>
+                <Grid Margin="10,10,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" FontFamily="Segoe MDL2 Assets" FontSize="20" Text="&#xE814;" Foreground="Yellow" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" FontSize="18" Margin="10,0,0,0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="These codes represent potential future issues with the vehicle&#x0a;If the underlying issue is not fixed, the code witll become a current code" VerticalAlignment="Top" Foreground="{StaticResource ModulePageForeground}"/>
+                </Grid>
+                <StackPanel x:Name="PendingCodesControl" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
 
-            <!-- Permanent Codes -->
-            <TextBlock FontSize="24" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Permanent Codes" VerticalAlignment="Top"/>
-            <StackPanel x:Name="PermanentCodesControl" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
-        </StackPanel>
-        <Grid Grid.Row="1" Background="LightGray"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <!-- Permanent Codes -->
+                <TextBlock FontSize="24" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Permanent Codes" VerticalAlignment="Top" Foreground="{StaticResource ModulePageForeground}"/>
+                <Grid Margin="10,10,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" FontFamily="Segoe MDL2 Assets" FontSize="20" Text="&#xE814;" Foreground="Red" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" FontSize="18" Margin="10,0,0,0" HorizontalAlignment="Left" TextWrapping="Wrap" Text="These codes represent serious issues with the vehicle&#x0a;These codes can only be removed if the underlying issue is fixed" VerticalAlignment="Top" Foreground="{StaticResource ModulePageForeground}"/>
+                </Grid>
+                <StackPanel x:Name="PermanentCodesControl" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
+            </StackPanel>
+        </ScrollViewer>
+        
+        <!-- App Bar-->
+        <Grid Grid.Row="1" Background="{StaticResource AppBarBackground}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <StackPanel x:Name="ControlBar" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Button x:Name="ClearCodes" Content="Clear Codes" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding ClearCodesCommand}" Margin="2,0,2,0"/>
+                <Button x:Name="ClearCodes" Content="Clear Codes" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding ClearCodesCommand}" Margin="2,0,2,0" Background="{StaticResource AppBarButtonBackground}" Foreground="{StaticResource AppBarButtonForeground}"/>
             </StackPanel>
         </Grid>
     </Grid>
