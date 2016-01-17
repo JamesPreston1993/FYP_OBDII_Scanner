@@ -67,7 +67,7 @@ namespace VSDACore.Modules.Codes
             this.CurrentCodes = new List<ICodeViewModel>();
             this.PendingCodes = new List<ICodeViewModel>();
             this.PermanentCodes = new List<ICodeViewModel>();
-            //this.ClearCodesCommand = new RelayCommand(this.ClearCodes);
+            this.ClearCodesCommand = new RelayCommand(this.ClearCodes);
             foreach (ICode code in this.dtcModuleModel.CurrentCodes)
             {
                 this.CurrentCodes.Add(new CodeViewModel(code));

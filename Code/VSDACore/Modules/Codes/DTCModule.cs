@@ -57,7 +57,7 @@ namespace VSDACore.Modules.Codes
         public DTCModule()
         {
             this.Name = "Codes";
-            //this.commsSystem = new DTCCommunicationSystem();
+            this.commsSystem = new DTCCommunicationSystem();
             this.currentCodes = this.pendingCodes = this.permanentCodes = new List<ICode>();
         }
 
