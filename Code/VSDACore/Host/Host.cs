@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using VSDACore.Connection;
 using VSDACore.Modules.Base;
 
 namespace VSDACore.Host
@@ -28,8 +29,8 @@ namespace VSDACore.Host
         public Host(List<IModule> modules)
         {
             this.Modules = modules;
-            this.CurrentModule = this.Modules.First(m => m.Name == "Connection");
-            //ConnectionManager.Instance.PropertyChanged += this.RaiseConnectionPropertyChanged;
+            this.CurrentModule = this.Modules.First(m => m.Name == "Connection");            
+            ConnectionManager.Instance.PropertyChanged += this.RaiseConnectionPropertyChanged;
         }
 
         public void RaisePropertyChanged(string propertyName)
@@ -44,7 +45,7 @@ namespace VSDACore.Host
         {
             if (e.PropertyName == "IsInitialized")
             {
-                /*
+                
                 switch (ConnectionManager.Instance.IsInitialized)
                 {
                     case true:
@@ -55,7 +56,7 @@ namespace VSDACore.Host
                         this.CurrentModule = this.Modules.First(m => m.Name == "Connection");
                         break;
                 }
-                */
+                
             }
         }
     }

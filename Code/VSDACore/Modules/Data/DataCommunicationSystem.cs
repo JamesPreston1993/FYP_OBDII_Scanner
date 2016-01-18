@@ -11,7 +11,7 @@ namespace VSDACore.Modules.Data
 
         public DataCommunicationSystem()
         {
-            //this.dataConnection = ConnectionManager.Instance;
+            this.dataConnection = ConnectionManager.Instance;
         }
 
         public void Initialize()

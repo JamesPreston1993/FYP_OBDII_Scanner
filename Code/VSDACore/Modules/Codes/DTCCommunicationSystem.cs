@@ -10,12 +10,12 @@ namespace VSDACore.Modules.Codes
 
         public DTCCommunicationSystem()
         {
-            //this.dataConnection = ConnectionManager.Instance;
+            this.dataConnection = ConnectionManager.Instance;
         }
 
         public void Initialize()
         {
-            //this.dataConnection.Initialize();            
+            
         }
 
         public void Update()
