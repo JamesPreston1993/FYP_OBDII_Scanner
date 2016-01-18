@@ -10,10 +10,11 @@ using Windows.Devices.Bluetooth.Rfcomm;
 using Windows.Storage.Streams;
 using Windows.Devices.Bluetooth.Background;
 using System.ComponentModel;
+using VSDACore.Connection;
 
 namespace VSDA.Connection
 {
-    public class BluetoothDataConnection : IDataConnection
+    public class BluetoothDataConnection : VSDACore.Connection.IDataConnection
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -35,21 +36,33 @@ namespace VSDA.Connection
                 this.RaisePropertyChanged("IsInitialized");
             }
         }
-        public DeviceInformation Device { get; set; }
+        public IDevice CurrentDevice { get; set; }
         
         public BluetoothDataConnection()
         {
-            this.Device = null;
+            this.CurrentDevice = null;
             this.isInitialized = false;
         }        
+
+        public async Task<IList<IDevice>> GetAvailableDevices()
+        {
+            IList<IDevice> availableDevices = new List<IDevice>();
+            DeviceInformationCollection devices = await DeviceInformation.FindAllAsync(RfcommDeviceService.GetDeviceSelector(RfcommServiceId.SerialPort));
+            foreach(DeviceInformation device in devices)
+            {
+                IDevice bluetoothDevice = new BluetoothConnectionDevice(device.Name, device.Id, null);
+                availableDevices.Add(bluetoothDevice);
+            }
+            return availableDevices;
+        }
 
         public async Task<bool> Initialize()
         {
             if (!this.IsInitialized)
             {
-               if (this.Device != null)
+               if (this.CurrentDevice != null)
                 {                    
-                    this.service = await RfcommDeviceService.FromIdAsync(this.Device.Id);
+                    this.service = await RfcommDeviceService.FromIdAsync(this.CurrentDevice.Id);
                     
                     if (this.service != null)
                     {
