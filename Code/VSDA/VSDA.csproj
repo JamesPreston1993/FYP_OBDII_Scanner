@@ -103,47 +103,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Communication\BluetoothModule.cs" />
-    <Compile Include="Communication\BluetoothModuleViewModel.cs" />
-    <Compile Include="Communication\Data\DataGraphViewModel.cs" />
-    <Compile Include="Communication\Data\DataListViewModel.cs" />
-    <Compile Include="Communication\Data\DataModuleViewModel.cs" />
-    <Compile Include="Communication\Data\IDataGraphViewModel.cs" />
-    <Compile Include="Communication\Data\IDataListViewModel.cs" />
-    <Compile Include="Communication\Data\IDataModuleViewModel.cs" />
-    <Compile Include="Communication\Data\IDataViewModel.cs" />
-    <Compile Include="Communication\DTC\Code.cs" />
-    <Compile Include="Communication\Data\DataCommunicationSystem.cs" />
-    <Compile Include="Communication\Data\DataConverter.cs" />
-    <Compile Include="Communication\Data\DataModule.cs" />
-    <Compile Include="Communication\DTC\CodeViewModel.cs" />
-    <Compile Include="Communication\DTC\DTCModuleViewModel.cs" />
-    <Compile Include="Communication\DTC\ICodeViewModel.cs" />
-    <Compile Include="Communication\DTC\IDtcModuleViewModel.cs" />
-    <Compile Include="Communication\HostViewModel.cs" />
-    <Compile Include="Communication\IConnectionModule.cs" />
-    <Compile Include="Communication\IConnectionModuleViewModel.cs" />
-    <Compile Include="Communication\IHostViewModel.cs" />
-    <Compile Include="Communication\IModuleViewModel.cs" />
-    <Compile Include="Communication\Interfaces\ICode.cs" />
-    <Compile Include="Communication\Interfaces\IDataCommsSystem.cs" />
-    <Compile Include="Communication\Interfaces\IDataModule.cs" />
-    <Compile Include="Communication\Interfaces\IDtcCommsSystem.cs" />
-    <Compile Include="Communication\Interfaces\IDtcModule.cs" />
-    <Compile Include="Communication\Interfaces\IPid.cs" />
-    <Compile Include="Communication\Data\Pid.cs" />
-    <Compile Include="Communication\Data\PidFactory.cs" />
-    <Compile Include="Communication\RelayCommand.cs" />
     <Compile Include="Connection\BluetoothDataConnection.cs" />
-    <Compile Include="Communication\DTC\DTCCommunicationSystem.cs" />
-    <Compile Include="Communication\DTC\DTCModule.cs" />
-    <Compile Include="Communication\Host.cs" />
-    <Compile Include="Communication\Interfaces\ICommunicationSystem.cs" />
-    <Compile Include="Connection\ConnectionManager.cs" />
-    <Compile Include="Connection\Interfaces\IDataConnection.cs" />
-    <Compile Include="Communication\Interfaces\IHost.cs" />
-    <Compile Include="Communication\Interfaces\IModule.cs" />
-    <Compile Include="Connection\SimulationDataConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\ConnectionPage.xaml.cs">
       <DependentUpon>ConnectionPage.xaml</DependentUpon>
@@ -216,6 +176,12 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VSDACore\VSDACore.csproj">
+      <Project>{22077c3f-a5a1-4bd4-986a-ba4ec4f22df0}</Project>
+      <Name>VSDACore</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
