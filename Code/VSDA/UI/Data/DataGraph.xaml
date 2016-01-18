@@ -52,8 +52,8 @@
                     <RowDefinition Height="15" />
                 </Grid.RowDefinitions>
                 <Grid x:Name="GraphArea" Grid.Row="0" Background="{StaticResource GraphBackground}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-                    <Line x:Name="Cursor" X1="{Binding CursorPosition}" Y1="0" X2="{Binding CursorPosition}" Y2="{Binding GraphHeight}" Stroke="{StaticResource GraphCursorColor}" StrokeThickness="2"/>
-                    <Polyline x:Name="GraphPlot" Stroke="{StaticResource GraphPlotColor}" Points="{Binding Points}" />                    
+                    <Line x:Name="Cursor" X1="{Binding CursorPosition}" Y1="0" X2="0" Y2="0" Stroke="{StaticResource GraphCursorColor}" StrokeThickness="2"/>
+                    <Polyline x:Name="GraphPlot" Stroke="{StaticResource GraphPlotColor}" />                    
                 </Grid>
                 <Line x:Name="XAxis" Grid.Row="1" X1="0" Y1="0" X2="{Binding GraphWidth}" Y2="0" Stroke="{StaticResource GraphAxisColor}" StrokeThickness="2" />
             </Grid>
