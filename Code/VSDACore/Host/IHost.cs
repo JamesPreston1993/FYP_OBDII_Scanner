@@ -6,7 +6,7 @@ namespace VSDACore.Host
 {
     public interface IHost : INotifyPropertyChanged
     {
-        List<IModule> Modules { get; }
+        IList<IModule> Modules { get; }
 
         IModule CurrentModule { get; set; }
     }

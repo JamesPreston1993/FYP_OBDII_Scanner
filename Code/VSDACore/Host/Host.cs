@@ -10,7 +10,7 @@ namespace VSDACore.Host
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public List<IModule> Modules { get; private set; }
+        public IList<IModule> Modules { get; private set; }
 
         private IModule currentModule;
         public IModule CurrentModule
@@ -26,7 +26,7 @@ namespace VSDACore.Host
             }
         }
 
-        public Host(List<IModule> modules)
+        public Host(IList<IModule> modules)
         {
             this.Modules = modules;
             this.CurrentModule = this.Modules.First(m => m.Name == "Connection");            
