@@ -7,6 +7,7 @@ using Android.Support.V7.App;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 using Android.Support.V4.Widget;
 using Android.Views;
+using VSDACore.Modules.Base;
 
 namespace VSDAAndroid.UI.Host
 {
@@ -17,6 +18,7 @@ namespace VSDAAndroid.UI.Host
         private SupportToolbar toolbar;
         private DrawerLayout drawerLayout;
         private ListView leftDrawer;
+        private FrameLayout modulePanel;
 
         // ViewModel
         private IHostViewModel host;
@@ -39,23 +41,39 @@ namespace VSDAAndroid.UI.Host
             // Hamburger Menu
             this.leftDrawer.Adapter = new ModuleListViewAdapter(this.ApplicationContext, this.host);
 
+            // Module Panel
+            this.modulePanel = this.FindViewById<FrameLayout>(Resource.Id.CurrentModulePanel);
+            this.PopulateModulePanel();
+
             // Toolbar
             this.SetSupportActionBar(this.toolbar);
             this.SupportActionBar.Title = this.host.CurrentModuleName;
             this.SupportActionBar.SetHomeButtonEnabled(true);
         }
 
+        private void PopulateModulePanel()
+        {
+            this.modulePanel.RemoveAllViews();
+            switch (this.host.CurrentModuleName)
+            {
+                case "Codes": break;
+                case "Data": break;
+                case "Connection": break;
+            }
+        }
+
         private void RaiseViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "CurrentModule")
             {
-                this.SupportActionBar.Title = this.host.CurrentModuleName;
-
                 switch (this.host.CurrentModuleName)
                 {
-                    case "Codes": break;
-                    case "Data": break;
-                    case "Connection": break;
+                    case "Codes":
+                    case "Data": 
+                    case "Connection":
+                        this.SupportActionBar.Title = this.host.CurrentModuleName;
+                        this.PopulateModulePanel();
+                        break;
                 }
             }
         }

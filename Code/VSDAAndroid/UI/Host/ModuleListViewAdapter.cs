@@ -38,6 +38,9 @@ namespace VSDAAndroid.UI.Host
         {
             TextView view = new TextView(context);
             view.Text = this.host.Modules[position].Name;
+            view.TextSize = 24;
+            view.TextAlignment = TextAlignment.Center;
+            view.Background = parent.Background;
             
             view.Click += delegate
             {
