@@ -37,5 +37,13 @@ namespace VSDACore.Modules.Base
         {
             action.Invoke();
         }
+
+        public void RaiseCanExecuteChanged()
+        {
+            if(this.CanExecuteChanged != null)
+            {
+                this.CanExecuteChanged(this, EventArgs.Empty);
+            }
+        }
     }
 }

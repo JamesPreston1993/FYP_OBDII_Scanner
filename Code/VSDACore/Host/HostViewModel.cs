@@ -92,7 +92,10 @@ namespace VSDACore.Host
                 this.CurrentModuleName = this.currentModule.Name;
                 this.RaisePropertyChanged(e.PropertyName);
             }
-
+            else if(e.PropertyName == "IsInitialized")
+            {
+                this.RaisePropertyChanged("IsInitialized");
+            }
         }
     }
 }

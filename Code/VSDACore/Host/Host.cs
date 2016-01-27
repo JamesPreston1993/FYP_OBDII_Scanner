@@ -56,7 +56,7 @@ namespace VSDACore.Host
                         this.CurrentModule = this.Modules.First(m => m.Name == "Connection");
                         break;
                 }
-                
+                this.RaisePropertyChanged("IsInitialized");
             }
         }
     }

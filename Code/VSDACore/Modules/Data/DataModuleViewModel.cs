@@ -70,8 +70,8 @@ namespace VSDACore.Modules.Data
 
         private void StepBack()
         {
-            if (!this.dataModuleModel.IsRecording)
-            {
+            //if (!this.dataModuleModel.IsRecording)
+            //{
                 foreach (DataGraphViewModel graph in this.GraphViews)
                 {
                     graph.StepBack();
@@ -80,7 +80,7 @@ namespace VSDACore.Modules.Data
                 {
                     list.StepBack();
                 }
-            }
+            //}
         }
 
         private void StepForward()
@@ -150,6 +150,13 @@ namespace VSDACore.Modules.Data
                     this.ListViews.Add(new DataListViewModel(pid));
                     this.GraphViews.Add(new DataGraphViewModel(pid));
                 }
+            }
+            else if(e.PropertyName == "IsRecording")
+            {                
+                (this.StepBackCommand as RelayCommand).RaiseCanExecuteChanged();
+                (this.StepForwardCommand as RelayCommand).RaiseCanExecuteChanged();
+                (this.SkipToEndCommand as RelayCommand).RaiseCanExecuteChanged();
+                (this.SkipToStartCommand as RelayCommand).RaiseCanExecuteChanged();
             }
         }
     }

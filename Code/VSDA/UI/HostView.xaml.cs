@@ -8,6 +8,8 @@ using VSDACore.Modules.Base;
 using VSDACore.Modules.Data;
 using VSDACore.Modules.Codes;
 using VSDACore.Modules.Connection;
+using VSDACore.Connection;
+using System;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -60,7 +62,7 @@ namespace VSDA.UI
                 grid.Children.Add(icon);
                 Grid.SetColumn(moduleName, 1);
                 grid.Children.Add(moduleName);
-                
+
                 Button button = new Button()
                 {
                     Height = 50,
@@ -68,13 +70,15 @@ namespace VSDA.UI
                     HorizontalContentAlignment = HorizontalAlignment.Left,
                     VerticalContentAlignment = VerticalAlignment.Center,
                     Background = new SolidColorBrush(Colors.Transparent),
-                    Content = grid,                    
-                    Command = new RelayCommand(delegate
-                    {
-                        this.host.CurrentModule = module;
-                        this.SideMenu.IsPaneOpen = false;
-                    })
+                    Content = grid,
                 };
+                button.Command = new RelayCommand(delegate
+                                                    {
+                                                        this.host.CurrentModule = module;
+                                                        this.SideMenu.IsPaneOpen = false;
+                                                    },
+                                                    new Func<bool>(() => ConnectionManager.Instance.IsInitialized));
+
                 this.ModuleIcons.Children.Add(button);
             }
 
@@ -85,8 +89,8 @@ namespace VSDA.UI
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
         {
             this.SideMenu.IsPaneOpen = !this.SideMenu.IsPaneOpen;
-        }
-        
+        }        
+
         public void RaiseCurrentViewModelChanged(object sender, PropertyChangedEventArgs e)
         {
             if(e.PropertyName == "CurrentModule")
@@ -106,6 +110,13 @@ namespace VSDA.UI
                         this.ModulePage.Children.Clear();
                         this.ModulePage.Children.Add(new ConnectionPage(this.host.CurrentModule as IConnectionModuleViewModel));
                         break;
+                }
+            }
+            else if(e.PropertyName == "IsInitialized")
+            {
+                foreach(Button button in this.ModuleIcons.Children)
+                {
+                    (button.Command as RelayCommand).RaiseCanExecuteChanged();
                 }
             }
         }               

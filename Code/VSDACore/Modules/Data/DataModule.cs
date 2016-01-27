@@ -25,10 +25,21 @@ namespace VSDACore.Modules.Data
                 this.RaisePropertyChanged("Pids");
             }
         }
+        private bool isRecording;
+        public bool IsRecording
+        {
+            get
+            {
+                return this.isRecording;
+            }
+            set
+            {
+                this.isRecording = value;
+                this.RaisePropertyChanged("IsRecording");
+            }
+        }
 
-        private IDataCommsSystem commsSystem;
-
-        public bool IsRecording { get; set; }
+        private IDataCommsSystem commsSystem;        
 
         public DataModule()
         {
