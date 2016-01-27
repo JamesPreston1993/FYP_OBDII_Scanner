@@ -11,6 +11,8 @@ namespace VSDACore.Modules.Connection
 
         IDevice CurrentDevice { get; set; }
 
+        string DeviceConnectionStatus { get; }
+
         IList<IDevice> Devices { get; set; }
     }
 }

@@ -13,6 +13,20 @@ namespace VSDACore.Modules.Connection
 
         public ICommand ConnectCommand { get; private set; }
 
+        private string connectionStatus;
+        public string DeviceConnectionStatus
+        {
+            get
+            {
+                return this.connectionStatus;
+            }
+            private set
+            {
+                this.connectionStatus = value;
+                this.RaisePropertyChanged("DeviceConnectionStatus");
+            }
+        }
+
         private IConnectionModule connectionModule;
         public IModule ModuleModel { get; set; }
 
@@ -41,6 +55,7 @@ namespace VSDACore.Modules.Connection
             this.Name = module.Name;
             this.CurrentDevice = null;
             this.ConnectCommand = new RelayCommand(this.Connect);
+            this.DeviceConnectionStatus = this.connectionModule.DeviceConnectionStatus;
             this.ModuleModel.PropertyChanged += this.RaiseModelPropertyChanged;
         }
 
@@ -71,6 +86,10 @@ namespace VSDACore.Modules.Connection
             if (e.PropertyName == "Devices")
             {
                 this.Devices = this.connectionModule.Devices;
+            }
+            else if(e.PropertyName == "DeviceConnectionStatus")
+            {
+                this.DeviceConnectionStatus = this.connectionModule.DeviceConnectionStatus;
             }
             this.RaisePropertyChanged(e.PropertyName);
         }

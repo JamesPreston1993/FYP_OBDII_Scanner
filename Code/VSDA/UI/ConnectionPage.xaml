@@ -20,6 +20,11 @@
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
                     <TextBlock FontSize="24" Text="Select your device from the list below" TextWrapping="WrapWholeWords" Foreground="{StaticResource ModulePageForeground}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Status:" FontSize="20" Margin="5,5,0,0" Foreground="{StaticResource ModulePageForeground}"/>
+                        <TextBlock Text="{Binding DeviceConnectionStatus}" FontSize="20" Margin="5,5,0,0" Foreground="{StaticResource ModulePageForeground}"/>
+                        <ProgressRing x:Name="ConnectingProgress" Visibility="Visible" FontSize="20" Margin="15,5,0,0" Foreground="{StaticResource ModulePageForeground}" IsActive="False"/>
+                    </StackPanel>
                 </StackPanel>
                 <Grid Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
@@ -33,11 +38,15 @@
                         <StackPanel x:Name="InstructionsPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,10,0">
                             <RichTextBlock x:Name="InstructionsTextBlock" FontSize="18" Margin="5,5,5,5" HorizontalAlignment="Stretch" VerticalAlignment="Top" TextWrapping="WrapWholeWords" Foreground="{StaticResource ModulePageForeground}">
                                 <Paragraph>
-                                    1) Ensure the ELM327 dongle is paired with your device and in range
+                                    1) Turn on Bluetooth on your device
                                 </Paragraph>
                                 <Paragraph/>
                                 <Paragraph>
-                                    2) Select your ELM327 dongle from the list to the left
+                                    2) Pair the ELM327 dongle with your device in PC Settings
+                                </Paragraph>
+                                <Paragraph/>
+                                <Paragraph>
+                                    3) Select your ELM327 dongle from the list to the left
                                 </Paragraph>
                             </RichTextBlock>
                         </StackPanel>

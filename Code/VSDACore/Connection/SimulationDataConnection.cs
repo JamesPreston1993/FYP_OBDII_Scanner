@@ -11,6 +11,8 @@ namespace VSDACore.Connection
 
         public IDevice CurrentDevice { get; set; }
 
+        public ConnectionStatus DeviceConnectionStatus { get; set; }
+
         private bool isInitialized;
         public bool IsInitialized
         {
@@ -32,13 +34,21 @@ namespace VSDACore.Connection
 
         public async Task<IList<IDevice>> GetAvailableDevices()
         {
-            return new List<IDevice>();
+            IList<IDevice> devices = new List<IDevice>();
+            IDevice simulationDevice = new BluetoothConnectionDevice("Simulation Mode", "0", string.Empty);
+            devices.Add(simulationDevice);
+            return devices;
         }
 
         public async Task<bool> Initialize()
         {
             await Task.Delay(100);
             this.IsInitialized = true;
+            return true;
+        }
+
+        public async Task<bool> AwaitShutdown()
+        {
             return true;
         }
 

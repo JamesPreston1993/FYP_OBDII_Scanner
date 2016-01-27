@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using VSDACore.Connection;
@@ -23,11 +24,27 @@ namespace VSDACore.Modules.Connection
             }
         }
 
+        private string connectionStatus;
+        public string DeviceConnectionStatus
+        {
+            get
+            {
+                return this.connectionStatus;
+            }
+            private set
+            {
+                this.connectionStatus = value;
+                this.RaisePropertyChanged("DeviceConnectionStatus");
+            }
+        }
+
         public string Name { get; private set; }
 
         public BluetoothModule()
         {
             this.Name = "Connection";
+            this.DeviceConnectionStatus = ConnectionManager.Instance.DeviceConnectionStatus.ToString();
+            ConnectionManager.Instance.PropertyChanged += this.RaiseModelPropertyChanged;
         }
 
         public async Task<bool> Initialize()
@@ -43,7 +60,15 @@ namespace VSDACore.Modules.Connection
         public async Task<bool> Connect(IDevice device)
         {
             ConnectionManager.Instance.CurrentDevice = device;
-            bool val = await ConnectionManager.Instance.Initialize();
+            bool val = false;
+            try
+            {
+                await ConnectionManager.Instance.Initialize();
+            }
+            catch(Exception e)
+            {
+                val = false;
+            }
             return val;
         }
 
@@ -53,6 +78,24 @@ namespace VSDACore.Modules.Connection
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        private void RaiseModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == "DeviceConnectionStatus")
+            {
+                switch (ConnectionManager.Instance.DeviceConnectionStatus)
+                {
+                    case ConnectionStatus.Connected:
+                    case ConnectionStatus.Connecting:
+                        this.DeviceConnectionStatus = ConnectionManager.Instance.DeviceConnectionStatus.ToString();
+                        break;
+                    case ConnectionStatus.NotConnected:
+                        this.DeviceConnectionStatus = "Not Connected";
+                        break;
+                }
+            }
+            this.RaisePropertyChanged(e.PropertyName);
         }
     }
 }

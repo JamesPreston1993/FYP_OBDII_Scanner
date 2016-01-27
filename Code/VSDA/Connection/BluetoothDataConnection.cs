@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
 using Windows.Networking.Sockets;
-using Windows.Devices.Bluetooth;
 using Windows.Devices.Bluetooth.Rfcomm;
 using Windows.Storage.Streams;
-using Windows.Devices.Bluetooth.Background;
 using System.ComponentModel;
 using VSDACore.Connection;
+using System.Threading;
+using System.Diagnostics;
 
 namespace VSDA.Connection
 {
@@ -23,6 +21,8 @@ namespace VSDA.Connection
         private DataWriter writer;
         private DataReader reader;
 
+        private SemaphoreSlim asyncLock;
+
         private bool isInitialized;
         public bool IsInitialized
         {
@@ -33,15 +33,37 @@ namespace VSDA.Connection
             private set
             {
                 this.isInitialized = value;
+                switch(this.isInitialized)
+                {
+                    case true: this.DeviceConnectionStatus = ConnectionStatus.Connected; break;
+                    case false: this.DeviceConnectionStatus = ConnectionStatus.NotConnected; break;
+                }
                 this.RaisePropertyChanged("IsInitialized");
             }
         }
+
+        private ConnectionStatus connectionStatus;
+        public ConnectionStatus DeviceConnectionStatus
+        {
+            get
+            {
+                return this.connectionStatus;
+            }
+            set
+            {
+                this.connectionStatus = value;
+                this.RaisePropertyChanged("DeviceConnectionStatus");
+            }
+        }
+
         public IDevice CurrentDevice { get; set; }
         
         public BluetoothDataConnection()
         {
             this.CurrentDevice = null;
+            this.DeviceConnectionStatus = ConnectionStatus.NotConnected;
             this.isInitialized = false;
+            this.asyncLock = new SemaphoreSlim(1);
         }        
 
         public async Task<IList<IDevice>> GetAvailableDevices()
@@ -61,66 +83,126 @@ namespace VSDA.Connection
             if (!this.IsInitialized)
             {
                if (this.CurrentDevice != null)
-                {                    
-                    this.service = await RfcommDeviceService.FromIdAsync(this.CurrentDevice.Id);
-                    
+                {
+                    await this.asyncLock.WaitAsync();
+                    this.service = await RfcommDeviceService.FromIdAsync(this.CurrentDevice.Id);                    
+
                     if (this.service != null)
                     {
+                        this.DeviceConnectionStatus = ConnectionStatus.Connecting;
+
                         this.socket = new StreamSocket();
-                        await socket.ConnectAsync(this.service.ConnectionHostName, this.service.ConnectionServiceName, SocketProtectionLevel.BluetoothEncryptionAllowNullAuthentication);
-                        
-                        this.writer = new DataWriter(this.socket.OutputStream);
-                        this.reader = new DataReader(this.socket.InputStream);
 
-                        this.isInitialized = true;
+                        CancellationTokenSource token = new CancellationTokenSource();
+                        try
+                        {
+                            token.CancelAfter(5000);
+                            await socket.ConnectAsync(this.service.ConnectionHostName, this.service.ConnectionServiceName, SocketProtectionLevel.BluetoothEncryptionAllowNullAuthentication).AsTask(token.Token);
+                            this.asyncLock.Release();
 
-                        await this.Reset();
+                            this.writer = new DataWriter(this.socket.OutputStream);
+                            this.reader = new DataReader(this.socket.InputStream);
+                            this.reader.InputStreamOptions = InputStreamOptions.Partial;
 
-                        this.IsInitialized = true;
+                            this.isInitialized = true;
 
-                        return true;
+                            await this.Reset();
+
+                            this.IsInitialized = true;
+
+                            return true;
+                        }
+                        catch(TaskCanceledException e)
+                        {
+                            this.DeviceConnectionStatus = ConnectionStatus.NotConnected;
+                            this.asyncLock.Release();
+                            return false;
+                        }
                     }
+                    else
+                    {
+                        this.DeviceConnectionStatus = ConnectionStatus.NotConnected;
+                    }
+                    this.asyncLock.Release();
                 }
             }
             return false;            
         }
 
-        public async Task<bool> Reset()
-        {
-            await this.SendCommand("ATZ");                
-            await this.SendCommand("ATE0");                
-            await this.SendCommand("ATSP0");                
-            await this.SendCommand("ATAL");
-            return true;
-        }
-
-        public void Shutdown()
+        public async Task<bool> AwaitShutdown()
         {
             if (this.IsInitialized)
             {
-
+                await this.asyncLock.WaitAsync();
+                this.asyncLock.Release();
             }
+            return true;
         }
+
+        public async Task<bool> Reset()
+        {
+            DateTime startTime = DateTime.Now;
+            await this.SendCommand("ATZ");
+            await this.SendCommand("ATAL");
+            await this.SendCommand("ATE0");
+            await this.SendCommand("ATL0");
+            await this.SendCommand("ATS0");
+            await this.SendCommand("ATSP0");
+            await this.SendCommand("01001");
+            DateTime endTime = DateTime.Now;
+            double timeTaken = (endTime - startTime).TotalMilliseconds;
+            return true;
+        }
+
+        
 
         public async Task<string> SendCommand(string command)
         {            
             string response = string.Empty;
+            
             if (this.IsInitialized)
-            {                
+            {
+                await this.asyncLock.WaitAsync();
+                DateTime startTime = DateTime.Now;
+
                 // Write
                 this.writer.WriteString(command + "\r");
-                await this.socket.OutputStream.WriteAsync(this.writer.DetachBuffer());                
+                await this.writer.StoreAsync();
 
+                CancellationTokenSource token = new CancellationTokenSource();
+                token.CancelAfter(5000);
+
+                
                 // Read
                 while (true)
                 {
-                    uint size = await this.reader.LoadAsync(1);
+                    uint size = await this.reader.LoadAsync(1).AsTask(token.Token);
                     string s = this.reader.ReadString(size);
                     if (s.Equals(">"))
                         break;
                     else
                         response += s;
-                }                        
+                }
+
+                /*
+                try
+                {
+                    while (!response.Contains(">"))
+                    {
+                        uint size = await this.reader.LoadAsync(32).AsTask(token.Token);
+                        string s = this.reader.ReadString(size);
+                        response += s;
+                    }
+                }
+                catch(TaskCanceledException te)
+                {
+
+                }
+                */
+                DateTime endTime = DateTime.Now;
+                string log = command + ": " + (endTime - startTime).TotalMilliseconds + "ms";
+                Debug.WriteLine(log);
+                this.asyncLock.Release();
             }
             else
             {
