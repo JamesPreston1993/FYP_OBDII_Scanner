@@ -24,9 +24,9 @@ namespace VSDACore.Modules.Data
 
         }
 
-        public void Shutdown()
+        public async void Shutdown()
         {
-
+            await this.dataConnection.AwaitShutdown();
         }
 
         public async Task<IList<IPid>> GetSupportedPids()
@@ -35,7 +35,7 @@ namespace VSDACore.Modules.Data
 
             for (int i = 0; i <= 4; i++)
             {
-                string request = await this.dataConnection.SendCommand("01" + (i * 20).ToString("D2"));
+                string request = await this.dataConnection.SendCommand("01" + (i * 20).ToString("D2") + "1");
 
                 // Remove spaces and extra words            
                 request = request.Replace("SEARCHING...", "");
@@ -50,7 +50,7 @@ namespace VSDACore.Modules.Data
                     // Convert to binary
                     string binary = Convert.ToString(Convert.ToInt32(request, 16), 2).PadLeft(32, '0');
 
-                    // Find all 1s in binary, denoting which pids are supported#
+                    // Find all 1s in binary, denoting which pids are supported
                     for (int j = 0; j < binary.Length - 1; j++)
                     {
                         if (binary.Substring(j, 1) == "1")
@@ -78,7 +78,7 @@ namespace VSDACore.Modules.Data
 
         public async Task<bool> UpdateData(IPid pid)
         {
-            string request = await this.dataConnection.SendCommand("01" + pid.PidHex);
+            string request = await this.dataConnection.SendCommand("01" + pid.PidHex + "1");
 
             // Remove spaces and extra words            
             request = request.Replace("SEARCHING...", "");
@@ -104,7 +104,7 @@ namespace VSDACore.Modules.Data
 
             foreach (IPid pid in pids)
             {
-                string request = await this.dataConnection.SendCommand("01" + pid.PidHex);
+                string request = await this.dataConnection.SendCommand("01" + pid.PidHex + "1");
 
                 // Remove spaces and extra words            
                 request = request.Replace("SEARCHING...", "");
