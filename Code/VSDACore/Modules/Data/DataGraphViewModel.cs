@@ -26,7 +26,7 @@ namespace VSDACore.Modules.Data
             }
         }
 
-        public IList<string> DataItems { get; private set; }
+        public IList<IDataItem> DataItems { get; private set; }
 
         private double maxValue;
         public double MaxPossibleValue

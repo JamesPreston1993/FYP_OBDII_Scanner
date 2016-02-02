@@ -11,7 +11,7 @@ namespace VSDACore.Modules.Data
 
         int CurrentSample { get; set; }
 
-        IList<string> DataItems { get; }
+        IList<IDataItem> DataItems { get; }
 
         void StepBack();
 

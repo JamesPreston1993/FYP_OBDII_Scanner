@@ -24,12 +24,12 @@ namespace VSDACore.Modules.Data
                 if (value >= 0 && value < this.DataItems.Count)
                 {
                     this.currentSample = value;
-                    this.CurrentValue = this.DataItems[this.currentSample];
+                    this.CurrentValue = this.DataItems[this.currentSample].StringValue;
                 }
             }
         }
 
-        public IList<string> DataItems { get; private set; }
+        public IList<IDataItem> DataItems { get; private set; }
 
         private string currentValue;
         public string CurrentValue
@@ -100,7 +100,7 @@ namespace VSDACore.Modules.Data
             if (e.PropertyName == "DataItems")
             {
                 this.RaisePropertyChanged("DataItems");
-                this.CurrentValue = this.DataItems.Last();
+                this.CurrentValue = this.DataItems.Last().StringValue;
                 this.currentSample = this.DataItems.Count - 1;
             }
 
