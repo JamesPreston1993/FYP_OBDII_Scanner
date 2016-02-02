@@ -89,7 +89,7 @@ namespace VSDACore.Modules.Data
             if (request.StartsWith("41"))
             {
                 request = request.Substring(4);
-                string value = DataConverter.ConvertPID(pid, request);
+                IDataItem value = DataConverter.ConvertPID(pid, request);
 
                 pid.DataItems.Add(value);
             }
@@ -100,7 +100,7 @@ namespace VSDACore.Modules.Data
         public async Task<bool> UpdateData(IList<IPid> pids)
         {
             /* TEMP */
-            IList<string> values = new List<string>();
+            IList<IDataItem> values = new List<IDataItem>();
 
             foreach (IPid pid in pids)
             {
@@ -115,7 +115,7 @@ namespace VSDACore.Modules.Data
                 if (request.StartsWith("41"))
                 {
                     request = request.Substring(4);
-                    string value = DataConverter.ConvertPID(pid, request);
+                    IDataItem value = DataConverter.ConvertPID(pid, request);
                     //pid.DataItems.Add(value);
 
                     /* TEMP */
