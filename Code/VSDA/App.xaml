@@ -25,7 +25,9 @@
                     <SolidColorBrush x:Key="GraphBackground" Color="LightGray"/>
                     <SolidColorBrush x:Key="GraphTitleBackground" Color="DodgerBlue"/>
                     <SolidColorBrush x:Key="GraphAxisColor" Color="Black"/>
-                    <SolidColorBrush x:Key="GraphPlotColor" Color="DodgerBlue"/>
+                    <SolidColorBrush x:Key="GraphPlotColorNormal" Color="DodgerBlue"/>
+                    <SolidColorBrush x:Key="GraphPlotColorCaution" Color="Orange"/>
+                    <SolidColorBrush x:Key="GraphPlotColorDanger" Color="Red"/>
                     <SolidColorBrush x:Key="GraphCursorColor" Color="Yellow"/>
                     
                     <!-- App Bar -->
@@ -51,7 +53,9 @@
                     <SolidColorBrush x:Key="GraphBackground" Color="#666666"/>
                     <SolidColorBrush x:Key="GraphTitleBackground" Color="DodgerBlue"/>
                     <SolidColorBrush x:Key="GraphAxisColor" Color="White"/>
-                    <SolidColorBrush x:Key="GraphPlotColor" Color="DodgerBlue"/>
+                    <SolidColorBrush x:Key="GraphPlotColorNormal" Color="DodgerBlue"/>
+                    <SolidColorBrush x:Key="GraphPlotColorCaution" Color="Orange"/>
+                    <SolidColorBrush x:Key="GraphPlotColorDanger" Color="Red"/>
                     <SolidColorBrush x:Key="GraphCursorColor" Color="Yellow"/>
                     
                     <!-- App Bar -->
