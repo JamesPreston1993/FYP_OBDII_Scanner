@@ -8,7 +8,7 @@ namespace VSDACore.Modules.Data
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<string> DataItems { get; private set; }
+        public ObservableCollection<IDataItem> DataItems { get; private set; }
 
         public string Name { get; private set; }
 
@@ -26,7 +26,7 @@ namespace VSDACore.Modules.Data
             this.Name = name;
             this.MinPossibleValue = min;
             this.MaxPossibleValue = max;
-            this.DataItems = new ObservableCollection<string>();
+            this.DataItems = new ObservableCollection<IDataItem>();
             this.DataItems.CollectionChanged += this.RaiseCollectionChanged;
         }
 

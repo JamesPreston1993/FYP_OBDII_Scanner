@@ -5,7 +5,7 @@ namespace VSDACore.Modules.Data
 {
     public interface IPid : INotifyPropertyChanged
     {
-        ObservableCollection<string> DataItems { get; }
+        ObservableCollection<IDataItem> DataItems { get; }
 
         string Name { get; }
 
