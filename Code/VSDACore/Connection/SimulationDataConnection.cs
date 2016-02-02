@@ -69,12 +69,12 @@ namespace VSDACore.Connection
             if (command.StartsWith("01"))
             {
                 // Only 04, 05, 0A, 0C and 0D are supported
-                if (command.Equals("0100"))
+                if (command.StartsWith("0100"))
                 {
                     // Binary Value: 0001 1000 0111 1000 0000 0000 0000 0000
                     response = "410018580000";
                 }
-                else if (command.Equals("0104"))
+                else if (command.StartsWith("0104"))
                 {
                     // A * 100 / 255
                     int min = 0;
@@ -87,7 +87,7 @@ namespace VSDACore.Connection
 
                     response = "4104" + value.ToString("X2");
                 }
-                else if (command.Equals("0105"))
+                else if (command.StartsWith("0105"))
                 {
                     // A - 40
                     int min = -40;
@@ -97,10 +97,10 @@ namespace VSDACore.Connection
 
                     // Manipulation
                     value += 40;
-
+                    
                     response = "4105" + value.ToString("X2");
                 }
-                else if (command.Equals("010A"))
+                else if (command.StartsWith("010A"))
                 {
                     // A * 3
                     int min = 0;
@@ -113,7 +113,7 @@ namespace VSDACore.Connection
 
                     response = "410A" + value.ToString("X2");
                 }
-                else if (command.Equals("010B"))
+                else if (command.StartsWith("010B"))
                 {
                     // A
                     int min = 0;
@@ -126,11 +126,11 @@ namespace VSDACore.Connection
 
                     response = "410B" + value.ToString("X2");
                 }
-                else if (command.Equals("010C"))
+                else if (command.StartsWith("010C"))
                 {
                     // ((A * 256) + B) / 4
                     int min = 0;
-                    int max = 8000;
+                    int max = 16000;
                     Random r = new Random();
                     int value = r.Next(min, max);
 
@@ -139,7 +139,7 @@ namespace VSDACore.Connection
 
                     response = "410C" + value.ToString("X2") + "00";
                 }
-                else if (command.Equals("010D"))
+                else if (command.StartsWith("010D"))
                 {
                     // A
                     int min = 0;
