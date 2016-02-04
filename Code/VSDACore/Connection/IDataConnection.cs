@@ -10,6 +10,8 @@ namespace VSDACore.Connection
 
         ConnectionStatus DeviceConnectionStatus { get; set; }
 
+        Protocol VehicleProtocol { get; }
+
         IDevice CurrentDevice { get; set; }
 
         Task<IList<IDevice>> GetAvailableDevices();
@@ -22,10 +24,21 @@ namespace VSDACore.Connection
 
         Task<string> SendCommand(string command);
     }
+
     public enum ConnectionStatus
     {
         NotConnected,
         Connecting,
         Connected
+    }
+
+    public enum Protocol
+    {
+        PWM,
+        VPW,
+        ISO9141,
+        KWP,
+        CAN,
+        Unknown
     }
 }

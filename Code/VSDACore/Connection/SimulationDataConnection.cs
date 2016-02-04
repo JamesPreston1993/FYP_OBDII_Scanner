@@ -11,6 +11,8 @@ namespace VSDACore.Connection
 
         public IDevice CurrentDevice { get; set; }
 
+        public Protocol VehicleProtocol { get; }
+
         public ConnectionStatus DeviceConnectionStatus { get; set; }
 
         private bool isInitialized;
