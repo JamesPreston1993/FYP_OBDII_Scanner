@@ -10,6 +10,7 @@ using VSDACore.Modules.Codes;
 using VSDACore.Modules.Connection;
 using VSDACore.Connection;
 using System;
+using Windows.UI.Popups;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -117,6 +118,11 @@ namespace VSDA.UI
                 foreach(Button button in this.ModuleIcons.Children)
                 {
                     (button.Command as RelayCommand).RaiseCanExecuteChanged();
+                }
+                if(ConnectionManager.Instance.IsInitialized == false)
+                {
+                    MessageDialog dialog = new MessageDialog("Bluetooth connection was lost... Please reconnect");
+                    dialog.ShowAsync();
                 }
             }
         }               
