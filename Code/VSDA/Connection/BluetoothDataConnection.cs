@@ -12,7 +12,7 @@ using System.Diagnostics;
 
 namespace VSDA.Connection
 {
-    public class BluetoothDataConnection : VSDACore.Connection.IDataConnection
+    public class BluetoothDataConnection : IDataConnection
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -33,10 +33,22 @@ namespace VSDA.Connection
             private set
             {
                 this.isInitialized = value;
-                switch(this.isInitialized)
+                if(this.isInitialized)
                 {
-                    case true: this.DeviceConnectionStatus = ConnectionStatus.Connected; break;
-                    case false: this.DeviceConnectionStatus = ConnectionStatus.NotConnected; break;
+                    this.DeviceConnectionStatus = ConnectionStatus.Connected;                    
+                }
+                else
+                {
+                    this.DeviceConnectionStatus = ConnectionStatus.NotConnected;
+                    this.CurrentDevice = null;
+                    this.service.Dispose();
+                    this.service = null;
+                    this.writer.Dispose();
+                    this.writer = null;
+                    this.reader.Dispose();
+                    this.reader = null;
+                    this.socket.Dispose();
+                    this.socket = null;
                 }
                 this.RaisePropertyChanged("IsInitialized");
             }
@@ -55,6 +67,8 @@ namespace VSDA.Connection
                 this.RaisePropertyChanged("DeviceConnectionStatus");
             }
         }
+
+        public Protocol VehicleProtocol { get; private set; }
 
         public IDevice CurrentDevice { get; set; }
         
@@ -114,9 +128,7 @@ namespace VSDA.Connection
                         }
                         catch(TaskCanceledException e)
                         {
-                            this.DeviceConnectionStatus = ConnectionStatus.NotConnected;
-                            this.asyncLock.Release();
-                            return false;
+                            this.DeviceConnectionStatus = ConnectionStatus.NotConnected;                            
                         }
                     }
                     else
@@ -142,11 +154,15 @@ namespace VSDA.Connection
         public async Task<bool> Reset()
         {
             DateTime startTime = DateTime.Now;
-            await this.SendCommand("ATZ");
+            await this.SendCommand("ATZ");            
             await this.SendCommand("ATAL");
             await this.SendCommand("ATE0");
             await this.SendCommand("ATL0");
             await this.SendCommand("ATS0");
+            
+            string protocol = await this.SendCommand("ATDP");
+            this.VehicleProtocol = this.GetProtocol(protocol);
+
             await this.SendCommand("ATSP0");
             await this.SendCommand("01001");
             DateTime endTime = DateTime.Now;
@@ -154,51 +170,47 @@ namespace VSDA.Connection
             return true;
         }
 
-        
-
         public async Task<string> SendCommand(string command)
         {            
             string response = string.Empty;
             
             if (this.IsInitialized)
-            {
+            {                
                 await this.asyncLock.WaitAsync();
                 DateTime startTime = DateTime.Now;
 
                 // Write
-                this.writer.WriteString(command + "\r");
-                await this.writer.StoreAsync();
-
+                if (this.writer != null)
+                {
+                    this.writer.WriteString(command + "\r");
+                    await this.writer.StoreAsync();
+                }
+                
                 CancellationTokenSource token = new CancellationTokenSource();
                 token.CancelAfter(5000);
 
-                
                 // Read
-                while (true)
-                {
-                    uint size = await this.reader.LoadAsync(1).AsTask(token.Token);
-                    string s = this.reader.ReadString(size);
-                    if (s.Equals(">"))
-                        break;
-                    else
-                        response += s;
-                }
-
-                /*
                 try
                 {
                     while (!response.Contains(">"))
                     {
-                        uint size = await this.reader.LoadAsync(32).AsTask(token.Token);
+                        uint size = await this.reader.LoadAsync(1).AsTask(token.Token);                        
                         string s = this.reader.ReadString(size);
                         response += s;
                     }
+                    response = response.Replace(">", "");
                 }
-                catch(TaskCanceledException te)
+                catch (Exception)
                 {
+                    response = "No connection";
+                }                
 
+                if (response.Contains("UNABLE TO CONNECT"))
+                {
+                    response = "No connection";
+                    this.IsInitialized = false;
                 }
-                */
+                
                 DateTime endTime = DateTime.Now;
                 string log = command + ": " + (endTime - startTime).TotalMilliseconds + "ms";
                 Debug.WriteLine(log);
@@ -206,9 +218,29 @@ namespace VSDA.Connection
             }
             else
             {
-                response = "No connection!";
+                response = "No connection";
             }
             return response;
+        }
+
+        private Protocol GetProtocol(string response)
+        {
+            Protocol protocol;
+
+            if (response.Contains("ISO 9141-2"))
+                protocol = Protocol.ISO9141;
+            else if (response.Contains("SAE J1850 PWM"))
+                protocol = Protocol.PWM;
+            else if (response.Contains("SAE J1850 VPW"))
+                protocol = Protocol.VPW;
+            else if (response.Contains("ISO 14230-4 KWP"))
+                protocol = Protocol.KWP;
+            else if (response.Contains("ISO 15765-4 CAN"))
+                protocol = Protocol.CAN;
+            else
+                protocol = Protocol.Unknown;
+
+            return protocol;
         }
 
         public void RaisePropertyChanged(string propertyName)
