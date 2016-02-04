@@ -4,6 +4,8 @@ using VSDACore.Modules.Connection;
 using VSDACore.Modules.Data;
 using VSDACore.Modules.Codes;
 using System.Collections.Generic;
+using VSDAAndroid.Connection;
+using VSDACore.Connection;
 
 namespace VSDAAndroid
 {
@@ -42,6 +44,7 @@ namespace VSDAAndroid
 
                 IHost host = new Host(modules);
                 AppRoot.Instance = new AppRoot(host);
+                ConnectionManager.Instance = new BluetoothDataConnection();
             }
         }
     }
