@@ -11,6 +11,7 @@ using VSDACore.Modules.Connection;
 using VSDACore.Connection;
 using System;
 using Windows.UI.Popups;
+using Windows.UI.Text;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -22,12 +23,15 @@ namespace VSDA.UI
     public sealed partial class HostView : Page
     {
         private IHostViewModel host;
+        private bool showHelp;        
 
         public HostView(IHostViewModel host)
         {            
             this.host = host;
+            this.showHelp = false;            
             this.DataContext = this.host;
             this.InitializeComponent();
+
             this.host.PropertyChanged += this.RaiseCurrentViewModelChanged;
 
             foreach(IModuleViewModel module in this.host.Modules)
@@ -82,6 +86,7 @@ namespace VSDA.UI
 
                 this.ModuleIcons.Children.Add(button);
             }
+            this.HelpView.Width = 0;
 
             // Hack
             this.host.CurrentModule = this.host.CurrentModule;           
@@ -90,7 +95,46 @@ namespace VSDA.UI
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
         {
             this.SideMenu.IsPaneOpen = !this.SideMenu.IsPaneOpen;
-        }        
+        }
+
+        private void HelpButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.showHelp = !this.showHelp;
+
+            switch (this.showHelp)
+            {
+                case true: this.HelpView.Width = 360; break;
+                case false: this.HelpView.Width = 0; break;
+            }
+        }
+
+        private void SetHelpViewItems()
+        {
+            this.HelpView.Children.Clear();
+
+            foreach(IHelpItem helpItem in this.host.CurrentModule.HelpItems)
+            {
+                TextBlock titleBlock = new TextBlock()
+                {
+                    FontSize = 20,
+                    FontWeight = FontWeights.Bold,
+                    Text = helpItem.Title,
+                    Foreground = App.Current.Resources["ModulePageForeground"] as SolidColorBrush,
+                    Margin = new Thickness(10, 10, 10, 10),
+                    TextWrapping = TextWrapping.WrapWholeWords
+                };
+                TextBlock descBlock = new TextBlock()
+                {
+                    FontSize = 18,
+                    Text = helpItem.Description,
+                    Foreground = App.Current.Resources["ModulePageForeground"] as SolidColorBrush,
+                    Margin = new Thickness(10, 10, 10, 20),                    
+                    TextWrapping = TextWrapping.WrapWholeWords
+                };
+                this.HelpView.Children.Add(titleBlock);
+                this.HelpView.Children.Add(descBlock);
+            }
+        }
 
         public void RaiseCurrentViewModelChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -100,7 +144,7 @@ namespace VSDA.UI
                 {
                     case "Data":
                         this.ModulePage.Children.Clear();
-                        this.ModulePage.Children.Add(new DataPage(this.host.CurrentModule as IDataModuleViewModel));
+                        this.ModulePage.Children.Add(new DataPage(this.host.CurrentModule as IDataModuleViewModel));                        
                         break;
                     case "Codes":
                         this.ModulePage.Children.Clear();
@@ -112,6 +156,9 @@ namespace VSDA.UI
                         this.ModulePage.Children.Add(new ConnectionPage(this.host.CurrentModule as IConnectionModuleViewModel));
                         break;
                 }
+                this.SetHelpViewItems();
+                this.HelpView.Width = 0;
+                this.showHelp = false;
             }
             else if(e.PropertyName == "IsInitialized")
             {
@@ -125,6 +172,6 @@ namespace VSDA.UI
                     dialog.ShowAsync();
                 }
             }
-        }               
+        }        
     }
 }
