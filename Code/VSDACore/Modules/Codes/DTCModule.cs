@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using VSDACore.Modules.Base;
 
 namespace VSDACore.Modules.Codes
 {
@@ -9,6 +10,8 @@ namespace VSDACore.Modules.Codes
         public event PropertyChangedEventHandler PropertyChanged;
 
         public string Name { get; private set; }
+
+        public IList<IHelpItem> HelpItems { get; private set; }
 
         private IList<ICode> currentCodes;
         public IList<ICode> CurrentCodes
@@ -57,6 +60,7 @@ namespace VSDACore.Modules.Codes
         public DTCModule()
         {
             this.Name = "Codes";
+            this.HelpItems = HelpItemFactory.GetHelpItems(this);
             this.commsSystem = new DTCCommunicationSystem();
             this.currentCodes = this.pendingCodes = this.permanentCodes = new List<ICode>();
         }

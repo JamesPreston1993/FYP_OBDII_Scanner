@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace VSDACore.Modules.Base
@@ -8,6 +9,8 @@ namespace VSDACore.Modules.Base
         IModule ModuleModel { get; set; }
 
         string Name { get; }
+
+        IList<IHelpItem> HelpItems { get; }
 
         Task<bool> InitializeModule();
     }

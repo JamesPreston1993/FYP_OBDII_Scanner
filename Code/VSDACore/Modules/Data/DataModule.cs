@@ -3,12 +3,15 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using VSDACore.Modules.Base;
 
 namespace VSDACore.Modules.Data
 {
     public class DataModule : IDataModule
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public IList<IHelpItem> HelpItems { get; private set; }
 
         public string Name { get; private set; }
 
@@ -44,6 +47,7 @@ namespace VSDACore.Modules.Data
         public DataModule()
         {
             this.Name = "Data";
+            this.HelpItems = HelpItemFactory.GetHelpItems(this);
             this.Pids = new ObservableCollection<IPid>();
             this.commsSystem = new DataCommunicationSystem();
             this.IsRecording = false;

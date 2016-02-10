@@ -15,6 +15,8 @@ namespace VSDACore.Modules.Data
 
         public string Name { get; private set; }
 
+        public IList<IHelpItem> HelpItems { get; private set; }
+
         private IDataModule dataModuleModel;
         public IModule ModuleModel { get; set; }
 
@@ -34,6 +36,7 @@ namespace VSDACore.Modules.Data
             this.ModuleModel = module;
             this.dataModuleModel = module;
             this.Name = module.Name;
+            this.HelpItems = module.HelpItems;
             this.ListViews = new List<IDataListViewModel>();
             this.GraphViews = new List<IDataGraphViewModel>();
             this.PlayPauseCommand = new RelayCommand(this.PlayPause);

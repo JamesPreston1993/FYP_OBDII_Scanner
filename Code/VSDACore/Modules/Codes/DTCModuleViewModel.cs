@@ -10,6 +10,8 @@ namespace VSDACore.Modules.Codes
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public IList<IHelpItem> HelpItems { get; private set; }
+
         private IDtcModule dtcModuleModel;
         public IModule ModuleModel { get; set; }
 
@@ -64,6 +66,7 @@ namespace VSDACore.Modules.Codes
             this.ModuleModel = module;
             this.dtcModuleModel = module;
             this.Name = this.ModuleModel.Name;
+            this.HelpItems = module.HelpItems;
             this.CurrentCodes = new List<ICodeViewModel>();
             this.PendingCodes = new List<ICodeViewModel>();
             this.PermanentCodes = new List<ICodeViewModel>();
