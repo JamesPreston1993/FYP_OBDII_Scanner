@@ -46,7 +46,10 @@
     <Compile Include="Host\HostViewModel.cs" />
     <Compile Include="Host\IHost.cs" />
     <Compile Include="Host\IHostViewModel.cs" />
+    <Compile Include="Modules\Base\HelpItem.cs" />
+    <Compile Include="Modules\Base\HelpItemFactory.cs" />
     <Compile Include="Modules\Base\ICommunicationSystem.cs" />
+    <Compile Include="Modules\Base\IHelpItem.cs" />
     <Compile Include="Modules\Base\IModule.cs" />
     <Compile Include="Modules\Base\IModuleViewModel.cs" />
     <Compile Include="Modules\Base\RelayCommand.cs" />
