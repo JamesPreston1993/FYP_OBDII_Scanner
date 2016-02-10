@@ -9,6 +9,8 @@ namespace VSDACore.Connection
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public string CommunicationLog { get; private set; }
+
         public IDevice CurrentDevice { get; set; }
 
         public Protocol VehicleProtocol { get; }

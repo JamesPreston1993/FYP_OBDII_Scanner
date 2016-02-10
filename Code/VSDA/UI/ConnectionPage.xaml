@@ -34,23 +34,12 @@
                     <StackPanel x:Name="DevicesPanel" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <TextBlock Text="Device Name" FontSize="18" Margin="5,0,0,0" Foreground="{StaticResource ModulePageForeground}"/>
                     </StackPanel>
-                    <ScrollViewer Grid.Column="1" HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Disabled" VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
-                        <StackPanel x:Name="InstructionsPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,10,0">
-                            <RichTextBlock x:Name="InstructionsTextBlock" FontSize="18" Margin="5,5,5,5" HorizontalAlignment="Stretch" VerticalAlignment="Top" TextWrapping="WrapWholeWords" Foreground="{StaticResource ModulePageForeground}">
-                                <Paragraph>
-                                    1) Turn on Bluetooth on your device
-                                </Paragraph>
-                                <Paragraph/>
-                                <Paragraph>
-                                    2) Pair the ELM327 dongle with your device in PC Settings
-                                </Paragraph>
-                                <Paragraph/>
-                                <Paragraph>
-                                    3) Select your ELM327 dongle from the list to the left
-                                </Paragraph>
-                            </RichTextBlock>
-                        </StackPanel>
-                    </ScrollViewer>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <TextBlock Text="Communication Log" FontSize="18" Margin="5,0,0,0" Foreground="{StaticResource ModulePageForeground}"/>
+                        <ScrollViewer HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Disabled" VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
+                            <TextBlock x:Name="CommunicationLog" Text="" LineHeight="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="{StaticResource ModulePageForeground}" />
+                        </ScrollViewer>
+                    </StackPanel>
                 </Grid>
             </Grid>
         </Grid>

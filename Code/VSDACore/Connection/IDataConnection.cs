@@ -8,6 +8,8 @@ namespace VSDACore.Connection
     {
         bool IsInitialized { get; }
 
+        string CommunicationLog { get; }
+
         ConnectionStatus DeviceConnectionStatus { get; set; }
 
         Protocol VehicleProtocol { get; }

@@ -64,7 +64,10 @@ namespace VSDA.UI
                     this.ConnectingProgress.IsActive = false;
                 }
             }
-
+            else if (e.PropertyName == "CommunicationLog")
+            {
+                this.CommunicationLog.Text += string.Format("{0}\n", this.module.CommunicationLog);
+            }
         }
     }
 }

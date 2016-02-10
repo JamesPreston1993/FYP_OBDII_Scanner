@@ -54,6 +54,21 @@ namespace VSDA.Connection
             }
         }
 
+        private string communicationLog;
+        public string CommunicationLog
+        {
+            get
+            {
+                return this.communicationLog;
+            }
+            private set
+            {
+                this.communicationLog = value;
+                this.RaisePropertyChanged("CommunicationLog");
+            }
+
+        }
+
         private ConnectionStatus connectionStatus;
         public ConnectionStatus DeviceConnectionStatus
         {
@@ -158,25 +173,22 @@ namespace VSDA.Connection
             await this.SendCommand("ATAL");
             await this.SendCommand("ATE0");
             await this.SendCommand("ATL0");
-            await this.SendCommand("ATS0");
-            
-            string protocol = await this.SendCommand("ATDP");
-            this.VehicleProtocol = this.GetProtocol(protocol);
-
-            await this.SendCommand("ATSP0");
+            await this.SendCommand("ATS0");            
+            await this.SendCommand("ATSP0");            
             await this.SendCommand("01001");
+            this.VehicleProtocol = await this.GetProtocol();
             DateTime endTime = DateTime.Now;
             double timeTaken = (endTime - startTime).TotalMilliseconds;
             return true;
         }
 
         public async Task<string> SendCommand(string command)
-        {            
+        {                        
+            await this.asyncLock.WaitAsync();
             string response = string.Empty;
-            
+
             if (this.IsInitialized)
             {                
-                await this.asyncLock.WaitAsync();
                 DateTime startTime = DateTime.Now;
 
                 // Write
@@ -199,6 +211,7 @@ namespace VSDA.Connection
                         response += s;
                     }
                     response = response.Replace(">", "");
+                    response = response.Replace("\r", "");
                 }
                 catch (Exception)
                 {
@@ -212,31 +225,37 @@ namespace VSDA.Connection
                 }
                 
                 DateTime endTime = DateTime.Now;
-                string log = command + ": " + (endTime - startTime).TotalMilliseconds + "ms";
+                double timeTaken = Math.Round((endTime - startTime).TotalMilliseconds, 0);
+                string log = string.Format("SENT: {0} RECEIVED: {1} TIME: {2}ms", command, response, timeTaken);
                 Debug.WriteLine(log);
-                this.asyncLock.Release();
+                this.CommunicationLog = log;
             }
             else
             {
                 response = "No connection";
             }
+
+            this.asyncLock.Release();
+
             return response;
         }
 
-        private Protocol GetProtocol(string response)
+        private async Task<Protocol> GetProtocol()
         {
             Protocol protocol;
 
-            if (response.Contains("ISO 9141-2"))
-                protocol = Protocol.ISO9141;
-            else if (response.Contains("SAE J1850 PWM"))
-                protocol = Protocol.PWM;
-            else if (response.Contains("SAE J1850 VPW"))
-                protocol = Protocol.VPW;
-            else if (response.Contains("ISO 14230-4 KWP"))
+            string response = await this.SendCommand("ATDP");
+
+            if (response.Contains("9141-2"))
+                protocol = Protocol.ISO9141;            
+            else if (response.Contains("KWP"))
                 protocol = Protocol.KWP;
-            else if (response.Contains("ISO 15765-4 CAN"))
+            else if (response.Contains("CAN"))
                 protocol = Protocol.CAN;
+            else if (response.Contains("PWM"))
+                protocol = Protocol.PWM;
+            else if (response.Contains("VPW"))
+                protocol = Protocol.VPW;
             else
                 protocol = Protocol.Unknown;
 

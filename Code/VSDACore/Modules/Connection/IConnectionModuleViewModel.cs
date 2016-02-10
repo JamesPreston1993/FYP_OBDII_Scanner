@@ -9,6 +9,8 @@ namespace VSDACore.Modules.Connection
     {
         ICommand ConnectCommand { get; }
 
+        string CommunicationLog { get; }
+
         IDevice CurrentDevice { get; set; }
 
         string DeviceConnectionStatus { get; }

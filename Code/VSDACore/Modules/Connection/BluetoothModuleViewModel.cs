@@ -11,7 +11,24 @@ namespace VSDACore.Modules.Connection
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public IList<IHelpItem> HelpItems { get; private set; }
+
         public ICommand ConnectCommand { get; private set; }
+
+        private string communicationLog;
+        public string CommunicationLog
+        {
+            get
+            {
+                return this.communicationLog;
+            }
+            private set
+            {
+                this.communicationLog = value;
+                this.RaisePropertyChanged("CommunicationLog");
+            }
+
+        }
 
         private string connectionStatus;
         public string DeviceConnectionStatus
@@ -53,6 +70,8 @@ namespace VSDACore.Modules.Connection
             this.ModuleModel = module;
             this.connectionModule = module;
             this.Name = module.Name;
+            this.HelpItems = module.HelpItems;
+            this.CommunicationLog = this.connectionModule.CommunicationLog;
             this.CurrentDevice = null;
             this.ConnectCommand = new RelayCommand(this.Connect);
             this.DeviceConnectionStatus = this.connectionModule.DeviceConnectionStatus;
@@ -87,11 +106,18 @@ namespace VSDACore.Modules.Connection
             {
                 this.Devices = this.connectionModule.Devices;
             }
-            else if(e.PropertyName == "DeviceConnectionStatus")
+            else if (e.PropertyName == "DeviceConnectionStatus")
             {
                 this.DeviceConnectionStatus = this.connectionModule.DeviceConnectionStatus;
             }
-            this.RaisePropertyChanged(e.PropertyName);
+            else if (e.PropertyName == "CommunicationLog")
+            {
+                this.CommunicationLog = this.connectionModule.CommunicationLog;
+            }
+            else
+            {
+                this.RaisePropertyChanged(e.PropertyName);
+            }
         }
     }
 }

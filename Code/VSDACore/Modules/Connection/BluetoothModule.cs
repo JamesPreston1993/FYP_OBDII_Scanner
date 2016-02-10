@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using VSDACore.Connection;
+using VSDACore.Modules.Base;
 
 namespace VSDACore.Modules.Connection
 {
     public class BluetoothModule : IConnectionModule
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public IList<IHelpItem> HelpItems { get; private set; }
 
         private IList<IDevice> devices;
         public IList<IDevice> Devices
@@ -22,6 +25,21 @@ namespace VSDACore.Modules.Connection
                 this.devices = value;
                 this.RaisePropertyChanged("Devices");
             }
+        }
+
+        private string communicationLog;
+        public string CommunicationLog
+        {
+            get
+            {
+                return this.communicationLog;
+            }
+            private set
+            {
+                this.communicationLog = value;
+                this.RaisePropertyChanged("CommunicationLog");
+            }
+
         }
 
         private string connectionStatus;
@@ -43,6 +61,8 @@ namespace VSDACore.Modules.Connection
         public BluetoothModule()
         {
             this.Name = "Connection";
+            this.HelpItems = HelpItemFactory.GetHelpItems(this);
+            this.CommunicationLog = ConnectionManager.Instance.CommunicationLog;
             this.DeviceConnectionStatus = ConnectionManager.Instance.DeviceConnectionStatus.ToString();
             ConnectionManager.Instance.PropertyChanged += this.RaiseModelPropertyChanged;
         }
@@ -82,7 +102,7 @@ namespace VSDACore.Modules.Connection
 
         private void RaiseModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == "DeviceConnectionStatus")
+            if (e.PropertyName == "DeviceConnectionStatus")
             {
                 switch (ConnectionManager.Instance.DeviceConnectionStatus)
                 {
@@ -95,7 +115,14 @@ namespace VSDACore.Modules.Connection
                         break;
                 }
             }
-            this.RaisePropertyChanged(e.PropertyName);
+            else if (e.PropertyName == "CommunicationLog")
+            {
+                this.CommunicationLog = ConnectionManager.Instance.CommunicationLog;
+            }
+            else
+            {
+                this.RaisePropertyChanged(e.PropertyName);
+            }
         }
     }
 }
