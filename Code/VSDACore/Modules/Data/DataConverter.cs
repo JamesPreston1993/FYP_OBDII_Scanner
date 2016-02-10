@@ -10,7 +10,7 @@ namespace VSDACore.Modules.Data
             string stringValue = "No Value";
 
             int A, B, C, D;
-            
+
             switch (pid.PidHex)
             {
                 // Bitwise Converted
@@ -29,7 +29,28 @@ namespace VSDACore.Modules.Data
                     stringValue = string.Format("MIL: {0} DTCs: {1}", milOnOff, numDTCs);
                     break;
 
-                
+                case "1C":
+                    A = Convert.ToInt32(Convert.ToByte(request.Substring(0, 2), 16));
+                    switch (A)
+                    {
+                        case 1: stringValue = "OBD-II (CARB)"; break;
+                        case 2: stringValue = "OBD-II (EPA)"; break;
+                        case 3: stringValue = "OBD and OBD-II"; break;
+                        case 4: stringValue = "OBD-I"; break;
+                        case 5: stringValue = "Not OBD compliant"; break;
+                        case 6: stringValue = "EOBD"; break;
+                        case 7: stringValue = "EOBD and OBD-II"; break;
+                        case 8: stringValue = "EOBD and OBD-I"; break;
+                        case 9: stringValue = "EOBD, OBD-I and OBD-II"; break;
+                        case 10: stringValue = "JOBD"; break;
+                        case 11: stringValue = "JOBD and OBD-II"; break;
+                        case 12: stringValue = "JOBD and EOBD"; break;
+                        case 13: stringValue = "JOBD, EOBD and OBD-II"; break;
+                        default: stringValue = "Unknown"; break;
+                    }
+                    break;
+
+
                 // (A - 128) * (100 / 128)                
                 case "06":
                 case "07":
@@ -141,16 +162,22 @@ namespace VSDACore.Modules.Data
         private static ValueType GetValueType(IPid pid, IDataItem item)
         {
             ValueType type = ValueType.Normal;
-            switch(pid.PidHex)
+            switch (pid.PidHex)
             {
+                case "0C":
+                    if (item.Value < 800)
+                        type = ValueType.Caution;
+                    else if (item.Value > 5500)
+                        type = ValueType.Danger;
+                    break;
                 case "21":
-                    if (item.Value >= 100)
+                    if (item.Value >= 50)
                         type = ValueType.Danger;
                     else if (item.Value <= 5)
                         type = ValueType.Caution;
                     break;
             }
             return type;
-        }        
+        }
     }
 }
