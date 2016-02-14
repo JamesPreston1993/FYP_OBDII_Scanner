@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using VSDACore.Connection;
 
@@ -45,19 +46,32 @@ namespace VSDACore.Modules.Codes
             {
                 if (batch.StartsWith("43"))
                 {
-                    string codesHex = batch.Substring(2);
-                    for (int i = 0; i < 3; i++)
+                    Debug.WriteLine("Current Codes: " + batch);
+                    string codesHex = string.Empty;
+                    if (ConnectionManager.Instance.VehicleProtocol == Protocol.CAN)
                     {
-                        string code = string.Empty;
-                        code = codesHex.Substring(i * 4, 4);
+                        codesHex = batch.Substring(4);
+                    }
+                    else
+                    {
+                        codesHex = batch.Substring(2);
+                    }
 
-                        if (code != "0000")
+                    if (!codesHex.Equals(string.Empty))
+                    {
+                        for (int i = 0; i < 3; i++)
                         {
-                            switch (code.Substring(0, 1))
+                            string code = string.Empty;
+                            code = codesHex.Substring(i * 4, 4);
+
+                            if (code != "0000")
                             {
-                                case "0": code = "P" + code; break;
+                                switch (code.Substring(0, 1))
+                                {
+                                    case "0": code = "P" + code; break;
+                                }
+                                codes.Add(new Code(code));
                             }
-                            codes.Add(new Code(code));
                         }
                     }
                 }
@@ -81,21 +95,33 @@ namespace VSDACore.Modules.Codes
 
             foreach (string batch in batches)
             {
+                Debug.WriteLine("Pending Codes: " + batch);
                 if (batch.StartsWith("47"))
                 {
-                    string codesHex = batch.Substring(2);
-                    for (int i = 0; i < 3; i++)
+                    string codesHex = string.Empty;
+                    if (ConnectionManager.Instance.VehicleProtocol == Protocol.CAN)
                     {
-                        string code = string.Empty;
-                        code = codesHex.Substring(i * 4, 4);
-
-                        if (code != "0000")
+                        codesHex = batch.Substring(4);
+                    }
+                    else
+                    {
+                        codesHex = batch.Substring(2);
+                    }
+                    if (!codesHex.Equals(string.Empty))
+                    {
+                        for (int i = 0; i < 3; i++)
                         {
-                            switch (code.Substring(0, 1))
+                            string code = string.Empty;
+                            code = codesHex.Substring(i * 4, 4);
+
+                            if (code != "0000")
                             {
-                                case "0": code = "P" + code; break;
+                                switch (code.Substring(0, 1))
+                                {
+                                    case "0": code = "P" + code; break;
+                                }
+                                codes.Add(new Code(code));
                             }
-                            codes.Add(new Code(code));
                         }
                     }
                 }
@@ -121,19 +147,31 @@ namespace VSDACore.Modules.Codes
             {
                 if (batch.StartsWith("4A"))
                 {
-                    string codesHex = batch.Substring(2);
-                    for (int i = 0; i < 3; i++)
+                    Debug.WriteLine("Permanent Codes: " + batch);
+                    string codesHex = string.Empty;
+                    if (ConnectionManager.Instance.VehicleProtocol == Protocol.CAN)
                     {
-                        string code = string.Empty;
-                        code = codesHex.Substring(i * 4, 4);
-
-                        if (code != "0000")
+                        codesHex = batch.Substring(4);
+                    }
+                    else
+                    {
+                        codesHex = batch.Substring(2);
+                    }
+                    if (!codesHex.Equals(string.Empty))
+                    {
+                        for (int i = 0; i < 3; i++)
                         {
-                            switch (code.Substring(0, 1))
+                            string code = string.Empty;
+                            code = codesHex.Substring(i * 4, 4);
+
+                            if (code != "0000")
                             {
-                                case "0": code = "P" + code; break;
+                                switch (code.Substring(0, 1))
+                                {
+                                    case "0": code = "P" + code; break;
+                                }
+                                codes.Add(new Code(code));
                             }
-                            codes.Add(new Code(code));
                         }
                     }
                 }
