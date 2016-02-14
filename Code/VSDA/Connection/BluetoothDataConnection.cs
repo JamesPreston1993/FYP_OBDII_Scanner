@@ -211,7 +211,6 @@ namespace VSDA.Connection
                         response += s;
                     }
                     response = response.Replace(">", "");
-                    response = response.Replace("\r", "");
                 }
                 catch (Exception)
                 {
@@ -226,7 +225,7 @@ namespace VSDA.Connection
                 
                 DateTime endTime = DateTime.Now;
                 double timeTaken = Math.Round((endTime - startTime).TotalMilliseconds, 0);
-                string log = string.Format("SENT: {0} RECEIVED: {1} TIME: {2}ms", command, response, timeTaken);
+                string log = string.Format("SENT: {0} RECEIVED: {1} TIME: {2}ms", command, response.Replace("\r", ""), timeTaken);
                 Debug.WriteLine(log);
                 this.CommunicationLog = log;
             }
