@@ -37,14 +37,15 @@ namespace VSDAAndroid
         {
             if (instance == null)
             {
+                ConnectionManager.Instance = new BluetoothDataConnection();
+
                 IList<IModule> modules = new List<IModule>();
                 modules.Add(new DTCModule());
                 modules.Add(new DataModule());
-                modules.Add(new BluetoothModule());
+                modules.Add(new BluetoothModule());                
 
                 IHost host = new Host(modules);
                 AppRoot.Instance = new AppRoot(host);
-                ConnectionManager.Instance = new BluetoothDataConnection();
             }
         }
     }
