@@ -157,24 +157,24 @@ namespace VSDACore.Connection
             // Current DTCs
             else if (command.StartsWith("03"))
             {
-                response = "43010100000000";
+                response = "43010101210353";
             }
             // Pending DTCs
             else if (command.StartsWith("07"))
             {
-                response = "47010100000000";
+                response = "47010401320342";
             }
             // Permanent DTCs
             else if (command.StartsWith("0A"))
             {
-                response = "4A010100000000";
+                response = "4A010701090111";
             }
             // Current DTCs
             else if (command.StartsWith("04"))
             {
                 response = "44";
             }
-            await Task.Delay(100);
+            await Task.Delay(5000);
             return response;
         }
 
