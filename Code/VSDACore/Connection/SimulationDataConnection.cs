@@ -174,7 +174,7 @@ namespace VSDACore.Connection
             {
                 response = "44";
             }
-            await Task.Delay(5000);
+            await Task.Delay(100);
             return response;
         }
 
