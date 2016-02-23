@@ -61,6 +61,21 @@ namespace VSDAAndroid.Connection
             }
         }
 
+        private string communicationLog;
+        public string CommunicationLog
+        {
+            get
+            {
+                return this.communicationLog;
+            }
+            private set
+            {
+                this.communicationLog = value;
+                this.RaisePropertyChanged("CommunicationLog");
+            }
+
+        }
+
         private IDevice currentDevice;
         public IDevice CurrentDevice
         {
@@ -84,9 +99,14 @@ namespace VSDAAndroid.Connection
             this.androidDevice = null;
         }
 
-        public Task<IList<IDevice>> GetAvailableDevices()
+        public async Task<IList<IDevice>> GetAvailableDevices()
         {
-            throw new NotImplementedException();
+            IList<IDevice> availableDevices = new List<IDevice>();
+            foreach(var device in BluetoothAdapter.DefaultAdapter.BondedDevices)
+            {
+                availableDevices.Add(new BluetoothConnectionDevice(device.Name, string.Empty, device.Address));
+            }
+            return availableDevices;
         }
 
         public async Task<bool> Initialize()
@@ -95,6 +115,7 @@ namespace VSDAAndroid.Connection
             {
                 if (this.androidDevice != null)
                 {
+                    this.DeviceConnectionStatus = ConnectionStatus.Connecting;
                     BluetoothAdapter adapter = BluetoothAdapter.DefaultAdapter;
                     this.socket = this.androidDevice.CreateRfcommSocketToServiceRecord(this.uuid);
                     if(socket != null)
@@ -109,7 +130,7 @@ namespace VSDAAndroid.Connection
                         }
                         catch(Exception e)
                         {
-
+                            this.DeviceConnectionStatus = ConnectionStatus.NotConnected;
                         }                        
                     }
                 }
@@ -128,11 +149,11 @@ namespace VSDAAndroid.Connection
             await this.SendCommand("ATAL");
             await this.SendCommand("ATE0");
             await this.SendCommand("ATL0");
-            await this.SendCommand("ATS0");
+            await this.SendCommand("ATS0");            
+            await this.SendCommand("ATSP0");
+            await this.SendCommand("01001");
             string protocol = await this.SendCommand("ATDP");
             this.VehicleProtocol = this.GetProtocol(protocol);
-            await this.SendCommand("ATSP0");
-            await this.SendCommand("01004");
             return true;
         }
 
@@ -149,21 +170,26 @@ namespace VSDAAndroid.Connection
                     outgoingMessage[i] = (byte)charArray[i];
 
                 // Write
-                await this.socket.OutputStream.WriteAsync(outgoingMessage, 0, outgoingMessage.Length);                
+                await this.socket.OutputStream.WriteAsync(outgoingMessage, 0, outgoingMessage.Length);
 
                 // Read
                 while (!response.Contains(">"))
                 {
-                    byte[] incomingMessage = new byte[64];
+                    byte[] incomingMessage = new byte[1024];
                     await this.socket.InputStream.ReadAsync(incomingMessage, 0, incomingMessage.Length);
-                    
+
                     foreach (byte b in incomingMessage)
-                        response += Convert.ToChar(b);
-                   
+                    {
+                        if (b != 0)
+                        {
+                            response += Convert.ToChar(b);
+                        }
+                    }                    
                 }
 
                 DateTime endTime = DateTime.Now;
-                string log = command + ": " + (endTime - startTime).TotalMilliseconds + "ms";
+                string log = string.Format("SENT: {0} RECEIVED: {1} TIME: {2}ms", command, response.Replace("\r", ""), (endTime - startTime).TotalMilliseconds);
+                //string log = command + ": " + (endTime - startTime).TotalMilliseconds + "ms";
                 System.Diagnostics.Debug.WriteLine(log);
             }
             else
