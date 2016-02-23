@@ -63,7 +63,7 @@ namespace VSDACore.Modules.Connection
             this.Name = "Connection";
             this.HelpItems = HelpItemFactory.GetHelpItems(this);
             this.CommunicationLog = ConnectionManager.Instance.CommunicationLog;
-            this.DeviceConnectionStatus = ConnectionManager.Instance.DeviceConnectionStatus.ToString();
+            this.GetConnectionStatus();
             ConnectionManager.Instance.PropertyChanged += this.RaiseModelPropertyChanged;
         }
 
@@ -100,20 +100,25 @@ namespace VSDACore.Modules.Connection
             }
         }
 
+        private void GetConnectionStatus()
+        {
+            switch (ConnectionManager.Instance.DeviceConnectionStatus)
+            {
+                case ConnectionStatus.Connected:
+                case ConnectionStatus.Connecting:
+                    this.DeviceConnectionStatus = ConnectionManager.Instance.DeviceConnectionStatus.ToString();
+                    break;
+                case ConnectionStatus.NotConnected:
+                    this.DeviceConnectionStatus = "Not Connected";
+                    break;
+            }
+        }
+
         private void RaiseModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "DeviceConnectionStatus")
             {
-                switch (ConnectionManager.Instance.DeviceConnectionStatus)
-                {
-                    case ConnectionStatus.Connected:
-                    case ConnectionStatus.Connecting:
-                        this.DeviceConnectionStatus = ConnectionManager.Instance.DeviceConnectionStatus.ToString();
-                        break;
-                    case ConnectionStatus.NotConnected:
-                        this.DeviceConnectionStatus = "Not Connected";
-                        break;
-                }
+                this.GetConnectionStatus();
             }
             else if (e.PropertyName == "CommunicationLog")
             {
