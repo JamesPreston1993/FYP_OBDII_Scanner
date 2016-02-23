@@ -61,6 +61,12 @@
     <Compile Include="Connection\BluetoothDataConnection.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\Codes\CodesFragment.cs" />
+    <Compile Include="UI\Codes\CodeView.cs" />
+    <Compile Include="UI\Connection\ConnectionFragment.cs" />
+    <Compile Include="UI\Connection\DeviceView.cs" />
+    <Compile Include="UI\Data\DataFragment.cs" />
+    <Compile Include="UI\Data\DataListView.cs" />
     <Compile Include="UI\Host\HostActivity.cs" />
     <Compile Include="UI\Host\ModuleListViewAdapter.cs" />
   </ItemGroup>
@@ -70,6 +76,15 @@
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <AndroidResource Include="Resources\layout\HostLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\CodesFragment.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ConnectionFragment.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\DataFragment.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
