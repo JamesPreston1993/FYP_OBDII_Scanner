@@ -73,8 +73,8 @@ namespace VSDACore.Modules.Data
 
         private void StepBack()
         {
-            //if (!this.dataModuleModel.IsRecording)
-            //{
+            if (!this.dataModuleModel.IsRecording)
+            {
                 foreach (DataGraphViewModel graph in this.GraphViews)
                 {
                     graph.StepBack();
@@ -83,7 +83,7 @@ namespace VSDACore.Modules.Data
                 {
                     list.StepBack();
                 }
-            //}
+            }
         }
 
         private void StepForward()
@@ -142,10 +142,7 @@ namespace VSDACore.Modules.Data
         private void RaiseModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Pids")
-            {
-                this.RaisePropertyChanged("ListViews");
-                this.RaisePropertyChanged("GraphViews");
-
+            {                
                 this.ListViews.Clear();
                 this.GraphViews.Clear();
                 foreach (IPid pid in this.dataModuleModel.Pids)
@@ -153,6 +150,9 @@ namespace VSDACore.Modules.Data
                     this.ListViews.Add(new DataListViewModel(pid));
                     this.GraphViews.Add(new DataGraphViewModel(pid));
                 }
+
+                this.RaisePropertyChanged("ListViews");
+                this.RaisePropertyChanged("GraphViews");
             }
             else if(e.PropertyName == "IsRecording")
             {                
