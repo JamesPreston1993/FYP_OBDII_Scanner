@@ -33,7 +33,7 @@ namespace VSDACore.Modules.Data
         {
             IList<IPid> supportedPids = new List<IPid>();
 
-            for (int i = 0; i <= 4; i++)
+            for (int i = 0; i < 2; i++)
             {
                 string request = await this.dataConnection.SendCommand("01" + (i * 20).ToString("D2") + "1");
 
