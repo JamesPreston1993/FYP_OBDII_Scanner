@@ -16,6 +16,8 @@ namespace VSDA.Connection
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private const string NO_CONNECTION = "NO_CONNECTION";
+
         private RfcommDeviceService service;        
         private StreamSocket socket;
         private DataWriter writer;
@@ -135,9 +137,10 @@ namespace VSDA.Connection
 
                             this.isInitialized = true;
 
-                            await this.Reset();
+                            bool resetComplete = await this.Reset();
 
-                            this.IsInitialized = true;
+                            if(resetComplete)
+                                this.IsInitialized = true;
 
                             return true;
                         }
@@ -169,13 +172,17 @@ namespace VSDA.Connection
         public async Task<bool> Reset()
         {
             DateTime startTime = DateTime.Now;
-            await this.SendCommand("ATZ");            
-            await this.SendCommand("ATAL");
-            await this.SendCommand("ATE0");
-            await this.SendCommand("ATL0");
-            await this.SendCommand("ATS0");            
-            await this.SendCommand("ATSP0");            
-            await this.SendCommand("01001");
+            string[] commands = { "ATZ", "ATAL", "ATE0", "ATL0", "ATS0", "ATSP0", "01001" };
+
+            for(int i= 0; i < commands.Length; i++)
+            {
+                string response = await this.SendCommand(commands[i]);
+                if(response.Equals(NO_CONNECTION))
+                {
+                    return false;
+                }
+            }
+            
             this.VehicleProtocol = await this.GetProtocol();
             DateTime endTime = DateTime.Now;
             double timeTaken = (endTime - startTime).TotalMilliseconds;
@@ -212,14 +219,15 @@ namespace VSDA.Connection
                     }
                     response = response.Replace(">", "");
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    response = "No connection";
+                    response = NO_CONNECTION;
+                    this.IsInitialized = false;
                 }                
 
                 if (response.Contains("UNABLE TO CONNECT"))
                 {
-                    response = "No connection";
+                    response = NO_CONNECTION;
                     this.IsInitialized = false;
                 }
                 
@@ -231,7 +239,7 @@ namespace VSDA.Connection
             }
             else
             {
-                response = "No connection";
+                response = NO_CONNECTION;
             }
 
             this.asyncLock.Release();
