@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Threading;
 using System.Threading.Tasks;
 using VSDACore.Modules.Base;
 
@@ -10,6 +12,8 @@ namespace VSDACore.Modules.Data
     public class DataModule : IDataModule
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private SemaphoreSlim asyncLock;
 
         public IList<IHelpItem> HelpItems { get; private set; }
 
@@ -28,6 +32,7 @@ namespace VSDACore.Modules.Data
                 this.RaisePropertyChanged("Pids");
             }
         }
+
         private bool isRecording;
         public bool IsRecording
         {
@@ -50,6 +55,7 @@ namespace VSDACore.Modules.Data
             this.HelpItems = HelpItemFactory.GetHelpItems(this);
             this.Pids = new ObservableCollection<IPid>();
             this.commsSystem = new DataCommunicationSystem();
+            this.asyncLock = new SemaphoreSlim(1);
             this.IsRecording = false;
             this.Pids.CollectionChanged += this.RaiseCollectionChanged;
         }
@@ -57,23 +63,62 @@ namespace VSDACore.Modules.Data
         public async Task<bool> Initialize()
         {
             this.commsSystem.Initialize();
-            this.Pids = await this.GetSupportedPids();
+            try
+            {
+                this.Pids = await this.GetSupportedPids();
+            }
+            catch(Exception e)
+            {
+
+            }
+            return true;
+        }
+
+        public async Task<bool> Shutdown()
+        {
+            this.IsRecording = false;
+
+            //await this.asyncLock.WaitAsync();
+
+            //foreach(IPid pid in this.Pids)
+            //{
+               // pid.DataItems.Clear();
+            //}
+
+            //this.asyncLock.Release();
+
             return true;
         }
 
         public async Task<ObservableCollection<IPid>> GetSupportedPids()
         {
-            IList<IPid> pids = await this.commsSystem.GetSupportedPids();
-            this.Pids = new ObservableCollection<IPid>(pids);
+            await this.asyncLock.WaitAsync();
+
+            if (this.commsSystem != null)
+            {
+                IList<IPid> pids = await this.commsSystem.GetSupportedPids();
+                this.Pids = new ObservableCollection<IPid>(pids);
+            }
+
+            this.asyncLock.Release();
+
             return this.Pids;
         }
 
         public async Task<bool> UpdateData(IPid pid)
         {
+            await this.asyncLock.WaitAsync();
+
             if (this.IsRecording)
             {
-                await this.commsSystem.UpdateData(pid);
+                if (this.commsSystem != null)
+                {
+                    await this.commsSystem.UpdateData(pid);
+                }
             }
+
+            this.asyncLock.Release();
+
             return IsRecording;
         }
 
@@ -81,8 +126,14 @@ namespace VSDACore.Modules.Data
         {
             while (this.IsRecording)
             {
-                await this.commsSystem.UpdateData(this.Pids);
-            }
+                await this.asyncLock.WaitAsync();
+                if (this.commsSystem != null)
+                {
+                    await this.commsSystem.UpdateData(this.Pids);
+                }
+                this.asyncLock.Release();
+            }            
+
             return IsRecording;
         }
 
