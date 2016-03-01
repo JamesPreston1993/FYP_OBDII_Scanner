@@ -21,6 +21,10 @@ namespace VSDACore.Host
             }
             set
             {
+                if (this.currentModule != null)
+                {
+                    this.currentModule.Shutdown();
+                }
                 this.currentModule = value;
                 this.RaisePropertyChanged("CurrentModule");
             }
