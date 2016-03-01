@@ -11,5 +11,7 @@ namespace VSDACore.Modules.Base
         IList<IHelpItem> HelpItems { get; }
 
         Task<bool> Initialize();
+
+        Task<bool> Shutdown(); 
     }
 }

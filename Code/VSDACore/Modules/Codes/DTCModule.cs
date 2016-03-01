@@ -74,6 +74,14 @@ namespace VSDACore.Modules.Codes
             return true;
         }
 
+        public async Task<bool> Shutdown()
+        {
+            this.currentCodes.Clear();
+            this.pendingCodes.Clear();
+            this.permanentCodes.Clear();
+            return true;
+        }
+
         public async Task<IList<ICode>> GetCurrentCodes()
         {
             this.CurrentCodes = await this.commsSystem.GetCurrentCodes();

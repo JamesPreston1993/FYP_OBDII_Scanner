@@ -77,6 +77,12 @@ namespace VSDACore.Modules.Connection
             return false;
         }
 
+        public async Task<bool> Shutdown()
+        {
+            this.Devices.Clear();
+            return true;
+        }
+
         public async Task<bool> Connect(IDevice device)
         {
             ConnectionManager.Instance.CurrentDevice = device;
