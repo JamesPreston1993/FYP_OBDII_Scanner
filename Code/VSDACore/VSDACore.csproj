@@ -84,6 +84,8 @@
     <Compile Include="Modules\Data\IPid.cs" />
     <Compile Include="Modules\Data\Pid.cs" />
     <Compile Include="Modules\Data\PidFactory.cs" />
+    <Compile Include="Modules\Home\HomeModule.cs" />
+    <Compile Include="Modules\Home\IHomeModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
