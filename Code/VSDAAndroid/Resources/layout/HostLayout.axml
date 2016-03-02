@@ -30,5 +30,15 @@
             android:background="#1E90FF"
             android:divider="#1E90FF"
             android:dividerHeight="1dp" />
+        <ListView
+            android:id="@+id/HelpItemsListView"
+            android:orientation="vertical"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:choiceMode="singleChoice"
+            android:background="#666666"
+            android:divider="#666666"
+            android:dividerHeight="1dp" />
     </android.support.v4.widget.DrawerLayout>
 </LinearLayout>

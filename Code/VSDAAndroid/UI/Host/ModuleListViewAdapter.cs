@@ -41,6 +41,9 @@ namespace VSDAAndroid.UI.Host
             view.TextSize = 24;
             view.TextAlignment = TextAlignment.Center;
             view.Background = parent.Background;
+
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, 100);            
+            view.LayoutParameters = layoutParams;            
             
             view.Click += delegate
             {

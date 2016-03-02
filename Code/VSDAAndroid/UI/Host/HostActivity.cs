@@ -24,8 +24,10 @@ namespace VSDAAndroid.UI.Host
     {
         // UI
         private SupportToolbar toolbar;
+        private HostModuleListToggle toggle;
         private DrawerLayout drawerLayout;
-        private ListView leftDrawer;
+        private ListView moduleListView;
+        private ListView helpItemsListView;
         private FrameLayout modulePanel;
 
         // ViewModel
@@ -44,10 +46,17 @@ namespace VSDAAndroid.UI.Host
             this.SetContentView(Resource.Layout.HostLayout);
             this.toolbar = this.FindViewById<SupportToolbar>(Resource.Id.HostToolBar);
             this.drawerLayout = this.FindViewById<DrawerLayout>(Resource.Id.Drawer);
-            this.leftDrawer = this.FindViewById<ListView>(Resource.Id.ModuleListView);
+            this.moduleListView = this.FindViewById<ListView>(Resource.Id.ModuleListView);
+            this.helpItemsListView = this.FindViewById<ListView>(Resource.Id.HelpItemsListView);
+
+            // Tags
+            this.moduleListView.Tag = 0;
+            this.helpItemsListView.Tag = 1;
+
 
             // Hamburger Menu
-            this.leftDrawer.Adapter = new ModuleListViewAdapter(this.ApplicationContext, this.host);
+            this.moduleListView.Adapter = new ModuleListViewAdapter(this.ApplicationContext, this.host);
+            this.helpItemsListView.Adapter = new HelpItemsListViewAdapter(this.ApplicationContext, this.host);
 
             // Module Panel
             this.modulePanel = this.FindViewById<FrameLayout>(Resource.Id.CurrentModulePanel);
@@ -55,12 +64,45 @@ namespace VSDAAndroid.UI.Host
 
             // Toolbar
             this.SetSupportActionBar(this.toolbar);
-            this.SupportActionBar.Title = this.host.CurrentModuleName;
+            this.toggle = new HostModuleListToggle(this, this.drawerLayout, Resource.String.Empty, Resource.String.Empty);
+            this.drawerLayout.SetDrawerListener(this.toggle);
+            
             this.SupportActionBar.SetHomeButtonEnabled(true);
+            this.SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+            this.SupportActionBar.Title = this.host.CurrentModuleName;
+            this.toggle.SyncState();
+        }
 
-            //ConnectionManager.Instance.CurrentDevice = new BluetoothConnectionDevice("OBDII", "", "");
-            //await ConnectionManager.Instance.Initialize();
-            //await this.host.CurrentModule.InitializeModule(); //ConnectionManager.Instance.Initialize();
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch(item.ItemId)
+            {
+                case Android.Resource.Id.Home:
+                    this.drawerLayout.CloseDrawer(this.helpItemsListView);
+                    this.toggle.OnOptionsItemSelected(item);
+                    return true;
+
+                case Resource.Id.ActionHelp:
+                    if(this.drawerLayout.IsDrawerOpen(this.helpItemsListView))
+                    {
+                        this.drawerLayout.CloseDrawer(this.helpItemsListView);
+                    }
+                    else
+                    {                        
+                        this.drawerLayout.OpenDrawer(this.helpItemsListView);
+                        this.drawerLayout.CloseDrawer(this.moduleListView);
+                    }
+                    return true;
+
+                default:
+                    return base.OnOptionsItemSelected(item);
+            }
+        }
+
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            this.MenuInflater.Inflate(Resource.Menu.ActionMenu, menu);
+            return base.OnCreateOptionsMenu(menu);
         }
 
         private void PopulateModulePanel()
