@@ -134,6 +134,7 @@ namespace VSDAAndroid.UI.Host
                     case "Connection":
                         this.SupportActionBar.Title = this.host.CurrentModuleName;
                         this.PopulateModulePanel();
+                        (this.helpItemsListView.Adapter as HelpItemsListViewAdapter).NotifyDataSetChanged();
                         break;
                 }
             }
