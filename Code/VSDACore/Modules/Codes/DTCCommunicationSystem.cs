@@ -70,7 +70,8 @@ namespace VSDACore.Modules.Codes
                                 {
                                     case "0": code = "P" + code; break;
                                 }
-                                codes.Add(new Code(code));
+                                //codes.Add(new Code(code));
+                                codes.Add(CodeFactory.CreateCode(code));
                             }
                         }
                     }
@@ -120,7 +121,8 @@ namespace VSDACore.Modules.Codes
                                 {
                                     case "0": code = "P" + code; break;
                                 }
-                                codes.Add(new Code(code));
+                                //codes.Add(new Code(code));
+                                codes.Add(CodeFactory.CreateCode(code));
                             }
                         }
                     }
@@ -170,7 +172,8 @@ namespace VSDACore.Modules.Codes
                                 {
                                     case "0": code = "P" + code; break;
                                 }
-                                codes.Add(new Code(code));
+                                //codes.Add(new Code(code));
+                                codes.Add(CodeFactory.CreateCode(code));
                             }
                         }
                     }

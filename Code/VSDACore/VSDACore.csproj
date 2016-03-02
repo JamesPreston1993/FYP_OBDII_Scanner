@@ -54,6 +54,7 @@
     <Compile Include="Modules\Base\IModuleViewModel.cs" />
     <Compile Include="Modules\Base\RelayCommand.cs" />
     <Compile Include="Modules\Codes\Code.cs" />
+    <Compile Include="Modules\Codes\CodeFactory.cs" />
     <Compile Include="Modules\Codes\CodeViewModel.cs" />
     <Compile Include="Modules\Codes\DTCCommunicationSystem.cs" />
     <Compile Include="Modules\Codes\DTCModule.cs" />
