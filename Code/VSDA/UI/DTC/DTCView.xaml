@@ -6,25 +6,20 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="280"
+    d:DesignHeight="80"
     d:DesignWidth="640">
 
-    <Grid Margin="10,10,10,0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid Height="80" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="{StaticResource ModulePageButtonBackground}">
-            <StackPanel Orientation="Horizontal" Margin="10,10,10,10">
-                <TextBlock x:Name="CodeName" Text="{Binding Name}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24" Foreground="{StaticResource ModulePageButtonForeground}"/>
-                <TextBlock Text="-" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24" Margin="8,0,8,0" Foreground="{StaticResource ModulePageButtonForeground}"/>
-                <TextBlock x:Name="CodeDescription" Text="{Binding Description}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24" Foreground="{StaticResource ModulePageButtonForeground}"/>
-            
-            </StackPanel>
-            <Button Background="Transparent" x:Name="Expand" FontFamily="Segoe MDL2 Assets" FontSize="24" Content="&#xE011;" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="ExpandClick" Foreground="{StaticResource ModulePageButtonForeground}"/>
-        </Grid>
-        <Grid>
-            
+
+    <Grid Height="80" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="{StaticResource ModulePageButtonBackground}" Margin="10,10,10,0">
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,10,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="CodeName" Grid.Column="0" Text="{Binding Name}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24" Foreground="{StaticResource ModulePageButtonForeground}"/>
+            <TextBlock Text="-" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24" Margin="8,0,8,0" Foreground="{StaticResource ModulePageButtonForeground}"/>
+            <TextBlock x:Name="CodeDescription" Grid.Column="2" Text="{Binding Description}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="24" Foreground="{StaticResource ModulePageButtonForeground}"/>
         </Grid>
     </Grid>
 </UserControl>
