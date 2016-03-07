@@ -1,7 +1,32 @@
 \documentclass[12pt]{report}
 \usepackage[a4paper, left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm]{geometry}
 \usepackage{graphicx}
+\usepackage{listings}
+\usepackage{color}
 \graphicspath{ {images/} }
+
+% Code fragment formatting
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{myRed}{rgb}{0.64,0.082,0.082}
+
+\lstset{
+	frame=tb,
+	language=[Sharp]C,
+	aboveskip=4mm,
+	belowskip=4mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\scriptsize\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{myRed},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=4
+}
 
 \begin{document}
 
@@ -15,7 +40,7 @@
 		\textbf{ID:} 12159247\\
 		\textbf{Course:} LM110 - Computer Games Development\\
 		\textbf{Supervisor:} Mr. J.J. Collins\\
-		\textbf{Date:} 29\textsuperscript{th} December 2015 \\
+		\textbf{Date:} 18\textsuperscript{th} March 2016 \\
 		}
 	\end{center}
 \end{titlepage}
@@ -39,15 +64,19 @@
 		\input{Chapters/Chapter4_Design}
 	\newpage
 	
-	\chapter{Implementation and Testing}
-		\input{Chapters/Chapter5_ImplementationAndTesting}
+	\chapter{Implementation}
+		\input{Chapters/Chapter5_Implementation}
+	\newpage
+
+	\chapter{Testing}
+		\input{Chapters/Chapter6_Testing}
 	\newpage
 	
-	%\chapter{Evaluation}
+	\chapter{Evaluation}
+		
+	\newpage
 	
-	%\newpage
-	
-	%\chapter{Discussion and Conclusions}
+	\chapter{Discussion and Conclusions}
 	
 	\newpage	
 	
