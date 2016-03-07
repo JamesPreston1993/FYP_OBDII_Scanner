@@ -1,14 +1,39 @@
 \section{Introduction}
 	\paragraph{}{
-	This chapter will outline the functional and non-functional requirements of the project, and how they will be supported in the system.
+	This chapter will outline the functional and non-functional requirements of the project, how they will be supported in the system as well as the processes used to capture these requirements.
 	}		
+
+\section{Processes for Requirements Capture}	
+	\paragraph{}{
+	[SQIRO] - Need to get Object Oriented Systems Analysis and Design using UML
+	}
+	\paragraph{}{
+	The process began with background reading into the domain, as outlined in chapter 2. By analysing what functions were available under the OBDII standards, as well as the functions supported by the ELM327 device, it helped to create a base line for the functional requirements of the project.
+	%[Reading - what modes are available, what other tools are there etc.]
+	}	
+	\paragraph{}{
+	Once a list of available functions was compiled, a number of similar applications were analysed. This involved [checking] which functions were implemented, as well as how they were implemented. The functions that each of these applications supported can be found in table \ref{tab:Features} in chapter 2. By analysing how a function was implemented, it served to highlight which non-functional requirements the application supported and which ones our system should support.
+	%[Reviewed similar applications]
+	}
+	\paragraph{}{
+	As the system involved communication with vehicles, it was important to interview people within the motor industry. These people included family members, who have extensive experience in the motor industry, and colleagues that I met during my co-operative education. These interviews were informal in nature and the participants were asked what they valued most in a diagnostic scan tool. This served to determine what the system needed from a technical aspect, such as which functions to include in order to effectively diagnose a vehicle.  
+	%[Spoke to people in industry - Co-op and family]
+	}
+	\paragraph{}{
+	Although it was important to interview the domain experts, it was equally important to interview the potential end users. During this stage, proxies for the end user were established. These were vehicle owners with no experience in the motor industry and who had encountered issues with their vehicle in the past. By capturing the expectations of individuals with no technical knowledge, it helped to determine how the functions and results should be presented to the user.
+	%[Spoke to proxies for the end user / stakeholders]
+	}
+	\paragraph{}{
+	Through the use of reading, observation and interviews, as outlined in [the SQIRO method], the functional and non-functional requirements of the system were captured [CONTINUE]
+	%[Conclusion, found a balance between technical needs and user needs]
+	}
 	
 \section{Functional Requirements}	
 	\paragraph{}{
-	A key aspect of capturing the requirements for this project was deciding which OBDII modes to support. Due to the time frame of this project, it was impossible to include all modes, so a subset of modes that would be best suited for the target audience had to be selected.
+	A key outcome of capturing the requirements for this project was determining which OBDII modes to support. Due to the time frame of this project, it was impossible to include all modes, so a subset of modes that would be best suited for the target audience had to be selected.
 	}
 	\paragraph{}{
-	After reviewing similar applications, it was decided that the application would include diagnostic data and DTCs. This corresponds to modes 01, 03, 07 and 0A in the OBDII standard. These modes provide a suitable amount of information to allow a user to diagnose their vehicle, but they also allow the developer to abstract technical information without sacrificing precision.
+	After reviewing similar applications and interviewing domain experts, it was decided that the application would include diagnostic data and DTCs. This corresponds to modes 01, 03, 07 and 0A in the OBDII standard. These modes provide a suitable amount of information to allow a user to diagnose their vehicle, but they also allow the developer to abstract technical information without sacrificing precision.
 	}
 	\paragraph{}{
 	Modes 03, 07 and 0A, representing current, pending and permanent DTCs respectively, provide the means to quickly assess the severity of the issues with the vehicle. The application must display the severity of each DTC type to the end user. If the user needs more information before making a decision, the application must provide additional information on each DTC with minimal use of technical terms.
