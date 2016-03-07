@@ -3,21 +3,23 @@
 	As of 1996 in the United States and 2000 in the European Union, all vehicles must be fitted with an OBDII system. This system is detailed by a number of standards introduced by the Society of Automotive Engineers (SAE) and the California Air Resource Board (CARB). These standards define the hardware, software and communication requirements of the system.
 	}
 	\paragraph{}{
-	All OBDII compliant vehicles must have an OBDII port. This a standardized 16 pin connector that is located within three feet of the driver seat, usually under the dashboard. This allows any generic diagnostic scan tool to connect to the vehicle and read data. While the connector is standardized, there are multiple communication protocols used by different manufacturers. These communication protocols provide the same data, but send it to the scan tool in a different format.
+	All OBDII compliant vehicles must have an OBDII port (see figure \ref{fig:OBDport}). This a standardized 16 pin connector that is located within three feet of the driver seat, usually under the dashboard. This allows any generic diagnostic scan tool to connect to the vehicle and read data. While the connector is standardized, there are multiple communication protocols used by different manufacturers. These communication protocols provide the same data, but send it to the scan tool in a different format.
 	}
 	\paragraph{}{
-	The OBDII port provides a connection to the ECU in the vehicle. This is a computer that is connected to sensors and subsystems within the vehicle. These sensors are constantly monitoring the various aspects of the vehicle, such as engine speed and temperature. This data is sent to the ECU, allowing scan tools to read it. If these sensors detect that a data value is outside of the expected range, it may cause the malfunction indicator lamp (MIL) to be illuminated.
+	The OBDII port provides a connection to the ECU in the vehicle (see figure \ref{fig:ECU}). This is a computer that is connected to sensors and subsystems within the vehicle. These sensors are constantly monitoring the various aspects of the vehicle, such as engine speed and temperature. This data is sent to the ECU, allowing scan tools to read it. If these sensors detect that a data value is outside of the expected range, it may cause the malfunction indicator lamp (MIL) to be illuminated.
 	}
 	\begin{figure}[h]
 		\begin{center}								
 			\begin{minipage}{0.45\textwidth}
 				\includegraphics[width=\textwidth]{OBD.jpg}
 				\caption{OBDII Port - 20 cent coin for scale}						
+				\label{fig:OBDport}
 			\end{minipage}
 			\hfill			
 			\begin{minipage}{0.45\textwidth}
 				\includegraphics[width=\textwidth]{ECU.jpg}
-				\caption{ECU - 20 cent coin for scale}						
+				\caption{ECU - 20 cent coin for scale}
+				\label{fig:ECU}
 			\end{minipage}									
 		\end{center}
 	\end{figure}	
@@ -58,11 +60,12 @@
 				\hline			
 				\end{tabular}
 				\caption{OBD Protocols}
+				\label{tab:Protocols}
 			\end{center}
 		\end{table}	
 		}		
 		\paragraph{}{
-		Regardless of which protocol a vehicle uses, the process for requesting data is the same. The communication process is handled in hexadecimal format, and starts by selecting a mode. A mode represents a specific function to perform and there are ten in total from 01 to 0A. Some modes require a parameter identifier (PID) to be passed, specifying the data item to retrieve. The ECU will send back a response and will have a different conversion method depending on the mode selected. The response will begin with the sum of the mode and $40 _{16}$, for example, if the user requested mode 03, the response would begin with 43.
+		Regardless of which protocol a vehicle uses, the process for requesting data is the same. The communication process is handled in hexadecimal format, and starts by selecting a mode. A mode represents a specific function to perform and there are ten in total from 01 to 0A. The functionality of each mode can be seen in table \ref{tab:Modes} and each will be discussed in sections \ref{ssec:DTC}, \ref{ssec:ClearCodes}, \ref{ssec:Data} and \ref{ssec:OtherModes}. Some modes require a parameter identifier (PID) to be passed, specifying the data item to retrieve. The ECU will send back a response and will have a different conversion method depending on the mode selected. The response will begin with the sum of the mode and $40 _{16}$, for example, if the user requested mode 03, the response would begin with 43.
 		}
 		\begin{table}[h]
 			\begin{center}				
@@ -92,6 +95,7 @@
 				\hline
 				\end{tabular}
 				\caption{OBD Modes}
+				\label{tab:Modes}
 			\end{center}
 		\end{table}		 
 		
@@ -110,6 +114,7 @@
 		There are three types of DTC: stored, pending and permanent, accessed by mode 03, 07 and 0A respectively. Stored codes represent current issues with the vehicle. These codes can sometimes be fixed by calling the clear codes command on the scan tool. Pending codes represent potential future issues. If there is an irregular data value found by a sensor it may create a pending code. The ECU will continue to monitor this sensor, and if the data value has not returned to the expected value after a certain amount of time, the pending code is converted to a stored code. Otherwise, the pending code will be removed automatically. Permanent codes represent serious issues with the vehicle. These codes are not removed manually by scan tools or automatically by the ECU. In order to remove these codes, the underlying issue that caused the code to appear must be fixed.
 		}			
 	}
+	\label{ssec:DTC}
 	\subsection{Clear Codes}{
 		\paragraph{}{
 		The clear codes function allows one to clear all emissions-related diagnostic information from the ECU and can be accessed by mode 04. This removes stored and pending DTCs, on-board monitoring test results, oxygen sensor data, freeze frame data and data items pertaining to DTC and MIL information, such as distance travelled while MIL is activated.
@@ -118,6 +123,7 @@
 		In some cases, clear codes can turn off the MIL permanently. However, if the underlying issues are still present after the clear codes command has been sent, the MIL will illuminate again.
 		}
 	}
+	\label{ssec:ClearCodes}
 	
 	\subsection{Data}{
 		\paragraph{}{
@@ -138,6 +144,8 @@
 		Once the list of supported PIDs has been established, the user can request the data for these PIDs. This will return a single data value, so in order for the scan tool to display live data, it must repeat this call. The response must be converted from hexadecimal to the appropriate human readable value, either a string or number. Each PID has a different conversion method, although some PIDs may share them, for example engine coolant temperature and intake air temperature.
 		}
 	}
+	\label{ssec:Data}
+		
 	\subsection{Other Modes}{
 		\paragraph{}{
 		Mode 02 allows access to freeze frame data. When a DTC is stored, the ECU takes a snapshot of the values for each available data item. This snapshot is known as freeze frame data. It is accessed and converted in the same way as PID data, although each data item only has one value. It can be used to pinpoint which component is at fault by checking for irregular data values.
@@ -152,11 +160,12 @@
 		Mode 09 allows access to vehicle information. The information available depends on the vehicle, but every vehicle has a vehicle identification number (VIN). This is a 17 character identifier unique to that vehicle, which can be used to search for the history of the vehicle. 
 		}
 	}
+	\label{ssec:OtherModes}
 
 \section{Technology}
 	\subsection{ELM327}
 		\paragraph{}{
-		The ELM327 device used for this project is a compact Bluetooth dongle that can connect to the OBDII port on modern vehicles. The device is relatively inexpensive, with the model used in this project (see figure \ref{ELM327}) costing {\textsterling}12.95. It supports all OBDII protocols and abstracts the data transfer process by including its own set of commands to handle communication.				
+		The ELM327 device (see figure \ref{fig:ELM327}) used for this project is a compact Bluetooth dongle that can connect to the OBDII port on modern vehicles. The device is relatively inexpensive, with the model used in this project costing {\textsterling}12.95. It supports all OBDII protocols and abstracts the data transfer process by including its own set of commands to handle communication.				
 		}
 		\paragraph{}{
 		The commands that the device supports allow users to either manually or automatically select the protocol, depending on if they know which protocol their vehicle uses. These commands also handle initialization of the device, setting up communication, and formatting the data received from the vehicle. Once the device has been configured, the user can send requests to the vehicle. These requests are in the same format that they are found in the SAE J1979 document, and no further formatting is required.
@@ -167,7 +176,8 @@
 		\begin{figure}[h]
 				\begin{center}											
 					\includegraphics[width=0.4\textwidth]{ELM327.jpg}
-					\caption{ELM327 Bluetooth Dongle}														\label{ELM327}
+					\caption{ELM327 Bluetooth Dongle}
+					\label{fig:ELM327}
 				\end{center}
 		\end{figure}		
 \newpage
@@ -204,8 +214,45 @@
 %\newpage
 \section{Similar Applications}
 	\paragraph{}{
-	When looking at similar applications, it appeared preferable to look at applications developed using the same technology and deployed on the same platform that the project intended to use. This lead to finding two similar applications available on Windows 10 through the Windows Store. Investigation included finding which modes these applications included, their communication process, the hardware required and the amount of technical information used.
+	When looking at similar applications, it appeared preferable to look at applications developed using the same technology and deployed on the same platform that the project intended to use. This lead to finding two similar applications available on Windows 10 through the Windows Store. Investigation included finding which modes these applications included, their communication process, the hardware required and the amount of technical information used. These findings are presented in table \ref{tab:Features}.
 	}
+	
+	\begin{table}[h]
+		\begin{center}				
+			\begin{tabular}{| l | c | c |}
+			\hline
+			\textbf{Function} & \textbf{Diagnose your car}  &\textbf{OBD dash}\\
+			\hline
+			Mode 01 & Yes & Yes\\
+			\hline
+			Mode 02 & &\\
+			\hline
+			Mode 03 & Yes & Yes\\
+			\hline
+			Mode 04 & &\\
+			\hline
+			Mode 05 & &\\
+			\hline
+			Mode 06 & &\\
+			\hline
+			Mode 07 & &\\
+			\hline
+			Mode 08 & &\\
+			\hline
+			Mode 09 & &\\
+			\hline
+			Mode 0A & &\\
+			\hline
+			Communication process & Bluetooth & Bluetooth\\
+			\hline
+			Device support & ELM327 & ELM327\\
+			\hline			
+			\end{tabular}
+			\caption{Features of the similar applications}
+			\label{tab:Features}
+		\end{center}
+	\end{table}
+	
 	\subsection{Diagnose your car}
 		\paragraph{}{
 		Diagnose your car is a Windows application available for Windows phones and PCs running Windows 8 and above. It is a paid application, with a free version available that removes some features and includes adverts. When discussing the application in this section, the focus will be on the PC version.
@@ -238,7 +285,7 @@
 			\begin{figure}[h]
 				\begin{center}											
 					\includegraphics[width=\textwidth]{MVVM.png}
-					\caption{Model-view-viewmodel diagram}											
+					\caption{Model-view-viewmodel diagram}											\label{fig:MVVM}
 				\end{center}
 			\end{figure}
 	}
