@@ -10,7 +10,7 @@
 	A development PC running Windows 10 was required as part of the development environment. It was also preferable that the PC had a touchscreen, to allow testing of gesture controls, such as swipe and pinch, without deploying to a tablet. Fortunately, a Windows 8.1 touchscreen laptop which was eligible for a free Windows 10 upgrade was available before the project began. After the development PC was set up, research began on acquiring a Windows 10 tablet or phone to deploy the application on. However, at the time of setting up the development environment, no such devices were readily available.			
 	}
 	\paragraph{}{
-	In order to be able to test the application, it needed to connect to and communicate with a vehicle. However, this was not practical as it would require moving from the development environment to the vehicle when testing or debugging the application. Initially, an application that simulated connection to an ECU was bought and used. However, during development it became evident that this would not be suitable for the project, as outlined in section 5.5.2.
+	In order to be able to test the application, it needed to connect to and communicate with a vehicle. However, this was not practical as it would require moving from the development environment to the vehicle when testing or debugging the application. Initially, an application that simulated connection to an ECU was bought and used. However, during development it became evident that this would not be suitable for the project, as outlined in section \ref{ssec:SimSoftware}.
 	}
 	\paragraph{}{
 	Instead, an ECU test bench was created (see figure \ref{fig:TestBench}) that could be used as part of the development environment. This consisted of an ECU from a Rover 75 with an OBDII port and a power supply. A specific wiring diagram for the ECU had to be acquired in order to connect the wires to the corresponding pins on the ECU and OBDII port. The ECU test bench can be expanded with additional ECUs to facilitate the testing of communications with multiple communication protocols and vehicle manufacturers.
@@ -40,16 +40,23 @@
 	Overall, the prototype was a success, as it was able to display a DTC as well as the current engine speed on screen. This provided an insight into how communication and data conversion was handled, as well as how to configure the ELM327 device.
 	}
 
-\section{Implementation}
-	\subsection{Bluetooth Communication}
+\section{Bluetooth Communication}
+	\subsection{Description}
 		\paragraph{}{
 		Implementation of the Bluetooth communication layer of the application began immediately after the setup of the development environment. The goal of this stage was to implement generic Bluetooth communication, such as establishing a connection with the ELM327 device and configuring it, rather than working on module specific communication, such as converting responses. The configuration steps involved resetting the device, allowing the device to auto-detect the communication protocol, turning off echoing of messages and allowing for long responses.
 		}
 		\paragraph{}{
 		There were some issues with the 32Feet Bluetooth API, outlined in section 5.5.1, that lead to the use of Microsoft's own Bluetooth API in it's place. This API allows developers to find all Bluetooth device paired with the PC and choose the appropriate one from the list. Due to the use of this new API, there was less time to work on Bluetooth communication, so the application was created to connect to the first suitable Bluetooth device on the network, with the intention of adding a search function at a later date.
 		}
-		
-	\subsection{DTC Module}
+	\subsection{Issues}
+		\subsubsection{Issue 1: Bluetooth API}{
+		}
+		\label{ssec:BluetoothAPI}
+		\subsubsection{Issue 2: Simulation software}{
+		}
+		\label{ssec:SimSoftware}		
+
+\section{DTC Module}
 		\paragraph{}{
 		Implementation of the DTC module involved creating a UI layer, a module layer and a communication layer for DTCs.	Initially, the DTC module was implemented to only retrieve and display one DTC of each type. This was to quickly test the functionality of the communication system and to provide an impression of the general aesthetics of the module, before implementing it in its entirety.
 		}		
@@ -63,75 +70,151 @@
 		[DTC Info issue]
 		}
 		
-	\subsection{Simulated Communication}
+\section{Simulated Communication}
 		\paragraph{}{
-		[Preparation for data module, acts like an ECU, behaves like real world (time, responses etc)]
+		While preparing to implement the data module, a potential problem was discovered. While the ECU test bench sent back data that could be graphed, the values were static and could not be changed. This would make it difficult to test the data graphing, as it would require communication with a live vehicle to gather dynamic data values. Instead, a simulation connection class was created.
+		%[Preparation for data module, acts like an ECU, behaves like real world (time, responses etc)]
+		}
+		\paragraph{}{
+		The simulation connection class implements the IDataConnection interface seen in figure \ref{code:ConnectionInterface}, but instead of connecting to a Bluetooth device, it handles the requests and returns a response in the format that the ELM327 would use, sending response in hexadecimal format. Because of this, the simulation connection more accurately represents communication with a vehicle and did not require a refactor of the code in the communication layer.
 		}	
+		\begin{figure}[h]
+			\begin{lstlisting}
+string response = "NO DATA";
 
-	\subsection{Data Module}
+// Request for Data (Mode 01)
+if (command.StartsWith("01"))
+{
+	// Get supported pids
+	if (command.StartsWith("0100"))
+    {
+		// Binary Value: 0001 1000 0111 1000 0000 0000 0000 0000
+		response = "410018580000";
+	}
+    else if (command.StartsWith("0104"))
+	{
+    	/* Conversion formula: A * 100 / 255 */
+    	
+    	// Generate a number between the minimum and maximum value
+        int min = 0;
+		int max = 100;
+        Random r = new Random();
+		int value = r.Next(min, max);
+
+		// Reverse the equation and convert to hex
+        value = (255 * value) / 100;
+		response = "4104" + value.ToString("X2");
+	}
+}
+			\end{lstlisting}
+			\caption{Simulation connection code for 0100 and 0104 requests}
+			\label{code:SimConnectionData}
+		\end{figure}
+
+		\paragraph{}{
+		As shown in the code fragment seen  in figure \ref{code:SimConnectionData}, a small subset of pids are supported, and each of these pids will return data when a request is made. As each pid has a maximum and minimum possible value, a random value between these two will be generated and this will be the value that the user sees on-screen. The value  is passed through a conversion equation, in reverse order to convert it to hexadecimal format. Finally, the response header is prefixed to this hexadecimal message and is returned to the caller. A more detailed description of how these conversions work can be found in section \ref{ssec:DataModuleDesc}		
+		}
+		\paragraph{}{
+		Due to the success of the simulation connection with respect to the data module, it was expanded to work with the DTC module, returning a set of current, pending and permanent DTCs, as seen in figure \ref{code:SimConnectionDTC}.
+		}
+		\begin{figure}[h]
+			\begin{lstlisting}
+// Current DTCs
+if (command.StartsWith("03"))
+{
+	// Return P0101, P0121 and P0353	
+	response = "43010101210353";
+}
+// Pending DTCs
+else if (command.StartsWith("07"))
+{
+	// Return P0104, P0132 and P0342	
+	response = "47010401320342";
+}
+// Permanent DTCs
+else if (command.StartsWith("0A"))
+{
+	// Return P0107, P0109 and P0111	
+	response = "4A010701090111";
+}			
+			\end{lstlisting}
+			\caption{Simulation connection code for current, pending and permanent DTCs}
+			\label{code:SimConnectionDTC}
+		\end{figure}
+
+\section{Data Module}
+	\subsection{Description}{		
 		\paragraph{}{
 		[Graphs, List, Play/Pause/Step Controls, Smart Graphing]
-		}	
-	
-	\subsection{Connection Module}
+		}
+		\label{ssec:DataModuleDesc}
+	}
+	\subsection{Issues}{		
+		\paragraph{}{
+		[Speed 300ms, down to 170ms]
+		}
+		\label{ssec:DataModuleIssues}
+	}
+
+\section{Connection Module}
 		\paragraph{}{
 		[List of paired devices, connection status, comm log]
 		}
 	
-	\subsection{Android Port}
+\section{Android Port}
 		\paragraph{}{
 		[Port preparation, MVVM, Bluetooth layer, UI]
 		}	
 
-	\subsection{Help Information}
+\section{Help Information}
 		\paragraph{}{
 		[Moving help info out of other modules, help shouldn't interrupt modules]
 		}
 	
-	\subsection{Home Module}
+\section{Home Module}
 		\paragraph{}{
 		[Need to implement this]
 		}
 	
-	\subsection{Performance Re-factoring}
+\section{Performance Re-factoring}
 		\paragraph{}{
 		[Module shutdown, limited pids]
 		}
 	
-\section{Issues}
-	\paragraph{}{
-	During implementation, a number of serious issues were encountered that affected the design and development of the project. These issues were resolved, but often required a reconsideration of the initial design decisions.
-	}
+%\section{Issues}
+	%\paragraph{}{
+	%During implementation, a number of serious issues were encountered that affected the design and development of the project. These issues were resolved, but often required a reconsideration of the initial design decisions.
+	%}
 	
-	\subsection{Issue 1: Bluetooth API}
-		\paragraph{Description:}{
-		The 32Feet Bluetooth API used in the prototype was incompatible with the UWP application. This meant that the prototype code that was written for Bluetooth connection could not be reused in the final product.
-		}
-		\paragraph{Occurred during:}{
-		Week 1
-		}
-		\paragraph{Time taken to resolve:}{
-		Approximately one week
-		}
-		\paragraph{Attempts to resolve:}{
-		A number of attempts to resolve the issue were made, such as searching for newer versions of the API and researching potential workarounds. Unfortunately, it became evident that the API was completely incompatible with UWP applications, leading to a stand still in development until a replacement could be found.
-		}
-		\paragraph{Solution:}{
-		Microsoft includes their own Bluetooth API with UWP and this was chosen as a replacement for the 32Feet Bluetooth API. Aside from the unexpected learning curve, this solution had it's inconveniences, such as not allowing devices to be paired through the application. This meant that there was additional configuration required by the end user. However, this also created a more secure application, as the chance of automatically pairing a potentially malicious device was decreased.
-		}
-	\subsection{Issue 2: Simulation software}
-		\paragraph{Description:}{
-		The replacement Bluetooth API could not connect to the ECU simulation software. This meant connection to an actual vehicle was required to debug and test the application.
-		}
-		\paragraph{Occurred during:}{
-		Week 1
-		}
-		\paragraph{Time taken to resolve:}{
-		Approximately two weeks
-		}
-		\paragraph{Attempts to resolve:}{
-		Several attempts to contact the developer were made through emails and the Google Play Store, where the application was bought. Unfortunately, no response was received and a decision was reached that the application could not be utilised for this project, as it seemed highly unlikely that the application would be updated to support the Bluetooth API. 
-		}
-		\paragraph{Solution:}{
-		To simulate connection to a vehicle, an ECU test bench was created as outlined in section 5.2. This had an impact on the timeline of the project, as a number of components, such as an ECU and a wiring diagram, had to be sourced as well as assembling the test bench itself. Ultimately, the ECU test bench had the advantage of extensibility over the ECU simulation software, as the latter only supported one protocol, whereas the former can be extended with new ECUs that support various protocols.
-		}
+	%\subsection{Issue 1: Bluetooth API}
+		%\paragraph{Description:}
+		%The 32Feet Bluetooth API used in the prototype was incompatible with the UWP application. This meant that the prototype code that was written for Bluetooth connection could not be reused in the final product.
+		
+		%\paragraph{Occurred during:}
+		%Week 1
+		
+		%\paragraph{Time taken to resolve:}
+		%Approximately one week
+		
+		%\paragraph{Attempts to resolve:}
+		%A number of attempts to resolve the issue were made, such as searching for newer versions of the API and researching potential workarounds. Unfortunately, it became evident that the API was completely incompatible with UWP applications, leading to a stand still in development until a replacement could be found.
+		
+		%\paragraph{Solution:}
+		%Microsoft includes their own Bluetooth API with UWP and this was chosen as a replacement for the 32Feet Bluetooth API. Aside from the unexpected learning curve, this solution had it's inconveniences, such as not allowing devices to be paired through the application. This meant that there was additional configuration required by the end user. However, this also created a more secure application, as the chance of automatically pairing a potentially malicious device was decreased.
+		
+	%\subsection{Issue 2: Simulation software}
+		%\paragraph{Description:}
+		%The replacement Bluetooth API could not connect to the ECU simulation software. This meant connection to an actual vehicle was required to debug and test the application.
+		
+		%\paragraph{Occurred during:}
+		%Week 1
+		
+		%\paragraph{Time taken to resolve:}
+		%Approximately two weeks
+		
+		%\paragraph{Attempts to resolve:}
+		%Several attempts to contact the developer were made through emails and the Google Play Store, where the application was bought. Unfortunately, no response was received and a decision was reached that the application could not be utilised for this project, as it seemed highly unlikely that the application would be updated to support the Bluetooth API. 
+		
+		%\paragraph{Solution:}
+		%To simulate connection to a vehicle, an ECU test bench was created as outlined in section 5.2. This had an impact on the timeline of the project, as a number of components, such as an ECU and a wiring diagram, had to be sourced as well as assembling the test bench itself. Ultimately, the ECU test bench had the advantage of extensibility over the ECU simulation software, as the latter only supported one protocol, whereas the former can be extended with new ECUs that support various protocols.
+		
