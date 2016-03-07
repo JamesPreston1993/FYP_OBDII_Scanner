@@ -26,9 +26,10 @@
 	
 	\paragraph{}{
 	The host acts as a connection between the core functionality of the application and the UI and user input. The user interface connects to the host, which grants access to the modules that are registered with it. The modules are registered with the host on initialization of the application. This means new modules can be created and added to the application, without requiring a new build.
-	\\
-	\begin{lstlisting}
-// Host Interface
+	}
+		
+	\begin{figure}[h]
+		\begin{lstlisting}
 public interface IHost : INotifyPropertyChanged
 {
 	// List of all Modules associated with the Host
@@ -37,13 +38,16 @@ public interface IHost : INotifyPropertyChanged
 	// The currently selected Module
 	IModule CurrentModule { get; set; }
 }
-	\end{lstlisting}
-	}
+		\end{lstlisting}
+		\caption{Host Interface}
+		\label{code:HostInterface}
+	\end{figure}
+	
 	\paragraph{}{
 	The module represents the model in the MVVM pattern and a core function, such as a mode, in the system. The module contains human readable data that is retrieved from the vehicle. In order to obtain this data, the module must send a request to its communication system. The communication system, which is a part of each module, will take this request and convert it into the corresponding command that the ELM327 device and ECU can understand. It will then send this new request to the connection layer and await a response. This response, in the form of raw hexadecimal data, will be converted into a human readable value by the communication system and returned to the module, ready to be displayed or manipulated.
-	\\
-	\begin{lstlisting}
-// Module Interface
+	}
+	\begin{figure}[h]
+		\begin{lstlisting}
 public interface IModule : INotifyPropertyChanged
 {
 	// The name of the Module
@@ -58,14 +62,17 @@ public interface IModule : INotifyPropertyChanged
 	// Shut down the Module
 	Task<bool> Shutdown(); 
 }
-	\end{lstlisting}
-	}
+		\end{lstlisting}
+		\caption{Module Interface}
+		\label{code:ModuleInterface}
+	\end{figure}
+	
 	\paragraph{}{
 	The connection layer represents the low level communication with the OBDII device, such as the ELM327 device. This layer handles the initialization and configuration of the connected device, as well as error handling, such as when the device is disconnected during a procedure or becomes out of range. All requests and responses are handled in hexadecimal format in this layer, allowing the use of raw data to be abstracted from the other layers.
 	%Initialization, Setup of device, Handles raw data
-	\\
-	\begin{lstlisting}
-// Connection Interface
+	}
+	\begin{figure}[h]
+		\begin{lstlisting}
 public interface IDataConnection : INotifyPropertyChanged
 {	
 	bool IsInitialized { get; }
@@ -94,8 +101,10 @@ public interface IDataConnection : INotifyPropertyChanged
 	// Send a request to the device
     Task<string> SendCommand(string command);
 }
-	\end{lstlisting}
-	}
+		\end{lstlisting}
+		\caption{Connection Interface}
+		\label{code:ConnectionInterface}
+	\end{figure}
 
 \section{UI Design}
 	\paragraph{}{
