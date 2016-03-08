@@ -9,6 +9,7 @@
 	\paragraph{}{
 	A development PC running Windows 10 was required as part of the development environment. It was also preferable that the PC had a touchscreen, to allow testing of gesture controls, such as swipe and pinch, without deploying to a tablet. Fortunately, a Windows 8.1 touchscreen laptop which was eligible for a free Windows 10 upgrade was available before the project began. After the development PC was set up, a suitable Windows 10 tablet to deploy the application on was found. This was a low to middle end tablet, representing what an average user may own.
 	}
+	
 	\paragraph{}{
 	In order to be able to test the application, it needed to connect to and communicate with a vehicle. However, this was not practical as it would require moving from the development environment to the vehicle when testing or debugging the application. Initially, an application that simulated connection to an ECU was bought and used. However, during development it became evident that this would not be suitable for the project. Details about the application and why it was not suitable is discussed in section \ref{ssec:SimSoftware}.
 	}
@@ -176,18 +177,73 @@ return response;
 		\label{ssec:SimSoftware}		
 
 \section{DTC Module}
-		\paragraph{}{
-		%Implementation of the DTC module involved creating a UI layer, a module layer and a communication layer for DTCs.	Initially, the DTC module was implemented to only retrieve and display one DTC of each type. This was to quickly test the functionality of the communication system and to provide an impression of the general aesthetics of the module, before implementing it in its entirety.
-		}		
-		\paragraph{}{
-		%The core functionality of this module was to request all current, pending and permanent DTCs and display them on screen grouped by their types. Initially, the module requested current DTCs, and only converted and displayed the first DTC from the response. This code was then reworked to display the first pending DTC and the first permanent DTC. Once the user interface was fully implemented, the module was rewritten to display all DTCs.
+	\paragraph{}{
+	Once the Bluetooth connection system had been implemented, the DTC module was the first component to utilise its functionality. The two key components of this module are retrieving current, pending and permanent DTCs and requesting to clear current codes.
+	}
+	\paragraph{}{
+		% Retrieve codes		
+	}
+	
+	\begin{figure}[h]
+		\begin{lstlisting}
+// Get batches of current codes
+string hex = await this.dataConnection.SendCommand("03");
+
+// Split codes into batches
+string[] batches = hex.Split('\r');
+
+IList<ICode> codes = new List<ICode>();
+
+foreach (string batch in batches)
+{
+	// Check if the batch is valid
+    if (batch.StartsWith("43"))
+    {        
+        string codesHex = string.Empty;
+        		
+		// Remove the header - The CAN protcol uses a longer header
+		if (ConnectionManager.Instance.VehicleProtocol == Protocol.CAN)
+			codesHex = batch.Substring(4);
+        else
+			codesHex = batch.Substring(2);
+
+        // Codes are returned in batches of three
+		for (int i = 0; i < 3; i++)
+		{
+			string code = string.Empty;
+			code = codesHex.Substring(i * 4, 4);
+
+			// 0000 is not recognised as a valid DTC
+			if (code != "0000")
+			{
+				// The first digit determines the code type (P, C, B, U)
+				switch (code.Substring(0, 1))
+				{
+					case "0": code = "P" + code; break;
+					case "4": code = "C" + code; break;
+					case "8": code = "B" + code; break;
+					case "C": code = "U" + code; break;						
+				}					
+				
+				// Code description is added by the factory
+				codes.Add(CodeFactory.CreateCode(code));
+			}
 		}
+       }
+}
+return codes;
+		\end{lstlisting}
+		\caption{Retrieving current codes - The same process is used for pending and permanent codes, but with a different header}
+		\label{code:DTCModuleCodes}
+	\end{figure}
+			
 		\paragraph{}{
-		%Another key aspect of this module was the implementation of the clear codes functionality. The module included a button that, when pressed, issued the clear codes command, then acquired the new list of DTCs and refreshed the UI.
+		% Clear codes
 		}
+		
 		\paragraph{}{
-		%[DTC Info issue]
-		}
+		% DTC Additional Information
+		}						
 		
 \section{Simulated Communication}
 		\paragraph{}{
@@ -199,6 +255,7 @@ return response;
 		}	
 		\begin{figure}[h]
 			\begin{lstlisting}
+// Default response
 string response = "NO DATA";
 
 // Request for Data (Mode 01)
@@ -265,80 +322,60 @@ else if (command.StartsWith("0A"))
 \section{Data Module}
 	\subsection{Description}{		
 		\paragraph{}{
-		[Graphs, List, Play/Pause/Step Controls, Smart Graphing]
+		%[Get supported pids, convert data, List, Graphs, Play/Pause/Step Controls, Smart Graphing]
 		}
 		\label{ssec:DataModuleDesc}
 	}
 	\subsection{Issues}{		
-		\paragraph{}{
-		[Speed 300ms, down to 170ms]
-		[Graph blurring - Smart graphing fixed this but memory was an issue]
+		\subsubsection{Issue 1: Data collection speed}{
+			\paragraph{Description:}
+
+			\paragraph{Occurred during:}
+
+			\paragraph{Time taken to resolve:}
+
+			\paragraph{Attempts to resolve:}
+			
+			\paragraph{Solution:}
+		
+		\subsubsection{Issue 2: Graph blurring}{
+			\paragraph{Description:}
+
+			\paragraph{Occurred during:}
+
+			\paragraph{Time taken to resolve:}
+
+			\paragraph{Attempts to resolve:}
+			
+			\paragraph{Solution:}
+		%[Speed 300ms, down to 170ms]
+		%[Graph blurring - Smart graphing fixed this but memory was an issue]
 		}
-		\label{ssec:DataModuleIssues}
 	}
 
 \section{Connection Module}
 		\paragraph{}{
-		[List of paired devices, connection status, comm log]
+		%[List of paired devices, connection status, comm log]
 		}
 	
 \section{Android Port}
 	\subsection{Description}		
 		\paragraph{}{
-		[Port preparation, MVVM, Bluetooth layer, UI]
+		%[Port preparation, MVVM, Bluetooth layer, UI]
 		}	
 	\subsection{Issues}{
 	}
 	\label{ssec:AndroidIssues}
 \section{Help Information}
 		\paragraph{}{
-		[Moving help info out of other modules, help shouldn't interrupt modules]
+		%[Moving help info out of other modules, help shouldn't interrupt modules]
 		}
 	
 \section{Home Module}
 		\paragraph{}{
-		[Need to implement this]
+		%[Need to implement this]
 		}
 	
 %\section{Performance Re-factoring}
 		%\paragraph{}
 		%[Module shutdown, limited pids]
-		
-	
-%\section{Issues}
-	%\paragraph{}{
-	%During implementation, a number of serious issues were encountered that affected the design and development of the project. These issues were resolved, but often required a reconsideration of the initial design decisions.
-	%}
-	
-	%\subsection{Issue 1: Bluetooth API}
-		%\paragraph{Description:}
-		%The 32Feet Bluetooth API used in the prototype was incompatible with the UWP application. This meant that the prototype code that was written for Bluetooth connection could not be reused in the final product.
-		
-		%\paragraph{Occurred during:}
-		%Week 1
-		
-		%\paragraph{Time taken to resolve:}
-		%Approximately one week
-		
-		%\paragraph{Attempts to resolve:}
-		%A number of attempts to resolve the issue were made, such as searching for newer versions of the API and researching potential workarounds. Unfortunately, it became evident that the API was completely incompatible with UWP applications, leading to a stand still in development until a replacement could be found.
-		
-		%\paragraph{Solution:}
-		%Microsoft includes their own Bluetooth API with UWP and this was chosen as a replacement for the 32Feet Bluetooth API. Aside from the unexpected learning curve, this solution had it's inconveniences, such as not allowing devices to be paired through the application. This meant that there was additional configuration required by the end user. However, this also created a more secure application, as the chance of automatically pairing a potentially malicious device was decreased.
-		
-	%\subsection{Issue 2: Simulation software}
-		%\paragraph{Description:}
-		%The replacement Bluetooth API could not connect to the ECU simulation software. This meant connection to an actual vehicle was required to debug and test the application.
-		
-		%\paragraph{Occurred during:}
-		%Week 1
-		
-		%\paragraph{Time taken to resolve:}
-		%Approximately two weeks
-		
-		%\paragraph{Attempts to resolve:}
-		%Several attempts to contact the developer were made through emails and the Google Play Store, where the application was bought. Unfortunately, no response was received and a decision was reached that the application could not be utilised for this project, as it seemed highly unlikely that the application would be updated to support the Bluetooth API. 
-		
-		%\paragraph{Solution:}
-		%To simulate connection to a vehicle, an ECU test bench was created as outlined in section 5.2. This had an impact on the timeline of the project, as a number of components, such as an ECU and a wiring diagram, had to be sourced as well as assembling the test bench itself. Ultimately, the ECU test bench had the advantage of extensibility over the ECU simulation software, as the latter only supported one protocol, whereas the former can be extended with new ECUs that support various protocols.
-		
