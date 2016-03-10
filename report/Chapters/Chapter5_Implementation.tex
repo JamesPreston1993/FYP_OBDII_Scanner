@@ -322,8 +322,112 @@ else if (command.StartsWith("0A"))
 \section{Data Module}
 	\subsection{Description}{		
 		\paragraph{}{
-		%[Get supported pids, convert data, List, Graphs, Play/Pause/Step Controls, Smart Graphing]
+		%Intro
 		}
+		
+		\paragraph{}{
+		Supported pids as outlined in section \ref{ssec:Data}
+		%Get supported pids
+		}
+		
+		\begin{figure}[h]
+			\begin{lstlisting}
+IList<IPid> supportedPids = new List<IPid>();
+
+for (int i = 0; i < 2; i++)
+{
+	// Request supported pids
+	string request = await this.dataConnection.SendCommand("01" + (i * 20).ToString("D2") + "1");
+
+	// Check if the response is valid
+	if (request.StartsWith("41"))
+	{
+		// Remove header
+		request = request.Substring(4);
+
+		// Convert to binary
+		string binary = Convert.ToString(Convert.ToInt32(request, 16), 2).PadLeft(32, '0');
+
+		// Find all 1s in binary, denoting which pids are supported
+		for (int j = 0; j < binary.Length - 1; j++)
+		{
+			// If the bit is 1, then the pid is supported
+			if (binary.Substring(j, 1) == "1")
+			{
+				// Get the hex value for the pid
+				byte hex = Convert.ToByte(j + 1);
+				switch (i)
+				{
+					case 0: hex += 0x00; break;
+					case 1: hex += 0x20; break;
+				}
+				
+				// Create the pid
+				string pidHex = hex.ToString("X2");
+				IPid pid = PidFactory.CreatePid(pidHex);
+				supportedPids.Add(pid);
+			}
+		}
+	}
+}
+			\end{lstlisting}
+			\caption{Get supported pids - Only supports 1000 and 1020}
+			\label{code:SupportedPids}
+		\end{figure}
+		
+		\paragraph{}{
+		%convert data
+		}
+		
+		\begin{figure}[h]
+			\begin{lstlisting}
+public static IDataItem ConvertPID(IPid pid, string request)
+{
+	double value = double.NaN;
+	string stringValue = "No Value";
+	int A, B;
+
+	switch(pid.PidHex)
+	{
+		// ((A * 256) + B) / 4
+		case "0C":    
+			A = Convert.ToInt32(Convert.ToByte(request.Substring(0, 2), 16));
+			B = Convert.ToInt32(Convert.ToByte(request.Substring(2, 2), 16));
+			value = ((A * 256) + B) / 4;
+			stringValue = value.ToString();
+		break;
+	}
+
+	IDataItem dataItem = new DataItem(value, stringValue);
+	dataItem.Type = GetValueType(pid, dataItem);
+    return dataItem;
+}
+
+private static ValueType GetValueType(IPid pid, IDataItem item)
+{
+	ValueType type = ValueType.Normal;
+				
+	switch (pid.PidHex)
+	{
+		case "0C":		
+			if (item.Value < 800)
+				type = ValueType.Caution;
+			else if (item.Value > 5500)
+				type = ValueType.Danger;
+		break;
+
+	}
+	return type;
+}
+			\end{lstlisting}
+			\caption{Converting Engine Speed pid to human readable value}
+			\label{code:ConvertingPids}
+		\end{figure}		
+			
+		\paragraph{}{
+		%[List, Graphs, Play/Pause/Step Controls, Smart Graphing]
+		}			
+		
 		\label{ssec:DataModuleDesc}
 	}
 	\subsection{Issues}{		
@@ -355,21 +459,100 @@ else if (command.StartsWith("0A"))
 
 \section{Connection Module}
 		\paragraph{}{
-		%[List of paired devices, connection status, comm log]
+		As discussed in section \ref{ssec:DesignConnectionModule}, the system required a means of selecting an ELM327 device that is paired to the PC. This ensures that the end user has complete control over what device the application uses to communicate with their car.
 		}
-	
+		
+		\paragraph{}{
+		The connection module is the first module to be displayed when  the application loads, as the user must connect to a device before using any other modules. If connection to the device is lost while the user is using another module, the application will send the user back to the connection module to reconnect, along with displaying an appropriate message to the user.
+		}
+		
+		\paragraph{}{
+		The first component of this module is gathering a list of all Bluetooth devices that are paired	with the PC. Using the UWP Bluetooth API, this is achieved with one method call, as seen in \ref{code:AvailableDevices}. However, this returns a platform specific Bluetooth devices, which has a negative impact on the portability of the system. To counteract this, the system converts these into a custom device class that contains the name, ID and address of the Bluetooth device.
+		}
+		%Get paired devices, select one and it connects as outlined in \ref{code:BTConnectionInit}
+		%[List of paired devices, connection status, comm log, module is loaded on disconnect]
+		}
+		
+		\begin{figure}[h]
+			\begin{lstlisting}
+IList<IDevice> availableDevices = new List<IDevice>();
+
+// Get a list of Windows specific Bluetooth devices
+DeviceInformationCollection devices = await DeviceInformation.FindAllAsync(RfcommDeviceService.GetDeviceSelector(RfcommServiceId.SerialPort));
+
+
+foreach(DeviceInformation device in devices)
+{
+	// Create an instance of custom device class that can be used on all platforms
+	IDevice bluetoothDevice = new BluetoothConnectionDevice(device.Name, device.Id, null);
+    availableDevices.Add(bluetoothDevice);
+}
+
+return availableDevices;
+			\end{lstlisting}
+			\caption{Finding all available devices}
+			\label{code:AvailableDevices}
+		\end{figure}				
+		
 \section{Android Port}
 	\subsection{Description}		
 		\paragraph{}{
-		%[Port preparation, MVVM, Bluetooth layer, UI]
+		%[Port preparation, MVVM, Bluetooth layer, UI, SHow Module MVVM code]
 		}	
 	\subsection{Issues}{
 	}
 	\label{ssec:AndroidIssues}
 \section{Help Information}
 		\paragraph{}{
-		%[Moving help info out of other modules, help shouldn't interrupt modules]
+		Once the majority of modules had been implemented, it became clear that the way the modules instructed the end user on how to use them was not optimal. Firstly, these instructions were intrusive and took up valuable screen real estate. This would be an issue when the application is deployed on devices smaller screens, such as mobile phones. Secondly, over time, the end user will learn to use the application without instructions, at which point the on-screen instructions become redundant.
+		%[Moving help info out of other modules, help shouldn't interrupt modules, UI matches on both platforms]
 		}
+		\paragraph{}{
+		A decision was made to re-factor the application so that the instructions were not integrated with the user interface of the module. Instead, the solution was to provide a means of viewing instructions that was separate from the module, but could be accessed without leaving the current module. This was achieved by implementing a pop out window on the right hand side of the screen.
+		}
+		\paragraph{}{
+		The Module interface (see figure \ref{code:ModuleInterface}) was re-factored to include a list of help items, of which the code is seen in figure \ref{code:HelpItem}.
+		}
+		\begin{figure}[h]
+			\begin{lstlisting}
+public interface IHelpItem
+{
+    string Title { get; }
+
+	string Description { get; }
+}
+
+public class HelpItem : IHelpItem
+{
+	public string Title { get; private set; }
+
+	public string Description { get; private set; }
+
+	public HelpItem(string title, string description)
+	{
+		this.Title = title;
+		this.Description = description;
+	}
+}
+
+public static class HelpItemFactory
+{
+	private static IList<IHelpItem> ConnectionHelpItems()
+	{
+    	IList<IHelpItem> connectionHelpItems = new List<IHelpItem>();
+
+		connectionHelpItems.Add(new HelpItem("What device do I need?", "You will need an ELM327 Bluetooth device (version 1.3 or later)"));
+        connectionHelpItems.Add(new HelpItem("Setup", "1) Enable Bluetooth on your PC / tablet\n" +
+                                                          "2) Pair the ELM327 device with your PC / tablet / phone in your device settings\n" +
+                                                          "3) Select your ELM327 device from the device list"));
+
+    	return connectionHelpItems;
+	}	
+}
+			\end{lstlisting}
+			\caption{Help item interface and example of how they are implemented for the connection module}
+			\label{code:HelpItem}
+		\end{figure}
 	
 \section{Home Module}
 		\paragraph{}{
