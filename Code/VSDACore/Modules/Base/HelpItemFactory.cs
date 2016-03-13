@@ -32,7 +32,8 @@ namespace VSDACore.Modules.Base
             IList<IHelpItem> dataHelpItems = new List<IHelpItem>();
             dataHelpItems.Add(new HelpItem("Gathering Samples", "Please allow up to five seconds for each sample to be retrieved when gathering data"));
             dataHelpItems.Add(new HelpItem("Graph Colours", "Some graphs will change colour based on their value. If the graph is red or orange for an extendend period of time, you should seek the advice of a mechanic\n\n" +
-                                                "Blue: Current value is within the expected range\n" +
+                                                "Blue: Smart graphing not available\n" +
+                                                "Green: Current value is within the expected range\n" +
                                                 "Orange: Current value indicates a potential issue but more information is required\n" +
                                                 "Red: Current value indicates a serious problem"));
 
