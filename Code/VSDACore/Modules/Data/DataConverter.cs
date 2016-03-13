@@ -161,7 +161,7 @@ namespace VSDACore.Modules.Data
 
         private static ValueType GetValueType(IPid pid, IDataItem item)
         {
-            ValueType type = ValueType.Normal;
+            ValueType type = ValueType.Default;
             switch (pid.PidHex)
             {
                 case "0C":
@@ -169,12 +169,16 @@ namespace VSDACore.Modules.Data
                         type = ValueType.Caution;
                     else if (item.Value > 5500)
                         type = ValueType.Danger;
+                    else
+                        type = ValueType.Normal;
                     break;
                 case "21":
                     if (item.Value >= 50)
                         type = ValueType.Danger;
                     else if (item.Value <= 5)
                         type = ValueType.Caution;
+                    else
+                        type = ValueType.Normal;
                     break;
             }
             return type;

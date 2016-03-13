@@ -107,6 +107,11 @@ namespace VSDA.UI
                         {
                             currentColor = (App.Current.Resources["GraphPlotColorDanger"] as SolidColorBrush).Color;
                         }
+                        else
+                        {
+                            currentColor = (App.Current.Resources["GraphPlotColorDefault"] as SolidColorBrush).Color;
+                        }
+
                         
                         GradientStopCollection gradients = new GradientStopCollection();
                         if (previousPoint.Y > point.Y)
@@ -127,6 +132,7 @@ namespace VSDA.UI
                     {
                         switch (currentItem.Type)
                         {
+                            case VSDACore.Modules.Data.ValueType.Default: currentColor = (App.Current.Resources["GraphPlotColorDefault"] as SolidColorBrush).Color; break;
                             case VSDACore.Modules.Data.ValueType.Normal: currentColor = (App.Current.Resources["GraphPlotColorNormal"] as SolidColorBrush).Color; break;
                             case VSDACore.Modules.Data.ValueType.Caution: currentColor = (App.Current.Resources["GraphPlotColorCaution"] as SolidColorBrush).Color; break;
                             case VSDACore.Modules.Data.ValueType.Danger: currentColor = (App.Current.Resources["GraphPlotColorDanger"] as SolidColorBrush).Color; break;
