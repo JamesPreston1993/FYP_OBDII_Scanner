@@ -118,32 +118,23 @@ public interface IDataConnection : INotifyPropertyChanged
 	
 	\begin{figure}[h]
 		\begin{center}
-			\includegraphics[width=0.5\textwidth]{hostpage.png}
+			\includegraphics[width=0.6\textwidth]{hostpage.png}
 			\caption{UI Shell}
 			\label{fig:UIShell}
 		\end{center}
 	\end{figure}	
-	
+	\newpage
 	\paragraph{}{
 	A number of mockups were created for the user interface using an application called Pencil. These were simple wireframes and did not include platform specific UI elements, but instead provide a more abstract view of the overall look and feel of the application. The mockups served as an initial guide when implementing the user interface and as a means of maintaining a coherent and standardised UI. 
 	% UI Mockups
 	}
-	\paragraph{}{
-	[XAML with C\#]
-	}
 	
 	\subsection{DTC Module}
 		\paragraph{}{						
+		The user interface for the DTC module consists of two states. The first state displays the codes and names of all current, pending and permanent DTCs. The second stage displays more detailed information regarding the causes and solutions for a DTC.
 		% Must display description as well as code, allow the user to clear codes, display additional information, if needed, without interupting flow
-		[INTRO]
 		}
-		\paragraph{}{
-		[CODE LIST]
-		}
-		\paragraph{}{
-		[CODE DETAILS]
-		% Get more info, without interrupting flow of application. Design chocies include take user to a separate screen, load a modal box, or add a drop down box
-		}
+		
 		\begin{figure}[h]
 			\begin{center}								
 				\begin{minipage}{0.49\textwidth}
@@ -159,12 +150,39 @@ public interface IDataConnection : INotifyPropertyChanged
 				\end{minipage}									
 			\end{center}
 		\end{figure}
-	\newpage
+		
+		\paragraph{}{
+		The first stage, seen in figure \ref{fig:DTCPage1}, was designed to be minimalist in nature. This is because the DTC page will be one of the first technical screens the user will encounter, so the design must minimise cognitive load on the user. The user can see, at a glance, the number of DTCs and their severity, before viewing additional information. 		
+		%[CODE LIST]
+		}
+		\paragraph{}{
+		The second stage, seen in figure \ref{fig:DTCPage2}, was designed to provide the user with additional information on a single DTC when they required it, without interrupting the flow of the application. This meant that the additional information could not appear on a separate page or in a modal dialog box, as it would mean the user would have to navigate back and forth if they required information for several DTCs. Because of this, the design that was chosen includes a larger area of text for each DTC that holds the additional information for that DTC. This text area can be expanded and collapsed and still allows the user to browse the page freely.
+		%[CODE DETAILS]
+		% Get more info, without interrupting flow of application. Design chocies include take user to a separate screen, load a modal box, or add a drop down box
+		}
+					
 	\subsection{Data Module}
 		\paragraph{}{	
 		The user interface for the data module consists of two components: data text views and data graph views.  
 		% Graphs as well as text, smart graphing, expand and collapse graph, fullscreen graph
 		}
+		
+		\begin{figure}[h]
+			\begin{center}								
+				\begin{minipage}{0.49\textwidth}
+					\includegraphics[width=\textwidth]{pidpage.png}
+					\caption{Data Page - Graphs Expanded}						
+					\label{fig:DataPage1}
+				\end{minipage}
+				\hfill			
+				\begin{minipage}{0.49\textwidth}
+					\includegraphics[width=\textwidth]{pidpage2.png}
+					\caption{Data Page - Graph Collapsed}						
+					\label{fig:DataPage2}
+				\end{minipage}									
+			\end{center}
+		\end{figure}
+		
 		\paragraph{}{
 		In the data module, the text views show the current data value in text format, enabling the user to see the current state of the vehicle at a glance. During the design process, displaying the current value on a dial was considered, as seen in the similar applications. This would create a match between the system and real world, as this is how these values are displayed on the dashboard of their car.
 		%[TEXT VIEWS] - Considered dials like similar applications
@@ -183,23 +201,7 @@ public interface IDataConnection : INotifyPropertyChanged
 		The user may want to move forwards and backwards through the data samples that have been collected, to find a particular value. To accommodate this, the design contains controls in the command bar. These include a play and pause button, to start and stop gathering, as well as skip buttons to move through the samples.
 		%[CONTROLS]
 		}
-		\begin{figure}[h]
-			\begin{center}								
-				\begin{minipage}{0.49\textwidth}
-					\includegraphics[width=\textwidth]{pidpage.png}
-					\caption{Data Page - Graphs Expanded}						
-					\label{fig:DataPage1}
-				\end{minipage}
-				\hfill			
-				\begin{minipage}{0.49\textwidth}
-					\includegraphics[width=\textwidth]{pidpage2.png}
-					\caption{Data Page - Graph Collapsed}						
-					\label{fig:DataPage2}
-				\end{minipage}									
-			\end{center}
-		\end{figure}
-	
-	\newpage
+		
 	\subsection{Connection Module}{
 		\paragraph{}{
 		The user interface for connecting to a device was a key component of the project. As this would be the first thing a user would see on loading the application, it had to provide a suitable amount of information, whilst also being minimalist enough as to not confuse the user. There were two design options considered for this user interface. 
@@ -239,7 +241,15 @@ public interface IDataConnection : INotifyPropertyChanged
 		}
 	}
 	\label{ssec:DesignConnectionModule}
+	
 	\subsection{Home Module}
 		\paragraph{}{
 		
 		}
+		\begin{figure}[h]
+			\begin{center}
+				\includegraphics[width=0.6\textwidth]{homepage.png}
+				\caption{Home Page}
+				\label{fig:HomePage}
+			\end{center}
+		\end{figure}
