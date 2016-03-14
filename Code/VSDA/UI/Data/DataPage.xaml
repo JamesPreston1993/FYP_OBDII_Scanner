@@ -39,7 +39,7 @@
         </Grid>
 
         <!-- Graph -->
-        <ScrollViewer Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer x:Name="GraphScrollViewer" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
             <Grid x:Name="Graph" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />

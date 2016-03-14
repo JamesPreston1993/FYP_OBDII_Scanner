@@ -1,4 +1,5 @@
-﻿using VSDACore.Modules.Data;
+﻿using VSDACore.Modules.Base;
+using VSDACore.Modules.Data;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -37,6 +38,13 @@ namespace VSDA.UI
                 this.DataList.RowDefinitions.Add(rowDef);
                 Grid.SetRow(dataView, index);
                 this.DataList.Children.Add(dataView);
+
+                // Workaround for C# issue: Create a copy of index for lambda expression   
+                int i = index;
+                dataView.JumpToGraphCommand = new RelayCommand(() =>
+                {   
+                    this.GraphScrollViewer.ChangeView(null, graphHeight * (i / 2), null);
+                });
                 index++;
             }
             index = 0;
