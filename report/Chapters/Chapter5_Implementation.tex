@@ -381,7 +381,7 @@ for (int i = 0; i < 2; i++)
 		\end{figure}
 		
 		\paragraph{}{
-		%convert data
+		[Convert data]
 		}
 		
 		\begin{figure}[h]
@@ -430,7 +430,11 @@ private static ValueType GetValueType(IPid pid, IDataItem item)
 		\end{figure}		
 			
 		\paragraph{}{
-		%[List, Graphs, Play/Pause/Step Controls, Smart Graphing]
+		[List, Graphs, Play/Pause/Step Controls] 
+		}
+		
+		\paragraph{}{
+		[Smart Graphing]
 		}			
 		
 		\label{ssec:DataModuleDesc}
@@ -444,9 +448,10 @@ private static ValueType GetValueType(IPid pid, IDataItem item)
 			\paragraph{Time taken to resolve:}
 			Approximately three weeks
 			\paragraph{Attempts to resolve:}
-			
+			The application was then tested with other vehicle protocols to no avail. A number of attempts were also made to re-factor the Bluetooth communication system. However, these attempts did not see any improvement in performance.
+			[NUM PIDS LIMITED]
 			\paragraph{Solution:}
-		
+			A solution was found after more research was conducted on the ELM327 device. By default, the device will wait 200 milliseconds before returning a response. To bypass this, the user can pass a numerical parameter with each request, that denotes how many bytes are expected in the response. Once the device has collected this number of bytes, it will skip the waiting period and return the response immediately. This decreased the response time from 300 milliseconds to 170 milliseconds, which was a huge improvement, but the data collection was still slow.
 		\subsubsection{Issue 2: Graph blurring}{
 			\paragraph{Description:}
 
@@ -569,6 +574,7 @@ public static class HelpItemFactory
 		%[Need to implement this]
 		}
 	
-%\section{Performance Re-factoring}
-		%\paragraph{}
-		%[Module shutdown, limited pids]
+\section{Email}
+		\paragraph{}{
+		%[Need to implement this]
+		}
