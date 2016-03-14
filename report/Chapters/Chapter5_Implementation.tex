@@ -178,9 +178,10 @@ return response;
 
 \section{DTC Module}
 	\paragraph{}{
-	Once the Bluetooth connection system had been implemented, the DTC module was the first component to utilise its functionality. The two key components of this module are retrieving current, pending and permanent DTCs and requesting to clear current codes.
+	Once the Bluetooth connection system had been implemented, the DTC module was the first component to utilise its functionality. The two key components of this module are retrieving current, pending and permanent DTCs and requesting to clear codes.
 	}
 	\paragraph{}{
+	Initially, the application only retrieved the first current DTC. This provided the opportunity to review the communication process and the look and feel of the user interface. Once the user interface had been finalised, the communication system was updated to retrieve all current DTCs, as seen in figure \ref{code:DTCModuleCodes}. The process for retrieving DTCs is very similar for each type, with the only difference being the request and response message headers. Because of this, the majority of the code used to retrieve current DTCs could be re-used to retrieve pending and permanent DTCs.
 		% Retrieve codes		
 	}
 	
@@ -238,13 +239,15 @@ return codes;
 	\end{figure}
 			
 		\paragraph{}{
+		The second component of this module is the ability to issue the clear codes command. The manner in which this is handled differs greatly from retrieving DTCs. When requesting to clear codes, there is no response that has to be handled. Instead, the application refreshes the list of current DTCs, which will now be empty, thus verifying that the clear codes command was issued.
 		% Clear codes
 		}
 		
 		\paragraph{}{
+		Unfortunately, due to a number of constraints, additional information for DTCs was not be implemented in the final product. As the project progressed, it became evident that there would not be enough time to gather information on the causes and solutions of each DTC. This was because of the large amount of DTCs, which exceeds four thousand. Some consideration was made for implementing a subset of these DTCs, but given the time frame, it would not be possible to find a reputable source for this information, gain permission for its use and validate the information for all DTCs.
 		% DTC Additional Information
 		}						
-		
+\newpage		
 \section{Simulated Communication}
 		\paragraph{}{
 		While preparing to implement the data module, a potential problem was discovered. While the ECU test bench sent back data that could be graphed, the values were static and could not be changed. This would make it difficult to test the data graphing, as it would require communication with a live vehicle to gather dynamic data values. Instead, a simulation connection class was created.
@@ -322,11 +325,13 @@ else if (command.StartsWith("0A"))
 \section{Data Module}
 	\subsection{Description}{		
 		\paragraph{}{
+		
 		%Intro
 		}
 		
 		\paragraph{}{
-		Supported pids as outlined in section \ref{ssec:Data}
+		The first stage of initializing the data module is to compile a list of supported pids. This is shown in figure \ref{code:SupportedPids}, which uses the same process that is outlined in section \ref{ssec:Data}.
+		%Supported pids as outlined in section \ref{ssec:Data}
 		%Get supported pids
 		}
 		
@@ -433,11 +438,11 @@ private static ValueType GetValueType(IPid pid, IDataItem item)
 	\subsection{Issues}{		
 		\subsubsection{Issue 1: Data collection speed}{
 			\paragraph{Description:}
-
+			When gathering data samples, it was discovered that the time taken to send a request and receive a response was around 300 milliseconds per request. When a large number of pids are request, it took around seven seconds per sample.
 			\paragraph{Occurred during:}
 
 			\paragraph{Time taken to resolve:}
-
+			Approximately three weeks
 			\paragraph{Attempts to resolve:}
 			
 			\paragraph{Solution:}
@@ -456,6 +461,7 @@ private static ValueType GetValueType(IPid pid, IDataItem item)
 		%[Graph blurring - Smart graphing fixed this but memory was an issue]
 		}
 	}
+	\label{ssec:DataModuleIssues}
 
 \section{Connection Module}
 		\paragraph{}{
@@ -467,7 +473,7 @@ private static ValueType GetValueType(IPid pid, IDataItem item)
 		}
 		
 		\paragraph{}{
-		The first component of this module is gathering a list of all Bluetooth devices that are paired	with the PC. Using the UWP Bluetooth API, this is achieved with one method call, as seen in \ref{code:AvailableDevices}. However, this returns a platform specific Bluetooth devices, which has a negative impact on the portability of the system. To counteract this, the system converts these into a custom device class that contains the name, ID and address of the Bluetooth device.
+		The first component of this module is gathering a list of all Bluetooth devices that are paired	with the PC. Using the UWP Bluetooth API, this is achieved with one method call, as seen in \ref{code:AvailableDevices}. However, this returns a platform specific Bluetooth devices, which has a negative impact on the portability of the system. To counteract this, the system converts these into a custom device class that contains the name, ID and address of the Bluetooth device. This creates a more portable application, as there is less duplicated code for the Bluetooth communication system.
 		}
 		%Get paired devices, select one and it connects as outlined in \ref{code:BTConnectionInit}
 		%[List of paired devices, connection status, comm log, module is loaded on disconnect]
@@ -492,7 +498,11 @@ return availableDevices;
 			\end{lstlisting}
 			\caption{Finding all available devices}
 			\label{code:AvailableDevices}
-		\end{figure}				
+		\end{figure}
+		
+		\paragraph{}{
+		[CONTINUE]		
+		}				
 		
 \section{Android Port}
 	\subsection{Description}		
@@ -511,7 +521,7 @@ return availableDevices;
 		A decision was made to re-factor the application so that the instructions were not integrated with the user interface of the module. Instead, the solution was to provide a means of viewing instructions that was separate from the module, but could be accessed without leaving the current module. This was achieved by implementing a pop out window on the right hand side of the screen.
 		}
 		\paragraph{}{
-		The Module interface (see figure \ref{code:ModuleInterface}) was re-factored to include a list of help items, of which the code is seen in figure \ref{code:HelpItem}.
+		The Module interface (see figure \ref{code:ModuleInterface}) was re-factored to include a list of help items, which can be seen in figure \ref{code:HelpItem}. [CONTINUE]
 		}
 		\begin{figure}[h]
 			\begin{lstlisting}
