@@ -11,12 +11,14 @@
     
     <!--="{ThemeResource ApplicationPageBackgroundThemeBrush}" -->
 
-    <Grid Background="{StaticResource ModulePageButtonBackground}" Height="60" HorizontalAlignment="Stretch">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="1*" />
-        </Grid.ColumnDefinitions>
-        <TextBlock x:Name="PidName" Grid.Column="0" Text="{Binding PidName}" TextTrimming="CharacterEllipsis" Foreground="{StaticResource ModulePageButtonForeground}" FontSize="18" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Left" Margin="5,0,0,0" TextWrapping="WrapWholeWords"/>
-        <TextBlock x:Name="PidValue" Grid.Column="1" Text="{Binding CurrentValue}" Foreground="{StaticResource ModulePageButtonForeground}" FontSize="18" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,15,0"/>
-    </Grid>
+    <Button Background="{StaticResource ModulePageButtonBackground}" HorizontalAlignment="Stretch" Height="60" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Click="JumpToGraphClick">
+        <Grid Background="{StaticResource ModulePageButtonBackground}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="PidName" Grid.Column="0" Text="{Binding PidName}" TextTrimming="CharacterEllipsis" Foreground="{StaticResource ModulePageButtonForeground}" FontSize="18" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Left" Margin="5,0,0,0" TextWrapping="WrapWholeWords"/>
+            <TextBlock x:Name="PidValue" Grid.Column="1" Text="{Binding CurrentValue}" Foreground="{StaticResource ModulePageButtonForeground}" FontSize="18" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Right" Margin="0,0,15,0"/>
+        </Grid>
+    </Button>
 </UserControl>

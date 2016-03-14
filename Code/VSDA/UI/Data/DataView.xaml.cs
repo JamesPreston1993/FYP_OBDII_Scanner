@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel;
+using System.Windows.Input;
 using VSDACore.Modules.Data;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
@@ -10,6 +12,8 @@ namespace VSDA.UI
     public sealed partial class DataView : UserControl
     {
         private IDataListViewModel pid;
+
+        public ICommand JumpToGraphCommand { get; set; }
 
         public DataView(IDataListViewModel pid)
         {
@@ -39,6 +43,14 @@ namespace VSDA.UI
                         this.PidValue.Foreground = (App.Current.Resources["ModulePageButtonForeground"] as SolidColorBrush);
                         break;
                 }
+            }
+        }
+
+        private void JumpToGraphClick(object sender, RoutedEventArgs e)
+        {
+            if(this.JumpToGraphCommand != null)
+            {
+                this.JumpToGraphCommand.Execute(null);
             }
         }
     }
