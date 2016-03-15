@@ -247,10 +247,166 @@ return codes;
 		Unfortunately, due to a number of constraints, additional information for DTCs was not be implemented in the final product. As the project progressed, it became evident that there would not be enough time to gather information on the causes and solutions of each DTC. This was because of the large amount of DTCs, which exceeds four thousand. Some consideration was made for implementing a subset of these DTCs, but given the time frame, it would not be possible to find a reputable source for this information, gain permission for its use and validate the information for all DTCs.
 		% DTC Additional Information
 		}						
-\newpage		
+		
+\section{Data Module}
+	\subsection{Description}{		
+		\paragraph{}{
+		Implementation for the data module differed greatly as, unlike the other modules, the data module was constantly polling the ECU for information, rather than sending a request once on initialization. The data module is also the most visual of all module as it utilises graphs to display data to the end user.
+		%Intro
+		}
+		
+		\paragraph{}{
+		The first stage of the data module is to compile a list of supported pids. The process for acquiring all supported pids is outlined in section \ref{ssec:Data}. However, as seen in figure \ref{code:SupportedPids}, the data module only acquires the first two sets of supported pids, totalling a maximum of sixty four supported pids. This was due to the potential performance issues that may arise from rendering too many graphs and also due to the limited timeframe of the project, as it would require conversion code to be written for each pid.
+		%Supported pids as outlined in section \ref{ssec:Data}
+		%Get supported pids
+		}
+		
+		\begin{figure}[h]
+			\begin{lstlisting}
+IList<IPid> supportedPids = new List<IPid>();
+
+for (byte i = 0x00; i <= 0x20; i += 0x20)
+{
+	// Request supported pids
+	string request = await this.dataConnection.SendCommand("01" + i.ToString("X2") + "1");
+
+	// Check if the response is valid
+	if (request.StartsWith("41"))
+	{
+		// Remove header
+		request = request.Substring(4);
+
+		// Convert to binary
+		string binary = Convert.ToString(Convert.ToInt32(request, 16), 2).PadLeft(32, '0');
+
+		// Find all 1s in binary, denoting which pids are supported
+		for (int j = 0; j < binary.Length - 1; j++)
+		{
+			// If the bit is 1, then the pid is supported
+			if (binary.Substring(j, 1) == "1")
+			{
+				// Get the hex value for the pid
+				byte hex = i;
+				hex += Convert.ToByte(j + 1);
+								
+				// Create the pid
+				string pidHex = hex.ToString("X2");
+				IPid pid = PidFactory.CreatePid(pidHex);
+				supportedPids.Add(pid);
+			}
+		}
+	}
+}
+			\end{lstlisting}
+			\caption{Get supported pids - Only supports 1000 and 1020}
+			\label{code:SupportedPids}
+		\end{figure}
+		
+		\paragraph{}{
+		When a request is made, the response that is received is in hexadecimal format. This response contains the header and a number of bytes. To convert this data into a human readable value, a the bytes are passed into a conversion equation. This equation varies for each pid. In figure \ref{code:ConvertingPids}, the engine speed pid is converted by removing the message header, and passing the response bytes into its conversion equation.
+		%[Convert data]
+		}
+		
+		\begin{figure}[h]
+			\begin{lstlisting}
+public static IDataItem ConvertPID(IPid pid, string request)
+{
+	// Represent first and second response bytes
+	int A, B;
+	double value = double.NaN;
+	string stringValue = "No Value";
+	
+	switch(pid.PidHex)
+	{
+		// Convert response using the equation: ((A * 256) + B) / 4
+		case "0C":    
+			A = Convert.ToInt32(Convert.ToByte(request.Substring(0, 2), 16));
+			B = Convert.ToInt32(Convert.ToByte(request.Substring(2, 2), 16));
+			value = ((A * 256) + B) / 4;
+			stringValue = value.ToString();
+		break;
+	}
+
+	IDataItem dataItem = new DataItem(value, stringValue);	
+    return dataItem;
+}
+			\end{lstlisting}
+			\caption{Converting Engine Speed pid to human readable value}
+			\label{code:ConvertingPids}
+		\end{figure}		
+			
+		\paragraph{}{
+		The human readable data values are displayed to the end user in two formats: text and graphs. The text views give a simplified view of each pid, only displaying the current value of a pid. The graph views track all values over a session and plot them so they can be viewed at a later time. The data module also implements controls to play, pause and skip through the values. This allows the user to have full control over what data is presented to them on screen. 
+		%[List, Graphs, Play/Pause/Step Controls] 
+		}
+		
+		\paragraph{}{
+		The final feature of the data module is the smart graphing system, which is an extension of the existing graphing system. Smart graphing is a system that uses different colour values to represent whether a data value is normal, potentially dangerous or severely dangerous. This system is currently implemented for a subset of pids, due to time constraints and a lack of technical knowledge. As seen in figure \ref{code:ValueType}, a smart graphing pid is analysed based on its current value and assigned a type. This type determines the colour that will be displayed on the graph.
+		%[Smart Graphing]
+		}			
+		
+		\begin{figure}[h]
+			\begin{lstlisting}		
+private static ValueType GetValueType(IPid pid, IDataItem item)
+{
+	ValueType type = ValueType.Default;
+				
+	switch (pid.PidHex)
+	{
+		case "0C":		
+			if (item.Value < 800)
+				type = ValueType.Caution;
+			else if (item.Value > 5500)
+				type = ValueType.Danger;
+			else
+				type = ValueType.Normal;
+		break;
+
+	}
+	return type;
+}
+			\end{lstlisting}
+			\caption{Changing the graph colour based on the value}
+			\label{code:ValueType}
+		\end{figure}		
+		
+		
+		\label{ssec:DataModuleDesc}
+	}
+
+	\subsection{Issues}{		
+		\subsubsection{Issue 1: Data collection speed}{
+			\paragraph{Description:}
+			When gathering data samples, it was discovered that the time taken to send a request and receive a response was around 300 milliseconds per request. When a large number of pids are request, it took around seven seconds per sample.
+			\paragraph{Occurred during:}
+			Week 12
+			\paragraph{Time taken to resolve:}
+			Approximately three weeks
+			\paragraph{Attempts to resolve:}
+			The application was then tested with other vehicle protocols to no avail. A number of attempts were also made to re-factor the Bluetooth communication system. However, these attempts did not see any improvement in performance.
+			%[NUM PIDS LIMITED]
+			\paragraph{Solution:}
+			A solution was found after more research was conducted on the ELM327 device. By default, the device will wait 200 milliseconds before returning a response. To bypass this, the user can pass a numerical parameter with each request, that denotes how many bytes are expected in the response. Once the device has collected this number of bytes, it will skip the waiting period and return the response immediately. This decreased the response time from 300 milliseconds to 170 milliseconds, which was a huge improvement, but the data collection was still slow.
+		\subsubsection{Issue 2: Graph blurring}{
+			\paragraph{Description:}
+			When gathering data samples, the graph plot line started to blur. This blurring became more severe as the number of samples increased. This affected the readability of the data graphs.
+			\paragraph{Occurred during:}
+			Week 14
+			\paragraph{Time taken to resolve:}
+			Approximately two weeks
+			\paragraph{Attempts to resolve:}
+			An attempt was made to cull the graph plot line based on what was visible. However, when this was implemented, it did not seem to fix the issue. 
+			\paragraph{Solution:}
+			The solution came as part of the implementation of the smart graphing system. Originally, the graph plot was a single line, with a collection of points. In order to add varying colours to the plot line, it had to be split into segments that were coloured individually. By splitting the line into segments, the blurring issue was fixed.
+		%[Speed 300ms, down to 170ms]
+		%[Graph blurring - Smart graphing fixed this but memory was an issue]
+		}
+	}
+	\label{ssec:DataModuleIssues}
+
 \section{Simulated Communication}
 		\paragraph{}{
-		While preparing to implement the data module, a potential problem was discovered. While the ECU test bench sent back data that could be graphed, the values were static and could not be changed. This would make it difficult to test the data graphing, as it would require communication with a live vehicle to gather dynamic data values. Instead, a simulation connection class was created.
+		While implementing the data module, a potential problem was discovered. While the ECU test bench sent back data that could be graphed, the values were static and could not be changed. This would make it difficult to test the data graphing, as it would require communication with a live vehicle to gather dynamic data values. Instead, a simulation connection class was created.
 		%[Preparation for data module, acts like an ECU, behaves like real world (time, responses etc)]
 		}
 		\paragraph{}{
@@ -296,7 +452,7 @@ if (command.StartsWith("01"))
 		\paragraph{}{
 		Due to the success of the simulation connection with respect to the data module, it was expanded to work with the DTC module, returning a set of current, pending and permanent DTCs, as seen in figure \ref{code:SimConnectionDTC}.
 		}
-		
+	\newpage	
 		\begin{figure}[h]
 			\begin{lstlisting}
 // Current DTCs
@@ -322,151 +478,6 @@ else if (command.StartsWith("0A"))
 			\label{code:SimConnectionDTC}
 		\end{figure}
 
-\section{Data Module}
-	\subsection{Description}{		
-		\paragraph{}{
-		
-		%Intro
-		}
-		
-		\paragraph{}{
-		The first stage of initializing the data module is to compile a list of supported pids. This is shown in figure \ref{code:SupportedPids}, which uses the same process that is outlined in section \ref{ssec:Data}.
-		%Supported pids as outlined in section \ref{ssec:Data}
-		%Get supported pids
-		}
-		
-		\begin{figure}[h]
-			\begin{lstlisting}
-IList<IPid> supportedPids = new List<IPid>();
-
-for (int i = 0; i < 2; i++)
-{
-	// Request supported pids
-	string request = await this.dataConnection.SendCommand("01" + (i * 20).ToString("D2") + "1");
-
-	// Check if the response is valid
-	if (request.StartsWith("41"))
-	{
-		// Remove header
-		request = request.Substring(4);
-
-		// Convert to binary
-		string binary = Convert.ToString(Convert.ToInt32(request, 16), 2).PadLeft(32, '0');
-
-		// Find all 1s in binary, denoting which pids are supported
-		for (int j = 0; j < binary.Length - 1; j++)
-		{
-			// If the bit is 1, then the pid is supported
-			if (binary.Substring(j, 1) == "1")
-			{
-				// Get the hex value for the pid
-				byte hex = Convert.ToByte(j + 1);
-				switch (i)
-				{
-					case 0: hex += 0x00; break;
-					case 1: hex += 0x20; break;
-				}
-				
-				// Create the pid
-				string pidHex = hex.ToString("X2");
-				IPid pid = PidFactory.CreatePid(pidHex);
-				supportedPids.Add(pid);
-			}
-		}
-	}
-}
-			\end{lstlisting}
-			\caption{Get supported pids - Only supports 1000 and 1020}
-			\label{code:SupportedPids}
-		\end{figure}
-		
-		\paragraph{}{
-		[Convert data]
-		}
-		
-		\begin{figure}[h]
-			\begin{lstlisting}
-public static IDataItem ConvertPID(IPid pid, string request)
-{
-	double value = double.NaN;
-	string stringValue = "No Value";
-	int A, B;
-
-	switch(pid.PidHex)
-	{
-		// ((A * 256) + B) / 4
-		case "0C":    
-			A = Convert.ToInt32(Convert.ToByte(request.Substring(0, 2), 16));
-			B = Convert.ToInt32(Convert.ToByte(request.Substring(2, 2), 16));
-			value = ((A * 256) + B) / 4;
-			stringValue = value.ToString();
-		break;
-	}
-
-	IDataItem dataItem = new DataItem(value, stringValue);
-	dataItem.Type = GetValueType(pid, dataItem);
-    return dataItem;
-}
-
-private static ValueType GetValueType(IPid pid, IDataItem item)
-{
-	ValueType type = ValueType.Normal;
-				
-	switch (pid.PidHex)
-	{
-		case "0C":		
-			if (item.Value < 800)
-				type = ValueType.Caution;
-			else if (item.Value > 5500)
-				type = ValueType.Danger;
-		break;
-
-	}
-	return type;
-}
-			\end{lstlisting}
-			\caption{Converting Engine Speed pid to human readable value}
-			\label{code:ConvertingPids}
-		\end{figure}		
-			
-		\paragraph{}{
-		[List, Graphs, Play/Pause/Step Controls] 
-		}
-		
-		\paragraph{}{
-		[Smart Graphing]
-		}			
-		
-		\label{ssec:DataModuleDesc}
-	}
-	\subsection{Issues}{		
-		\subsubsection{Issue 1: Data collection speed}{
-			\paragraph{Description:}
-			When gathering data samples, it was discovered that the time taken to send a request and receive a response was around 300 milliseconds per request. When a large number of pids are request, it took around seven seconds per sample.
-			\paragraph{Occurred during:}
-
-			\paragraph{Time taken to resolve:}
-			Approximately three weeks
-			\paragraph{Attempts to resolve:}
-			The application was then tested with other vehicle protocols to no avail. A number of attempts were also made to re-factor the Bluetooth communication system. However, these attempts did not see any improvement in performance.
-			[NUM PIDS LIMITED]
-			\paragraph{Solution:}
-			A solution was found after more research was conducted on the ELM327 device. By default, the device will wait 200 milliseconds before returning a response. To bypass this, the user can pass a numerical parameter with each request, that denotes how many bytes are expected in the response. Once the device has collected this number of bytes, it will skip the waiting period and return the response immediately. This decreased the response time from 300 milliseconds to 170 milliseconds, which was a huge improvement, but the data collection was still slow.
-		\subsubsection{Issue 2: Graph blurring}{
-			\paragraph{Description:}
-
-			\paragraph{Occurred during:}
-
-			\paragraph{Time taken to resolve:}
-
-			\paragraph{Attempts to resolve:}
-			
-			\paragraph{Solution:}
-		%[Speed 300ms, down to 170ms]
-		%[Graph blurring - Smart graphing fixed this but memory was an issue]
-		}
-	}
-	\label{ssec:DataModuleIssues}
 
 \section{Connection Module}
 		\paragraph{}{
