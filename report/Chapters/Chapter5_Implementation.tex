@@ -502,7 +502,6 @@ IList<IDevice> availableDevices = new List<IDevice>();
 // Get a list of Windows specific Bluetooth devices
 DeviceInformationCollection devices = await DeviceInformation.FindAllAsync(RfcommDeviceService.GetDeviceSelector(RfcommServiceId.SerialPort));
 
-
 foreach(DeviceInformation device in devices)
 {
 	// Create an instance of custom device class that can be used on all platforms
@@ -517,13 +516,22 @@ return availableDevices;
 		\end{figure}
 		
 		\paragraph{}{
-		[CONTINUE]		
+		Once a list of available devices has been gathered, they are displayed on screen as buttons. When the user clicks one of these buttons, the system will attempt to connect to the associated device, using the process seen in figure \ref{code:BTConnectionInit}. If the connection cannot be established within five seconds, the user will be informed and can retry or select another device.
 		}				
 		
 \section{Android Port}
 	\subsection{Description}		
 		\paragraph{}{
-		%[Port preparation, MVVM, Bluetooth layer, UI, SHow Module MVVM code]
+		[INTRO]
+		}
+		\paragraph{}{
+		[PORT PREP + PCL] % MVVM, Bluetooth layer, UI, SHow Module MVVM code]
+		}
+		\paragraph{}{
+		[BLUETOOTH + CODE]
+		}
+		\paragraph{}{
+		[UI + CODE]
 		}	
 	\subsection{Issues}{
 	}
@@ -587,5 +595,5 @@ public static class HelpItemFactory
 	
 \section{Email}
 		\paragraph{}{
-		%[Need to implement this]
+		%[INTRO]
 		}
