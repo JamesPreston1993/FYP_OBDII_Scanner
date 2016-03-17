@@ -654,8 +654,9 @@ private void RaiseViewModelChanged(object sender, PropertyChangedEventArgs e)
 		A decision was made to re-factor the application so that the instructions were not integrated with the user interface of the module. Instead, the solution was to provide a means of viewing instructions that was separate from the module, but could be accessed without leaving the current module. This was achieved by implementing a pop out window on the right hand side of the screen.
 		}
 		\paragraph{}{
-		The Module interface (see figure \ref{code:ModuleInterface}) was re-factored to include a list of help items, with each help item having a title and a description. Figure \ref{code:HelpItem} shows how the help items are implemented for the connection module. [CONTINUE]
+		The Module interface (see figure \ref{code:ModuleInterface}) was re-factored to include a list of help items, with each help item having a title and a description. As seen in figure \ref{code:HelpItem}, which shows the implementation of help items for the connection module, the help items are created by a factory method and assigned to a module.
 		}
+		
 		\begin{figure}[h]
 			\begin{lstlisting}
 public interface IHelpItem
@@ -699,10 +700,14 @@ public static class HelpItemFactory
 	\newpage
 \section{Home Module}
 		\paragraph{}{
-		%[Need to implement this]
+		The home module is the least technical of all the modules in the system. It serves as a means of teaching how to utilise the various functions of the application. The user can find a list of functions that are available to use, as well as how and when to use them. This helps to guide new users on where to start when they first load the application.
 		}
+				
+		\paragraph{}{
+		The module displays disclaimer information, warning the user not to attempt any repairs on their vehicle and to always seek the advice of a mechanic after using the application. This ensures that the user is aware that the application is used for preliminary diagnosis rather than formal diagnosis.
+		}
+		
 
-\newpage
 \section{Email}
 		\paragraph{}{
 		The final feature of the application to be implemented was the email system. This system captures useful data from a module and compiles it into an email so the user can send it to their mechanic. This allows end users to receive a preliminary opinion from a person with technical knowledge before they physically travel to a garage for formal diagnosis.		
@@ -758,6 +763,3 @@ private async void EmailButton_Click(object sender, RoutedEventArgs e)
 			\caption{Email system}
 			\label{code:Email}
 		\end{figure}	
-		
-\newpage	
-\section{Summary of Features}
