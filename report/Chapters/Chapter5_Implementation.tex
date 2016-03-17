@@ -1,599 +1,64 @@
 \section{Introduction}
 	\paragraph{}{
-	This chapter will outline the implementation and testing process adopted during the project. This will include information on how each component was implemented as well as any issues that occurred during the project and how they were resolved.
-	}
-\section{Development Environment}{
+	This chapter will outline the functional and non-functional requirements of the project, how they will be supported in the system as well as the processes used to capture these requirements.
+	}		
+
+\section{Techniques for Requirements Capture}	
 	\paragraph{}{
-	Before starting implementation, a suitable development environment was required. This included a Windows 10 development PC and a method of simulating connection to a vehicle. 
+	[SQIRO] - Need to get Object Oriented Systems Analysis and Design using UML
 	}
 	\paragraph{}{
-	A development PC running Windows 10 was required as part of the development environment. It was also preferable that the PC had a touchscreen, to allow testing of gesture controls, such as swipe and pinch, without deploying to a tablet. Fortunately, a Windows 8.1 touchscreen laptop which was eligible for a free Windows 10 upgrade was available before the project began. After the development PC was set up, a suitable Windows 10 tablet to deploy the application on was found. This was a low to middle end tablet, representing what an average user may own.
-	}
-	
-	\paragraph{}{
-	In order to be able to test the application, it needed to connect to and communicate with a vehicle. However, this was not practical as it would require moving from the development environment to the vehicle when testing or debugging the application. Initially, an application that simulated connection to an ECU was bought and used. However, during development it became evident that this would not be suitable for the project. Details about the application and why it was not suitable is discussed in section \ref{ssec:SimSoftware}.
-	}
-	
-	\paragraph{}{
-	Instead, an ECU test bench was created (see figure \ref{fig:TestBench}) that could be used as part of the development environment. This consisted of an ECU from a Rover 75 with an OBDII port and a power supply. A specific wiring diagram for the ECU had to be acquired in order to connect the wires to the corresponding pins on the ECU and OBDII port. The ECU test bench can be expanded with additional ECUs to facilitate the testing of communications with multiple communication protocols and vehicle manufacturers.
+	The process began with background reading into the domain, as outlined in chapter 2. By analysing what functions were available under the OBDII standards, as well as the functions supported by the ELM327 device, it helped to create a base line for the functional requirements of the project.
+	%[Reading - what modes are available, what other tools are there etc.]
 	}	
-	
-	\begin{figure}[h]
-		\begin{center}										
-				\includegraphics[width=0.8\textwidth]{ECUDesk.jpg}
-				\caption{ECU test bench}
-				\label{fig:TestBench}
-		\end{center}
-	\end{figure}
-}
-\label{sec:DeveEnv}
-
-\section{Prototyping}
 	\paragraph{}{
-	Prior to starting the project, a lightweight proof of concept was created. This was a C{\#} console application that could connect to an ELM327 simulation application, and display live data on the screen. 
-	}
-	\paragraph{}{ %Bluetooth API, CAN only
-	The application used the 32Feet API by In The Hand Ltd. to handle Bluetooth communication with the ELM327 simulator. The communication system was low level, as it required the address of the laptop and simulator to establish a connection. This was more low level than anticipated and resulted in the hard-coding of the addresses of the development laptop and simulator into the application, which was not optimal. One of the advantages of the 32Feet API, is that the developer can pair Bluetooth devices within their own application. However, this may also be a security issue as an incompatible or harmful device may be paired without the end user's knowledge.
+	Once a list of available functions was compiled, a number of similar applications were analysed. This involved [checking] which functions were implemented, as well as how they were implemented. The functions that each of these applications supported can be found in table \ref{tab:Features} in chapter 2. By analysing how a function was implemented, it served to highlight which non-functional requirements the application supported and which ones our system should support.
+	%[Reviewed similar applications]
 	}
 	\paragraph{}{
-	The ELM327 simulation software used was an Android application called ECU Engine Pro. The application simulates an ELM327 device connected to an ECU using the CAN protocol. The user can manually add up to six DTCs, and can access the VIN and a limited number of PIDs, such as engine speed. The application displays the address to establish connection via Bluetooth, then the user is taken to the control panel, where they can monitor incoming and outgoing communication logs, as well as edit the DTCs and PID values being returned.
+	As the system involved communication with vehicles, it was important to interview people within the motor industry. These people included family members, who have extensive experience in the motor industry, and colleagues that I met during my co-operative education. These interviews were informal in nature and the participants were asked what they valued most in a diagnostic scan tool. This served to determine what the system needed from a technical aspect, such as which functions to include in order to effectively diagnose a vehicle.  
+	%[Spoke to people in industry - Co-op and family]
 	}
 	\paragraph{}{
-	The application established communications with the simulator and configured the ELM327 device to use the CAN protocol using the pre-defined commands. The application would then display the first DTC as well as the current engine speed. The values that were displayed were the result of the formatting and converting of the raw data from the simulator.
-	}
-	\paragraph{}{	
-	Overall, the prototype was a success, as it was able to display a DTC as well as the current engine speed on screen. This provided an insight into how communication and data conversion was handled, as well as how to configure the ELM327 device.
-	}
-
-\section{Bluetooth Communication}
-	\subsection{Description}
-		\paragraph{}{
-		As the prototype had implemented a subset of the functionality for the communication, it was initially thought that this code code be updated and expanded to create the Bluetooth connection layer. However, during the development process, two key issues became evident, as detailed in section \ref{ssec:BluetoothAPI}. Firstly, the 32Feet Bluetooth API was not supported for UWP applications. Secondly, while UWP applications have their own Bluetooth API, it does not work with the ELM327 simulation software.
-		%Implementation of the Bluetooth communication layer of the application began immediately after the setup of the development environment. The goal of this stage was to implement generic Bluetooth communication, such as establishing a connection with the ELM327 device and configuring it, rather than working on module specific communication, such as converting responses. The configuration steps involved resetting the device, allowing the device to auto-detect the communication protocol, turning off echoing of messages and allowing for long responses.
-		}
-		\paragraph{}{
-		Due to these issues, the Bluetooth connection code had to be fully rewritten. This provided some benefits, as the new API is not as low level as the previous one. As seen in figure \ref{code:BTConnectionInit}, connection only requires a device ID, rather than an address of the device and the PC. Another key difference with this API is that the developer can not pair devices through the application. Instead, the user has to pair the device manually before using the application. While this was initially viewed as a limitation, it improved the security of the application, as harmful or incompatible devices cannot be paired with the user's PC. 
-		%not as low level as the previous API, More secure
-		}
-		
-		\begin{figure}[h]
-			\begin{lstlisting}
-// Set up a service for the Bluetooth device
-this.service = await RfcommDeviceService.FromIdAsync(this.CurrentDevice.Id);
-
-if (this.service != null)
-{
-	this.DeviceConnectionStatus = ConnectionStatus.Connecting;
-	this.socket = new StreamSocket();
-
-	// Timeout after 5 seconds
-	CancellationTokenSource token = new CancellationTokenSource();
-	token.CancelAfter(5000);
-
-	try
-	{
-		// Connect to the socket
-		await socket.ConnectAsync(this.service.ConnectionHostName,this.service.ConnectionServiceName, SocketProtectionLevel.BluetoothEncryptionAllowNullAuthentication).AsTask(token.Token);
-	
-		// Set up the reader and writer using the socket input stream and output stream respectively
-		this.writer = new DataWriter(this.socket.OutputStream);
-		this.reader = new DataReader(this.socket.InputStream);    		
-	}
-	catch(TaskCanceledException e)
-	{
-		this.DeviceConnectionStatus = ConnectionStatus.NotConnected;                            
-	}
-}
-			\end{lstlisting}
-			\caption{Establishing a connection to the ELM327}
-			\label{code:BTConnectionInit}
-		\end{figure}
-
-		\paragraph{}{
-		The main component of the Bluetooth connection system was sending and receiving data. As seen in figure \ref{code:BTConnectionSend}, a command is sent to the data writer and appended with a return carriage, to inform the ELM327 that the command has terminated. The reader then attempts to read any incoming messages. However, the length of the  message is unknown and can vary for each command. To deal with this the reader reads one character at a time until a '\textgreater' character appears, signifying the end of the message. If the reader cannot read the entire message, for example, if the user walks out of range of the device, or removes it from the vehicle, the connection will time out.
-		% Send & Receive, don't know length of response
-		}
-
-		\begin{figure}[h]
-			\begin{lstlisting}
-// Write
-if (this.writer != null)
-{
-    this.writer.WriteString(command + "\r");
-	await this.writer.StoreAsync();
-}
-
-// Timeout after 5 seconds                
-CancellationTokenSource token = new CancellationTokenSource();
-token.CancelAfter(5000);
-
-// Read
-try
-{
-	while (!response.Contains(">"))
-	{
-		uint size = await this.reader.LoadAsync(1).AsTask(token.Token);                        
-        string s = this.reader.ReadString(size);
-		response += s;
-	}
-    
-    response = response.Replace(">", "");
-}
-catch (Exception e)
-{
-	// Shutdown communication on timeout
-	response = NO_CONNECTION;
-	this.IsInitialized = false;
-}                
-
-if (response.Contains("UNABLE TO CONNECT"))
-{
-	// Shutdown communication on unable to connect
-	response = NO_CONNECTION;
-    this.IsInitialized = false;
-}
-
-return response;
-			\end{lstlisting}
-			\caption{Sending a command to the ELM327 and receiving a response}
-			\label{code:BTConnectionSend}
-		\end{figure}		
-		
-		%\paragraph{}{
-		%There were some issues with the 32Feet Bluetooth API, outlined in section 5.5.1, that lead to the use of Microsoft's own Bluetooth API in it's place. This API allows developers to find all Bluetooth device paired with the PC and choose the appropriate one from the list. Due to the use of this new API, there was less time to work on Bluetooth communication, so the application was created to connect to the first suitable Bluetooth device on the network, with the intention of adding a search function at a later date.
-		%}
-	\subsection{Issues}
-		\subsubsection{Issue 1: Bluetooth API}{
-			\paragraph{Description:}
-			The 32Feet Bluetooth API used in the prototype was incompatible with the UWP application. This meant that the prototype code that was written for Bluetooth connection could not be reused in the final product.
-				
-			\paragraph{Occurred during:}
-			Week 1
-		
-			\paragraph{Time taken to resolve:} Half a week to identify the issue, one week to find an alternative solution and one week to implement this solution.
-		
-			\paragraph{Attempts to resolve:}
-			A number of attempts to resolve the issue were made, such as searching for newer versions of the API and researching potential workarounds. Unfortunately, it became evident that the API was completely incompatible with UWP applications, leading to a stand still in development until a replacement could be found.
-			
-			\paragraph{Solution:}
-			Microsoft includes their own Bluetooth API with UWP and this was chosen as a replacement for the 32Feet Bluetooth API. There was an unexpected learning curve that affected the project timeline, but this solution ultimately improved the security of the application and decreased the complexity of the code.
-		}
-		\label{ssec:BluetoothAPI}
-		
-		\subsubsection{Issue 2: Simulation software}{
-			\paragraph{Description:}
-			The replacement Bluetooth API could not connect to the ECU simulation software. This meant connection to an actual vehicle was required to debug and test the application.
-			
-			\paragraph{Occurred during:}
-			Week 1
-			\paragraph{Time taken to resolve:}
-			One week to find a workaround and half a week to set up ECU.
-			\paragraph{Attempts to resolve:}
-			Several attempts to contact the developer were made through emails and the Google Play Store, where the application was bought. Unfortunately, no response was received and a decision was reached that the application could not be utilised for this project, as it seemed highly unlikely that the application would be updated to support the Bluetooth API. 
-%Looked for other apps
-			\paragraph{Solution:}
-			To simulate connection to a vehicle, an ECU test bench was created as outlined in section \ref{sec:DeveEnv}. This had an impact on the timeline of the project, as a number of components, such as an ECU and a wiring diagram, had to be sourced as well as assembling the test bench itself. Ultimately, the ECU test bench had the advantage of extensibility over the ECU simulation software, as the latter only supported one protocol, whereas the former can be extended with new ECUs that support various protocols.
-		}
-		\label{ssec:SimSoftware}		
-
-\section{DTC Module}
-	\paragraph{}{
-	Once the Bluetooth connection system had been implemented, the DTC module was the first component to utilise its functionality. The two key components of this module are retrieving current, pending and permanent DTCs and requesting to clear codes.
+	Although it was important to interview the domain experts, it was equally important to interview the potential end users. During this stage, proxies for the end user were established. These were vehicle owners with no experience in the motor industry and who had encountered issues with their vehicle in the past. By capturing the expectations of individuals with no technical knowledge, it helped to determine how the functions and results should be presented to the user.
+	%[Spoke to proxies for the end user / stakeholders]
 	}
 	\paragraph{}{
-	Initially, the application only retrieved the first current DTC. This provided the opportunity to review the communication process and the look and feel of the user interface. Once the user interface had been finalised, the communication system was updated to retrieve all current DTCs, as seen in figure \ref{code:DTCModuleCodes}. The process for retrieving DTCs is very similar for each type, with the only difference being the request and response message headers. Because of this, the majority of the code used to retrieve current DTCs could be re-used to retrieve pending and permanent DTCs.
-		% Retrieve codes		
+	Through the use of reading, observation and interviews, as outlined in [the SQIRO method], the functional and non-functional requirements of the system were captured [CONTINUE]
+	%[Conclusion, found a balance between technical needs and user needs]
 	}
 	
-	\begin{figure}[h]
-		\begin{lstlisting}
-// Get batches of current codes
-string hex = await this.dataConnection.SendCommand("03");
-
-// Split codes into batches
-string[] batches = hex.Split('\r');
-
-IList<ICode> codes = new List<ICode>();
-
-foreach (string batch in batches)
-{
-	// Check if the batch is valid
-    if (batch.StartsWith("43"))
-    {        
-        string codesHex = string.Empty;
-        		
-		// Remove the header - The CAN protcol uses a longer header
-		if (ConnectionManager.Instance.VehicleProtocol == Protocol.CAN)
-			codesHex = batch.Substring(4);
-        else
-			codesHex = batch.Substring(2);
-
-        // Codes are returned in batches of three
-		for (int i = 0; i < 3; i++)
-		{
-			string code = string.Empty;
-			code = codesHex.Substring(i * 4, 4);
-
-			// 0000 is not recognised as a valid DTC
-			if (code != "0000")
-			{
-				// The first digit determines the code type (P, C, B, U)
-				switch (code.Substring(0, 1))
-				{
-					case "0": code = "P" + code; break;
-					case "4": code = "C" + code; break;
-					case "8": code = "B" + code; break;
-					case "C": code = "U" + code; break;						
-				}					
-				
-				// Code description is added by the factory
-				codes.Add(CodeFactory.CreateCode(code));
-			}
-		}
-       }
-}
-return codes;
-		\end{lstlisting}
-		\caption{Retrieving current codes - The same process is used for pending and permanent codes, but with a different header}
-		\label{code:DTCModuleCodes}
-	\end{figure}
-			
-		\paragraph{}{
-		The second component of this module is the ability to issue the clear codes command. The manner in which this is handled differs greatly from retrieving DTCs. When requesting to clear codes, there is no response that has to be handled. Instead, the application refreshes the list of current DTCs, which will now be empty, thus verifying that the clear codes command was issued.
-		% Clear codes
-		}
-		
-		\paragraph{}{
-		Unfortunately, due to a number of constraints, additional information for DTCs was not be implemented in the final product. As the project progressed, it became evident that there would not be enough time to gather information on the causes and solutions of each DTC. This was because of the large amount of DTCs, which exceeds four thousand. Some consideration was made for implementing a subset of these DTCs, but given the time frame, it would not be possible to find a reputable source for this information, gain permission for its use and validate the information for all DTCs.
-		% DTC Additional Information
-		}						
-		
-\section{Data Module}
-	\subsection{Description}{		
-		\paragraph{}{
-		Implementation for the data module differed greatly as, unlike the other modules, the data module was constantly polling the ECU for information, rather than sending a request once on initialization. The data module is also the most visual of all module as it utilises graphs to display data to the end user.
-		%Intro
-		}
-		
-		\paragraph{}{
-		The first stage of the data module is to compile a list of supported pids. The process for acquiring all supported pids is outlined in section \ref{ssec:Data}. However, as seen in figure \ref{code:SupportedPids}, the data module only acquires the first two sets of supported pids, totalling a maximum of sixty four supported pids. This was due to the potential performance issues that may arise from rendering too many graphs and also due to the limited timeframe of the project, as it would require conversion code to be written for each pid.
-		%Supported pids as outlined in section \ref{ssec:Data}
-		%Get supported pids
-		}
-		
-		\begin{figure}[h]
-			\begin{lstlisting}
-IList<IPid> supportedPids = new List<IPid>();
-
-for (byte i = 0x00; i <= 0x20; i += 0x20)
-{
-	// Request supported pids
-	string request = await this.dataConnection.SendCommand("01" + i.ToString("X2") + "1");
-
-	// Check if the response is valid
-	if (request.StartsWith("41"))
-	{
-		// Remove header
-		request = request.Substring(4);
-
-		// Convert to binary
-		string binary = Convert.ToString(Convert.ToInt32(request, 16), 2).PadLeft(32, '0');
-
-		// Find all 1s in binary, denoting which pids are supported
-		for (int j = 0; j < binary.Length - 1; j++)
-		{
-			// If the bit is 1, then the pid is supported
-			if (binary.Substring(j, 1) == "1")
-			{
-				// Get the hex value for the pid
-				byte hex = i;
-				hex += Convert.ToByte(j + 1);
-								
-				// Create the pid
-				string pidHex = hex.ToString("X2");
-				IPid pid = PidFactory.CreatePid(pidHex);
-				supportedPids.Add(pid);
-			}
-		}
+\section{Functional Requirements}	
+	\paragraph{}{
+	A key outcome of capturing the requirements for this project was determining which OBDII modes to support. Due to the time frame of this project, it was impossible to include all modes, so a subset of modes that would be best suited for the target audience had to be selected.
 	}
-}
-			\end{lstlisting}
-			\caption{Get supported pids - Only supports 1000 and 1020}
-			\label{code:SupportedPids}
-		\end{figure}
-		
-		\paragraph{}{
-		When a request is made, the response that is received is in hexadecimal format. This response contains the header and a number of bytes. To convert this data into a human readable value, a the bytes are passed into a conversion equation. This equation varies for each pid. In figure \ref{code:ConvertingPids}, the engine speed pid is converted by removing the message header, and passing the response bytes into its conversion equation.
-		%[Convert data]
-		}
-		
-		\begin{figure}[h]
-			\begin{lstlisting}
-public static IDataItem ConvertPID(IPid pid, string request)
-{
-	// Represent first and second response bytes
-	int A, B;
-	double value = double.NaN;
-	string stringValue = "No Value";
-	
-	switch(pid.PidHex)
-	{
-		// Convert response using the equation: ((A * 256) + B) / 4
-		case "0C":    
-			A = Convert.ToInt32(Convert.ToByte(request.Substring(0, 2), 16));
-			B = Convert.ToInt32(Convert.ToByte(request.Substring(2, 2), 16));
-			value = ((A * 256) + B) / 4;
-			stringValue = value.ToString();
-		break;
+	\paragraph{}{
+	After reviewing similar applications and interviewing domain experts, it was decided that the application would include diagnostic data and DTCs. This corresponds to modes 01, 03, 07 and 0A in the OBDII standard. These modes provide a suitable amount of information to allow a user to diagnose their vehicle, but they also allow the developer to abstract technical information without sacrificing precision.
+	}
+	\paragraph{}{
+	Modes 03, 07 and 0A, representing current, pending and permanent DTCs respectively, provide the means to quickly assess the severity of the issues with the vehicle. The application must display the severity of each DTC type to the end user. If the user needs more information before making a decision, the application must provide additional information on each DTC with minimal use of technical terms.
+	}
+	\paragraph{}{
+	Mode 01, representing current diagnostic data, is more technical than DTCs. However, with the correct level of abstraction and assistance, it can provide the end user with critical information on the issues with their vehicle. The application must display the data in graphical format, so that it can be tracked over a period of time and potentially erroneous or abnormal values must be highlighted for the end user, to assist in their diagnosis.
+	}
+	\paragraph{}{
+	Given the correct guidance, which will be provided by the application, the end user must be able to make an informed decision about the severity of the issues and the cost to repair them, without any technical knowledge.
 	}
 
-	IDataItem dataItem = new DataItem(value, stringValue);	
-    return dataItem;
-}
-			\end{lstlisting}
-			\caption{Converting Engine Speed pid to human readable value}
-			\label{code:ConvertingPids}
-		\end{figure}		
-			
+\section{Non-Functional Requirements}
+	\subsection{Portability}
 		\paragraph{}{
-		The human readable data values are displayed to the end user in two formats: text and graphs. The text views give a simplified view of each pid, only displaying the current value of a pid. The graph views track all values over a session and plot them so they can be viewed at a later time. The data module also implements controls to play, pause and skip through the values. This allows the user to have full control over what data is presented to them on screen. 
-		%[List, Graphs, Play/Pause/Step Controls] 
+		To be able to target a large user base, it is important to release the application on multiple systems. For this reason, the system must be portable, so it can be redeployed as an Android or iOS application. To achieve this, the system should leverage the Xamarin framework, and should separate the core functionality of the application from the UI and system dependent features of the application.
 		}
-		
+	\subsection{Extensibility}
 		\paragraph{}{
-		The final feature of the data module is the smart graphing system, which is an extension of the existing graphing system. Smart graphing is a system that uses different colour values to represent whether a data value is normal, potentially dangerous or severely dangerous. This system is currently implemented for a subset of pids, due to time constraints and a lack of technical knowledge. As seen in figure \ref{code:ValueType}, a smart graphing pid is analysed based on its current value and assigned a type. This type determines the colour that will be displayed on the graph.
-		%[Smart Graphing]
-		}			
-		
-		\begin{figure}[h]
-			\begin{lstlisting}		
-private static ValueType GetValueType(IPid pid, IDataItem item)
-{
-	ValueType type = ValueType.Default;
-				
-	switch (pid.PidHex)
-	{
-		case "0C":		
-			if (item.Value < 800)
-				type = ValueType.Caution;
-			else if (item.Value > 5500)
-				type = ValueType.Danger;
-			else
-				type = ValueType.Normal;
-		break;
-
-	}
-	return type;
-}
-			\end{lstlisting}
-			\caption{Changing the graph colour based on the value}
-			\label{code:ValueType}
-		\end{figure}		
-		
-		
-		\label{ssec:DataModuleDesc}
-	}
-
-	\subsection{Issues}{		
-		\subsubsection{Issue 1: Data collection speed}{
-			\paragraph{Description:}
-			When gathering data samples, it was discovered that the time taken to send a request and receive a response was around 300 milliseconds per request. When a large number of pids are request, it took around seven seconds per sample.
-			\paragraph{Occurred during:}
-			Week 12
-			\paragraph{Time taken to resolve:}
-			Approximately three weeks
-			\paragraph{Attempts to resolve:}
-			The application was then tested with other vehicle protocols to no avail. A number of attempts were also made to re-factor the Bluetooth communication system. However, these attempts did not see any improvement in performance.
-			%[NUM PIDS LIMITED]
-			\paragraph{Solution:}
-			A solution was found after more research was conducted on the ELM327 device. By default, the device will wait 200 milliseconds before returning a response. To bypass this, the user can pass a numerical parameter with each request, that denotes how many bytes are expected in the response. Once the device has collected this number of bytes, it will skip the waiting period and return the response immediately. This decreased the response time from 300 milliseconds to 170 milliseconds, which was a huge improvement, but the data collection was still slow.
-		\subsubsection{Issue 2: Graph blurring}{
-			\paragraph{Description:}
-			When gathering data samples, the graph plot line started to blur. This blurring became more severe as the number of samples increased. This affected the readability of the data graphs.
-			\paragraph{Occurred during:}
-			Week 14
-			\paragraph{Time taken to resolve:}
-			Approximately two weeks
-			\paragraph{Attempts to resolve:}
-			An attempt was made to cull the graph plot line based on what was visible. However, when this was implemented, it did not seem to fix the issue. 
-			\paragraph{Solution:}
-			The solution came as part of the implementation of the smart graphing system. Originally, the graph plot was a single line, with a collection of points. In order to add varying colours to the plot line, it had to be split into segments that were coloured individually. By splitting the line into segments, the blurring issue was fixed.
-		%[Speed 300ms, down to 170ms]
-		%[Graph blurring - Smart graphing fixed this but memory was an issue]
+		Due to the time frame of the project, it is impossible to include all features intended. Also, as new technology becomes available, the application may need to be extended to support it. The system design should consider a modular design where new features, such as supporting a new mode, can be integrated without requiring a restructure of the architecture.
 		}
-	}
-	\label{ssec:DataModuleIssues}
-
-\section{Simulated Communication}
+	\subsection{Security}
 		\paragraph{}{
-		While implementing the data module, a potential problem was discovered. While the ECU test bench sent back data that could be graphed, the values were static and could not be changed. This would make it difficult to test the data graphing, as it would require communication with a live vehicle to gather dynamic data values. Instead, a simulation connection class was created.
-		%[Preparation for data module, acts like an ECU, behaves like real world (time, responses etc)]
-		}
+		Security can be defined as "a measure of the system's ability to resist unauthorized usage while still providing its services to legitimate users" \cite{SAinP}. As this application is communicating directly with a vehicle, there may be a danger of damage being done to the vehicle and its components. It must be ensured that no harm can be caused by accidental misuse of the application. This will include proper handling of communication, in the event that a user unplugs the ELM327 device during a procedure, as well as providing the user with information on how to use the application correctly.
+		}		
+	\subsection{Usability}
 		\paragraph{}{
-		The simulation connection class implements the IDataConnection interface seen in figure \ref{code:ConnectionInterface}, but instead of connecting to a Bluetooth device, it handles the requests and returns a response in the format that the ELM327 would use, sending response in hexadecimal format. Because of this, the simulation connection more accurately represents communication with a vehicle and did not require a refactor of the code in the communication layer.
-		}	
-		\begin{figure}[h]
-			\begin{lstlisting}
-// Default response
-string response = "NO DATA";
-
-// Request for Data (Mode 01)
-if (command.StartsWith("01"))
-{
-	// Get supported pids
-	if (command.StartsWith("0100"))
-    {
-		// Binary Value: 0001 1000 0111 1000 0000 0000 0000 0000
-		response = "410018580000";
-	}
-    else if (command.StartsWith("0104"))
-	{
-    	/* Conversion formula: A * 100 / 255 */
-    	
-    	// Generate a number between the minimum and maximum value
-        int min = 0;
-		int max = 100;
-        Random r = new Random();
-		int value = r.Next(min, max);
-
-		// Reverse the equation and convert to hex
-        value = (255 * value) / 100;
-		response = "4104" + value.ToString("X2");
-	}
-}
-			\end{lstlisting}
-			\caption{Simulation connection code for 0100 and 0104 requests}
-			\label{code:SimConnectionData}
-		\end{figure}
-
-		\paragraph{}{
-		As shown in the code fragment seen  in figure \ref{code:SimConnectionData}, a small subset of pids are supported, and each of these pids will return data when a request is made. As each pid has a maximum and minimum possible value, a random value between these two will be generated and this will be the value that the user sees on-screen. The value  is passed through a conversion equation, in reverse order to convert it to hexadecimal format. Finally, the response header is prefixed to this hexadecimal message and is returned to the caller. A more detailed description of how these conversions work can be found in section \ref{ssec:DataModuleDesc}.
-		}
-		\paragraph{}{
-		Due to the success of the simulation connection with respect to the data module, it was expanded to work with the DTC module, returning a set of current, pending and permanent DTCs, as seen in figure \ref{code:SimConnectionDTC}.
-		}
-	\newpage	
-		\begin{figure}[h]
-			\begin{lstlisting}
-// Current DTCs
-if (command.StartsWith("03"))
-{
-	// Return P0101, P0121 and P0353	
-	response = "43010101210353";
-}
-// Pending DTCs
-else if (command.StartsWith("07"))
-{
-	// Return P0104, P0132 and P0342	
-	response = "47010401320342";
-}
-// Permanent DTCs
-else if (command.StartsWith("0A"))
-{
-	// Return P0107, P0109 and P0111	
-	response = "4A010701090111";
-}			
-			\end{lstlisting}
-			\caption{Simulation connection code for current, pending and permanent DTCs}
-			\label{code:SimConnectionDTC}
-		\end{figure}
-
-
-\section{Connection Module}
-		\paragraph{}{
-		As discussed in section \ref{ssec:DesignConnectionModule}, the system required a means of selecting an ELM327 device that is paired to the PC. This ensures that the end user has complete control over what device the application uses to communicate with their car.
-		}
-		
-		\paragraph{}{
-		The connection module is the first module to be displayed when  the application loads, as the user must connect to a device before using any other modules. If connection to the device is lost while the user is using another module, the application will send the user back to the connection module to reconnect, along with displaying an appropriate message to the user.
-		}
-		
-		\paragraph{}{
-		The first component of this module is gathering a list of all Bluetooth devices that are paired	with the PC. Using the UWP Bluetooth API, this is achieved with one method call, as seen in \ref{code:AvailableDevices}. However, this returns a platform specific Bluetooth devices, which has a negative impact on the portability of the system. To counteract this, the system converts these into a custom device class that contains the name, ID and address of the Bluetooth device. This creates a more portable application, as there is less duplicated code for the Bluetooth communication system.
-		}
-		%Get paired devices, select one and it connects as outlined in \ref{code:BTConnectionInit}
-		%[List of paired devices, connection status, comm log, module is loaded on disconnect]
-		}
-		
-		\begin{figure}[h]
-			\begin{lstlisting}
-IList<IDevice> availableDevices = new List<IDevice>();
-
-// Get a list of Windows specific Bluetooth devices
-DeviceInformationCollection devices = await DeviceInformation.FindAllAsync(RfcommDeviceService.GetDeviceSelector(RfcommServiceId.SerialPort));
-
-foreach(DeviceInformation device in devices)
-{
-	// Create an instance of custom device class that can be used on all platforms
-	IDevice bluetoothDevice = new BluetoothConnectionDevice(device.Name, device.Id, null);
-    availableDevices.Add(bluetoothDevice);
-}
-
-return availableDevices;
-			\end{lstlisting}
-			\caption{Finding all available devices}
-			\label{code:AvailableDevices}
-		\end{figure}
-		
-		\paragraph{}{
-		Once a list of available devices has been gathered, they are displayed on screen as buttons. When the user clicks one of these buttons, the system will attempt to connect to the associated device, using the process seen in figure \ref{code:BTConnectionInit}. If the connection cannot be established within five seconds, the user will be informed and can retry or select another device.
-		}				
-		
-\section{Android Port}
-	\subsection{Description}		
-		\paragraph{}{
-		[INTRO]
-		}
-		\paragraph{}{
-		[PORT PREP + PCL] % MVVM, Bluetooth layer, UI, SHow Module MVVM code]
-		}
-		\paragraph{}{
-		[BLUETOOTH + CODE]
-		}
-		\paragraph{}{
-		[UI + CODE]
-		}	
-	\subsection{Issues}{
-	}
-	\label{ssec:AndroidIssues}
-\section{Help Information}
-		\paragraph{}{
-		Once the majority of modules had been implemented, it became clear that the way the modules instructed the end user on how to use them was not optimal. Firstly, these instructions were intrusive and took up valuable screen real estate. This would be an issue when the application is deployed on devices smaller screens, such as mobile phones. Secondly, over time, the end user will learn to use the application without instructions, at which point the on-screen instructions become redundant.
-		%[Moving help info out of other modules, help shouldn't interrupt modules, UI matches on both platforms]
-		}
-		\paragraph{}{
-		A decision was made to re-factor the application so that the instructions were not integrated with the user interface of the module. Instead, the solution was to provide a means of viewing instructions that was separate from the module, but could be accessed without leaving the current module. This was achieved by implementing a pop out window on the right hand side of the screen.
-		}
-		\paragraph{}{
-		The Module interface (see figure \ref{code:ModuleInterface}) was re-factored to include a list of help items, which can be seen in figure \ref{code:HelpItem}. [CONTINUE]
-		}
-		\begin{figure}[h]
-			\begin{lstlisting}
-public interface IHelpItem
-{
-    string Title { get; }
-
-	string Description { get; }
-}
-
-public class HelpItem : IHelpItem
-{
-	public string Title { get; private set; }
-
-	public string Description { get; private set; }
-
-	public HelpItem(string title, string description)
-	{
-		this.Title = title;
-		this.Description = description;
-	}
-}
-
-public static class HelpItemFactory
-{
-	private static IList<IHelpItem> ConnectionHelpItems()
-	{
-    	IList<IHelpItem> connectionHelpItems = new List<IHelpItem>();
-
-		connectionHelpItems.Add(new HelpItem("What device do I need?", "You will need an ELM327 Bluetooth device (version 1.3 or later)"));
-        connectionHelpItems.Add(new HelpItem("Setup", "1) Enable Bluetooth on your PC / tablet\n" +
-                                                          "2) Pair the ELM327 device with your PC / tablet / phone in your device settings\n" +
-                                                          "3) Select your ELM327 device from the device list"));
-
-    	return connectionHelpItems;
-	}	
-}
-			\end{lstlisting}
-			\caption{Help item interface and example of how they are implemented for the connection module}
-			\label{code:HelpItem}
-		\end{figure}
-	
-\section{Home Module}
-		\paragraph{}{
-		%[Need to implement this]
-		}
-	
-\section{Email}
-		\paragraph{}{
-		%[INTRO]
+		Usability is concerned with how easy it is for the user to accomplish a desired task and the user support the system provides \cite{SAinP}. The application must be intuitive and easy to use for someone with limited technical knowledge of vehicles. This will include limiting the use of technical terms and creating a coherent UI. The application will follow Microsoft's user experience guidelines, so that users of other Windows 10 application will find it easy to use.
 		}
