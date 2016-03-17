@@ -13,6 +13,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using VSDA.Connection;
+using VSDACore.Modules.Home;
 
 namespace VSDA
 {
@@ -38,7 +39,8 @@ namespace VSDA
             ConnectionManager.Instance = new BluetoothDataConnection();
 
             List<IModule> modules = new List<IModule>();
-            
+
+            modules.Add(new HomeModule());
             modules.Add(new DataModule());
             modules.Add(new DTCModule());
             modules.Add(new BluetoothModule());
