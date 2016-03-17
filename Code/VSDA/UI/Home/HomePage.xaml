@@ -1,0 +1,43 @@
+﻿<Page
+    x:Class="VSDA.UI.Home.HomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:VSDA.UI.Home"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{StaticResource ModulePageBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid Margin="15,15,15,15">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                    <TextBlock FontSize="24" Text="Welcome to Vehicle Self Diagnosis Application" TextWrapping="WrapWholeWords" Foreground="{StaticResource ModulePageForeground}"/>
+                    <TextBlock FontSize="24" Text="" TextWrapping="WrapWholeWords" Foreground="{StaticResource ModulePageForeground}"/>
+                </StackPanel>
+                <Grid Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel x:Name="ModuleHintsGrid" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,5,5,5" />
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,5,5,5">
+                        <TextBlock FontSize="20" Text="This application will allow to provide a preliminary diagnosis on your vehicle" VerticalAlignment="Stretch" TextWrapping="WrapWholeWords" Foreground="{StaticResource ModulePageForeground}"/>
+                        <TextBlock FontSize="20" Text="" VerticalAlignment="Stretch" TextWrapping="WrapWholeWords" Foreground="{StaticResource ModulePageForeground}"/>
+                        <TextBlock FontSize="20" Text="You should seek the advice of your mechanic if this application flags any codes or unexpected data values" VerticalAlignment="Stretch" TextWrapping="WrapWholeWords" Foreground="{StaticResource ModulePageForeground}"/>
+                        <TextBlock FontSize="20" Text="" VerticalAlignment="Stretch" TextWrapping="WrapWholeWords" Foreground="{StaticResource ModulePageForeground}"/>
+                        <TextBlock FontSize="20" Text="You should NOT attempt to repair your vehicle unless you are a trained mechanic" VerticalAlignment="Stretch" TextWrapping="WrapWholeWords" Foreground="{StaticResource ModulePageForeground}"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="1" Background="{StaticResource AppBarBackground}"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+    </Grid>
+</Page>
