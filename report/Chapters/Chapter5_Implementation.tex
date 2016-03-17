@@ -522,20 +522,129 @@ return availableDevices;
 \section{Android Port}
 	\subsection{Description}		
 		\paragraph{}{
-		[INTRO]
+		A key aspect of the project is the extensibility and portability of the system. To prove this, the system was ported from Windows 10 to Android using the Xamarin framework. Due to time constraints, only a subset of features were made available on Android, but can be easily implemented in future iterations.
+		%[INTRO]
 		}
 		\paragraph{}{
-		[PORT PREP + PCL] % MVVM, Bluetooth layer, UI, SHow Module MVVM code]
+		As the project was initially developed as a UWP application, the platform specific code had to be separated from the shared code. The shared code corresponds to the host, module and communication layers in the system, where as the platform specific code corresponds to the UI and Bluetooth layers. The core code was put into a Portable Class Library (PCL), a library that can be used across multiple platforms, such as Windows 8 and 8.1 applications, WPF applications and application developed using Xamarin.
+		%[PORT PREP + PCL]
 		}
+		
 		\paragraph{}{
-		[BLUETOOTH + CODE]
+		After the preparation was complete, the first stage of porting the system was creating a new Bluetooth layer. Due to the design choices made for the system, this only required one class to be created, that implements the IDataConnection interface, seen in figure \ref{code:ConnectionInterface}, and utilises the Android Bluetooth API. While there was an initial learning curve, the basic principles of Bluetooth communication are the same, as seen in figure \ref{code:AndroidBluetoothInit}, that shows the initialization of the Bluetooth connection in the Android application.
+		%[BLUETOOTH INIT + CODE]
 		}
+		
+		\begin{figure}[h]
+			\begin{lstlisting}
+public async Task<bool> Initialize()
+{
+	this.DeviceConnectionStatus = ConnectionStatus.Connecting;
+	
+	// Get the Bluetooth adapter and socket
+    BluetoothAdapter adapter = BluetoothAdapter.DefaultAdapter;
+	this.socket = this.androidDevice.CreateRfcommSocketToServiceRecord(this.uuid);
+    
+    if(socket != null)
+	{
+		try
+		{
+			// Connect to the socket
+			await this.socket.ConnectAsync();                           
+			await this.Reset();
+			this.IsInitialized = true;
+		}
+		catch(Exception e)
+		{
+			this.DeviceConnectionStatus = ConnectionStatus.NotConnected;
+		}                        
+	}
+}
+			\end{lstlisting}
+			\caption{Android Bluetooth Initialize() Method}
+			\label{code:AndroidBluetoothInit}
+		\end{figure}		
+
 		\paragraph{}{
-		[UI + CODE]
-		}	
+		There are subtle differences in the Android Bluetooth API, that required more significant changes in the Bluetooth layer during the port. When sending requests and receiving responses, the messages must be sent as byte arrays. This is seen in figure \ref{code:AndroidBluetoothSend}, where the outgoing string message is converted into a byte array before being sent to the ELM327 device. While it was believed that the new API may be faster and therefore fix the data collection speed issue outlined in \ref{ssec:DataModuleIssues}, this was not the case, as the data collection speed was approximately the same.
+		%[BLUETOOTH SEND + CODE]
+		}
+
+		\begin{figure}[h]
+			\begin{lstlisting}
+public async Task<string> SendCommand(string command)
+{
+    string response = string.Empty;
+
+	// Convert string to byte array
+	char[] charArray = (command + "\r").ToCharArray();
+	byte[] outgoingMessage = new byte[charArray.Length];
+	for (int i = 0; i < charArray.Length; i++)
+		outgoingMessage[i] = (byte)charArray[i];
+
+	// Write
+	await this.socket.OutputStream.WriteAsync(outgoingMessage, 0, outgoingMessage.Length);
+
+	// Read
+	while (!response.Contains(">"))
+	{
+		byte[] incomingMessage = new byte[1024];
+		await this.socket.InputStream.ReadAsync(incomingMessage, 0, incomingMessage.Length);
+
+		foreach (byte b in incomingMessage)
+		{
+			if (b != 0)
+			{
+				response += Convert.ToChar(b);
+			}
+		}    
+	}
+	return response;
+}
+			\end{lstlisting}
+			\caption{Android Bluetooth SendCommand() Method}
+			\label{code:AndroidBluetoothSend}
+		\end{figure}
+		
+		\paragraph{}{
+		The second stage of porting the system was creating a new UI layer. Figure \ref{code:AndroidCodeUI} shows the implementation for the DTC Module user interface. As the system utilises MVVM, where viewmodel notifies of any property changes, the user interface only needs to subscribe to these notifications and perform the relevant actions. In the case of the DTC user interface, the user interface listens for changes to the module viewmodel and redraws the lists of DTCs when it is notified.
+		%[UI + CODE + MVVM]
+		}
+		\begin{figure}[h]
+			\begin{lstlisting}
+public CodesFragment(IDtcModuleViewModel module)
+{
+	// Subscribe to the PropertyChanged event handler of the ViewModel
+	this.module = module;
+	this.module.PropertyChanged += this.RaiseViewModelChanged;
+}
+
+private void RaiseViewModelChanged(object sender, PropertyChangedEventArgs e)
+{
+	// Draw the DTCs on screen when the ViewModel notifies of a change
+	this.PopulateCodes();
+}			
+			\end{lstlisting}
+			\caption{User Interface code for the DTC Module}
+			\label{code:AndroidCodeUI}
+		\end{figure}
+					
 	\subsection{Issues}{
+		\subsubsection{Issue 1: Android emulator not deploying in Visual Studio}{
+			\paragraph{Description:}
+			The Xamarin framework integrates with Visual Studio and allows Android emulators to be used for deploying applications. These emulators are virtual Android devices that can be used in place of physical devices. However, the application could not be deployed on the emulator.    
+			\paragraph{Occurred during:}
+			Week 13
+			\paragraph{Time taken to resolve:}
+			Approximately two weeks
+			\paragraph{Attempts to resolve:}
+			Research found that other developers had encountered this issue with Visual Studio. The proposed solution was to use Xamarin Studio, an IDE supplied by Xamarin. However, this was not a viable solution, as the time spent switching from one IDE to another when debugging was far greater than deploying to a physical device. 
+			\paragraph{Solution:}
+			A physical Android device was used to deploy and debug the application. While this was not ideal, it had the benefit of testing a physical device under real world scenarios, rather than a virtual device.
 	}
 	\label{ssec:AndroidIssues}
+
+
 \section{Help Information}
 		\paragraph{}{
 		Once the majority of modules had been implemented, it became clear that the way the modules instructed the end user on how to use them was not optimal. Firstly, these instructions were intrusive and took up valuable screen real estate. This would be an issue when the application is deployed on devices smaller screens, such as mobile phones. Secondly, over time, the end user will learn to use the application without instructions, at which point the on-screen instructions become redundant.
@@ -545,7 +654,7 @@ return availableDevices;
 		A decision was made to re-factor the application so that the instructions were not integrated with the user interface of the module. Instead, the solution was to provide a means of viewing instructions that was separate from the module, but could be accessed without leaving the current module. This was achieved by implementing a pop out window on the right hand side of the screen.
 		}
 		\paragraph{}{
-		The Module interface (see figure \ref{code:ModuleInterface}) was re-factored to include a list of help items, which can be seen in figure \ref{code:HelpItem}. [CONTINUE]
+		The Module interface (see figure \ref{code:ModuleInterface}) was re-factored to include a list of help items, with each help item having a title and a description. Figure \ref{code:HelpItem} shows how the help items are implemented for the connection module. [CONTINUE]
 		}
 		\begin{figure}[h]
 			\begin{lstlisting}
@@ -587,13 +696,68 @@ public static class HelpItemFactory
 			\caption{Help item interface and example of how they are implemented for the connection module}
 			\label{code:HelpItem}
 		\end{figure}
-	
+	\newpage
 \section{Home Module}
 		\paragraph{}{
 		%[Need to implement this]
 		}
-	
+
+\newpage
 \section{Email}
 		\paragraph{}{
+		The final feature of the application to be implemented was the email system. This system captures useful data from a module and compiles it into an email so the user can send it to their mechanic. This allows end users to receive a preliminary opinion from a person with technical knowledge before they physically travel to a garage for formal diagnosis.		
 		%[INTRO]
 		}
+		\paragraph{}{
+		The module interface was re-factored to include a formatted message that can be sent by email. Figure \ref{code:EmailCodes} shows the implementation for the DTC module, listing all DTCs that have been found. The email system was only implemented for the DTC Module as the other non-technical modules do not require aid from a mechanic. The only other technical module, the data module, requires aid from a mechanic, but sending the data values for each pid would not be sufficient information for the mechanic to make a preliminary diagnosis.
+		%Codes only, Module refactor
+		}
+
+		\begin{figure}[h]
+			\begin{lstlisting}
+public string FormatForEmail()
+{
+	string message = "My vehicle has the following DTCS:\n";
+
+	message += "\nCurrent Codes\n";
+	foreach (ICodeViewModel code in this.CurrentCodes)
+    	message += string.Format("{0} - {1}\n", code.Name, code.Description);
+
+	message += "\nPending Codes\n";
+	foreach (ICodeViewModel code in this.PendingCodes)
+    	message += string.Format("{0} - {1}\n", code.Name, code.Description);
+
+	message += "\nPermanent Codes\n";
+	foreach (ICodeViewModel code in this.PermanentCodes)
+    	message += string.Format("{0} - {1}\n", code.Name, code.Description);
+
+	message += "\nCan you provide a diagnosis?";
+
+	return message;
+}
+			\end{lstlisting}
+			\caption{Formatted message for the DTC module}
+			\label{code:EmailCodes}
+		\end{figure}	
+		
+		\paragraph{}{
+		Rather than sending an email directly from the application, the emailing system opens the users default email application with a pre-set subject and body for the email, as seen in figure \ref{code:Email}. This allows the user to select which account to send the email from as well as the recipients of the email. This provides an added security for the application, as their email credentials are not stored in the application and they can validate the content of the email.
+		%added security as UWP lets user pick their email address and recipient 		
+		}		
+		
+		\begin{figure}[h]
+			\begin{lstlisting}
+private async void EmailButton_Click(object sender, RoutedEventArgs e)
+{
+	EmailMessage message = new EmailMessage();
+	message.Subject = "Vehicle Self Diagnosis Report";            
+    message.Body = this.host.CurrentModule.FormatForEmail();
+	await EmailManager.ShowComposeNewEmailAsync(message);
+}
+			\end{lstlisting}
+			\caption{Email system}
+			\label{code:Email}
+		\end{figure}	
+		
+\newpage	
+\section{Summary of Features}
