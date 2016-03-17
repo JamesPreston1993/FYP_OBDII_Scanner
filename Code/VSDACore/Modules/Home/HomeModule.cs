@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using VSDACore.Modules.Base;
 
@@ -14,7 +12,13 @@ namespace VSDACore.Modules.Home
 
         public string Name { get; private set; }
 
-        public IList<IHelpItem> HelpItems { get; private set; }
+        public IList<IHelpItem> HelpItems { get; private set; }        
+        
+        public HomeModule()
+        {
+            this.Name = "Home";
+            this.HelpItems = HelpItemFactory.GetHelpItems(this);
+        }
 
         public async Task<bool> Initialize()
         {
