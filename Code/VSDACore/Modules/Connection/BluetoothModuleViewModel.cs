@@ -92,6 +92,11 @@ namespace VSDACore.Modules.Connection
             }
         }
 
+        public string FormatForEmail()
+        {
+            return string.Empty;
+        }
+
         public void RaisePropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)
