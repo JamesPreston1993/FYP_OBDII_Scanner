@@ -13,7 +13,6 @@ using System;
 using Windows.UI.Popups;
 using Windows.UI.Text;
 using VSDACore.Modules.Home;
-using VSDA.UI.Home;
 using Windows.ApplicationModel.Email;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238

@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="VSDA.UI.Home.ModuleHintView"
+    x:Class="VSDA.UI.ModuleHintView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:VSDA.UI.Home"
