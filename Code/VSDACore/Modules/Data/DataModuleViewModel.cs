@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using VSDACore.Modules.Base;
@@ -129,6 +126,11 @@ namespace VSDACore.Modules.Data
                     list.SkipToEnd();
                 }
             }
+        }
+
+        public string FormatForEmail()
+        {
+            return string.Empty;
         }
 
         private void RaisePropertyChanged(string propertyName)

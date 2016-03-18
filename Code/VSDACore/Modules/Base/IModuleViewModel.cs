@@ -13,5 +13,7 @@ namespace VSDACore.Modules.Base
         IList<IHelpItem> HelpItems { get; }
 
         Task<bool> InitializeModule();
+
+        string FormatForEmail();
     }
 }

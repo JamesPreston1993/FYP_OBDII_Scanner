@@ -53,7 +53,7 @@ namespace VSDACore.Host
                 switch (ConnectionManager.Instance.IsInitialized)
                 {
                     case true:
-                        this.CurrentModule = this.Modules[0];
+                        this.CurrentModule = this.Modules.First(m => m.Name == "Home");
                         break;
 
                     case false:

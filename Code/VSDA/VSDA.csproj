@@ -123,6 +123,12 @@
     <Compile Include="UI\DTC\DTCView.xaml.cs">
       <DependentUpon>DTCView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Home\HomePage.xaml.cs">
+      <DependentUpon>HomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Home\ModuleHintView.xaml.cs">
+      <DependentUpon>ModuleHintView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\HostView.xaml.cs">
       <DependentUpon>HostView.xaml</DependentUpon>
     </Compile>
@@ -169,6 +175,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\DTC\DTCView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Home\HomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Home\ModuleHintView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -12,6 +12,8 @@ using VSDACore.Connection;
 using System;
 using Windows.UI.Popups;
 using Windows.UI.Text;
+using VSDACore.Modules.Home;
+using Windows.ApplicationModel.Email;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -54,6 +56,7 @@ namespace VSDA.UI
                     case "Codes": icon.Text = "\xE814"; break;
                     case "Data": icon.Text = "\xE877"; break;
                     case "Connection": icon.Text = "\xE702"; break;
+                    case "Home": icon.Text = "\xE80F"; break;
                 }
                 TextBlock moduleName = new TextBlock()
                 {
@@ -96,6 +99,15 @@ namespace VSDA.UI
         {
             this.SideMenu.IsPaneOpen = !this.SideMenu.IsPaneOpen;
         }
+
+        private async void EmailButton_Click(object sender, RoutedEventArgs e)
+        {
+            EmailMessage message = new EmailMessage();
+            message.Subject = "Vehicle Self Diagnosis Report";            
+            message.Body = this.host.CurrentModule.FormatForEmail();
+            await EmailManager.ShowComposeNewEmailAsync(message);
+        }
+
 
         private void HelpButton_Click(object sender, RoutedEventArgs e)
         {
@@ -144,16 +156,30 @@ namespace VSDA.UI
                 {
                     case "Data":
                         this.ModulePage.Children.Clear();
-                        this.ModulePage.Children.Add(new DataPage(this.host.CurrentModule as IDataModuleViewModel));                        
+                        this.ModulePage.Children.Add(new DataPage(this.host.CurrentModule as IDataModuleViewModel));
+                        this.EmailButton.IsEnabled = false;
+                        this.HelpButton.IsEnabled = true;                        
                         break;
+
                     case "Codes":
                         this.ModulePage.Children.Clear();
                         this.ModulePage.Children.Add(new DTCPage(this.host.CurrentModule as IDtcModuleViewModel));
+                        this.EmailButton.IsEnabled = true;
+                        this.HelpButton.IsEnabled = true;
                         break;
 
                     case "Connection":
                         this.ModulePage.Children.Clear();
                         this.ModulePage.Children.Add(new ConnectionPage(this.host.CurrentModule as IConnectionModuleViewModel));
+                        this.EmailButton.IsEnabled = false;
+                        this.HelpButton.IsEnabled = true;
+                        break;
+
+                    case "Home":
+                        this.ModulePage.Children.Clear();
+                        this.ModulePage.Children.Add(new HomePage(this.host.CurrentModule as IHomeModuleViewModel));
+                        this.EmailButton.IsEnabled = false;
+                        this.HelpButton.IsEnabled = false;
                         break;
                 }
                 this.SetHelpViewItems();

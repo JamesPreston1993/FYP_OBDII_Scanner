@@ -5,6 +5,7 @@ using VSDACore.Modules.Base;
 using VSDACore.Modules.Codes;
 using VSDACore.Modules.Connection;
 using VSDACore.Modules.Data;
+using VSDACore.Modules.Home;
 
 namespace VSDACore.Host
 {
@@ -70,6 +71,7 @@ namespace VSDACore.Host
                     case "Data": this.Modules.Add(new DataModuleViewModel(module as IDataModule)); break;
                     case "Codes": this.Modules.Add(new DTCModuleViewModel(module as IDtcModule)); break;
                     case "Connection": this.Modules.Add(new BluetoothModuleViewModel(module as IConnectionModule)); break;
+                    case "Home": this.Modules.Add(new HomeModuleViewModel(module as IHomeModule)); break;
                 }
             }
             this.CurrentModule = this.Modules.First(m => m.Name == this.CurrentModuleName);

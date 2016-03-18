@@ -97,6 +97,27 @@ namespace VSDACore.Modules.Codes
             await this.dtcModuleModel.ClearCodes();
         }
 
+        public string FormatForEmail()
+        {
+            string message = "My vehicle has the following DTCS:\n";
+
+            message += "\nCurrent Codes\n";
+            foreach (ICodeViewModel code in this.CurrentCodes)
+                message += string.Format("{0} - {1}\n", code.Name, code.Description);
+
+            message += "\nPending Codes\n";
+            foreach (ICodeViewModel code in this.PendingCodes)
+                message += string.Format("{0} - {1}\n", code.Name, code.Description);
+
+            message += "\nPermanent Codes\n";
+            foreach (ICodeViewModel code in this.PermanentCodes)
+                message += string.Format("{0} - {1}\n", code.Name, code.Description);
+
+            message += "\nCan you provide a diagnosis?";
+
+            return message;
+        }
+
         private void RaisePropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)

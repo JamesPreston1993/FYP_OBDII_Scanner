@@ -13,6 +13,7 @@ namespace VSDACore.Modules.Base
                 case "Codes": helpItems = CodesHelpItems(); break;
                 case "Data": helpItems = DataHelpItems(); break;
                 case "Connection": helpItems = ConnectionHelpItems(); break;
+                case "Home": helpItems = HomeHelpItems(); break;
             }
 
             return helpItems;
@@ -50,6 +51,19 @@ namespace VSDACore.Modules.Base
                                                           "3) Select your ELM327 device from the device list"));
 
             return connectionHelpItems;
+        }
+
+        private static IList<IHelpItem> HomeHelpItems()
+        {
+            IList<IHelpItem> homeHelpItems = new List<IHelpItem>();
+
+            homeHelpItems.Add(new HelpItem("Codes", "Start here. If you see your \"Check Engine Light\" is turned on, see if there are any codes present and hit clear codes."));
+            homeHelpItems.Add(new HelpItem("Data", "Check individual components for unexpected values. Graphs will change colour if an unexpected value is detected."));
+            homeHelpItems.Add(new HelpItem("Connection", "Connect to a different ELM327 device or vehicle."));
+            homeHelpItems.Add(new HelpItem("Email", "Send an email report of what you see on screen to your mechanic."));
+            homeHelpItems.Add(new HelpItem("Help", "View specific hints and tips for how to use each individual module ."));
+
+            return homeHelpItems;
         }
     }
 }
