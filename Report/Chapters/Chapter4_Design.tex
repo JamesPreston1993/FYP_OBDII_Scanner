@@ -21,11 +21,11 @@
 	}	
 	
 	\paragraph{}{
-	The UI layer represents the user interface and user input handling functionality of the application. Gesture controls, such as swiping, scrolling and pinching are handled and buttons presses are hooked up to the appropriate functionality in the host or module. To port the application to another system, the developer only creates a new UI layer, as the UI is completely abstracted from the core functionality of the system.
+	The UI layer represents the user interface and user input handling functionality of the application. Gesture controls, such as swiping, scrolling and pinching are handled and buttons presses are hooked up to the appropriate functionality in the host or module. To port the application to another system, the developer creates a new UI layer, as the UI is completely abstracted from the core functionality of the system.
 	}	
 	
 	\paragraph{}{
-	The host acts as a connection between the core functionality of the application and the UI and user input. The user interface connects to the host, which grants access to the modules that are registered with it. The modules are registered with the host on initialization of the application. This means new modules can be created and added to the application, without requiring a new build.
+	The host, seen in figure \ref{code:HostInterface}, acts as a connection between the core functionality of the application and the UI and user input. The user interface connects to the host, which grants access to the modules that are registered with it. The modules are registered with the host on initialization of the application. This means new modules can be created and added to the application, with relative ease.
 	}
 		
 	\begin{figure}[h]
@@ -44,7 +44,7 @@ public interface IHost : INotifyPropertyChanged
 	\end{figure}
 	
 	\paragraph{}{
-	The module represents the model in the MVVM pattern and a core function, such as a mode, in the system. The module contains human readable data that is retrieved from the vehicle. In order to obtain this data, the module must send a request to its communication system. The communication system, which is a part of each module, will take this request and convert it into the corresponding command that the ELM327 device and ECU can understand. It will then send this new request to the connection layer and await a response. This response, in the form of raw hexadecimal data, will be converted into a human readable value by the communication system and returned to the module, ready to be displayed or manipulated.
+	The module, seen in figure \ref{code:ModuleInterface}, represents the model in the MVVM pattern and a core function, such as a mode, in the system. The module contains human readable data that is retrieved from the vehicle. In order to obtain this data, the module must send a request to its communication system. The communication system, which is a part of each module, will take this request and convert it into the corresponding command that the ELM327 device and ECU can understand. It will then send this new request to the connection layer and await a response. This response, in the form of raw hexadecimal data, will be converted into a human readable value by the communication system and returned to the module, ready to be displayed or manipulated.
 	}
 	\begin{figure}[h]
 		\begin{lstlisting}
@@ -68,7 +68,7 @@ public interface IModule : INotifyPropertyChanged
 	\end{figure}
 	
 	\paragraph{}{
-	The connection layer represents the low level communication with the OBDII device, such as the ELM327 device. This layer handles the initialization and configuration of the connected device, as well as error handling, such as when the device is disconnected during a procedure or becomes out of range. All requests and responses are handled in hexadecimal format in this layer, allowing the use of raw data to be abstracted from the other layers.
+	The connection layer represents the low level communication with the OBDII device, such as the ELM327 device. This layer handles the initialization and configuration of the connected device, as seen in figure \ref{code:ConnectionInterface}, as well as error handling, such as when the device is disconnected during a procedure or becomes out of range. All requests and responses are handled in hexadecimal format in this layer, allowing the use of raw data to be abstracted from the other layers.
 	%Initialization, Setup of device, Handles raw data
 	}
 	\begin{figure}[h]
@@ -152,7 +152,7 @@ public interface IDataConnection : INotifyPropertyChanged
 		\end{figure}
 		
 		\paragraph{}{
-		The first stage, seen in figure \ref{fig:DTCPage1}, was designed to be minimalist in nature. This is because the DTC page will be one of the first technical screens the user will encounter, so the design must minimise cognitive load on the user. The user can see, at a glance, the number of DTCs and their severity, before viewing additional information. 		
+		The first stage, seen in figure \ref{fig:DTCPage1}, was designed to be minimalist in nature. This is because the DTC page will be one of the first technical screens the user will encounter, so the design must minimise cognitive load for the user. The user can see, at a glance, the number of DTCs and their severity, before viewing additional information. 		
 		%[CODE LIST]
 		}
 		\paragraph{}{
@@ -188,12 +188,10 @@ public interface IDataConnection : INotifyPropertyChanged
 		%[TEXT VIEWS] - Considered dials like similar applications
 		}
 		\paragraph{}{
-		However, this approach would lead to the user interface becoming cluttered if a large number of items were on-screen, leading to decreased usability. Instead, a list format was considered, as seen on the left side of figure \ref{fig:DataPage1}. This allowed for a minimalist design that would remain consistent when the number of available pids increased. This approach was eventually selected, as it achieved the same goal of displaying the current value for a pid in a more simplistic and user friendly manner.
+		However, this approach would lead to the user interface becoming cluttered if a large number of items were on-screen, leading to decreased usability. Instead, a list format was considered, as seen on the left side of figure \ref{fig:DataPage1}. This allowed for a minimalistic design that would remain consistent when the number of available pids increased. This approach was eventually selected, as it achieved the same goal of displaying the current value for a pid in a more simplistic and user friendly manner.
 		}
 		\paragraph{}{
-		The key aspect of the data module user interface is the graphing of data values. By graphing the data, the user can track the values throughout the history of current session. 
-\\		
-		It also provides a more visual representation for the data, allowing the user to identify the maximum, minimum and average values at a glance. As a user may only want to view one particular graph or a subset of graphs, the design allows for user to minimise certain graphs and to set one graph to fullscreen mode for more detailed viewing, as seen in figure \ref{fig:DataPage2}.
+		The key aspect of the data module user interface is the graphing of data values. By graphing the data, the user can track the values throughout the history of the current session. It also provides a more visual representation for the data, allowing the user to identify the maximum, minimum and average values at a glance. As a user may only want to view one particular graph or a subset of graphs, the design allows for user to minimise certain graphs and to set one graph to fullscreen mode for more detailed viewing, as seen in figure \ref{fig:DataPage2}.
 		%[GRAPH VIEWS]
 		% Smart graphing, the design allow for users to minimise graphs and expand them to full screen
 		}
@@ -204,7 +202,7 @@ public interface IDataConnection : INotifyPropertyChanged
 		
 	\subsection{Connection Module}{
 		\paragraph{}{
-		The user interface for connecting to a device was a key component of the project. As this would be the first thing a user would see on loading the application, it had to provide a suitable amount of information, whilst also being minimalist enough as to not confuse the user. There were two design options considered for this user interface. 
+		The user interface for connecting to a device was a key component of the project. As this would be the first screen a user would see on loading the application, it had to provide a suitable amount of information, whilst also being minimalistic enough as to not confuse the user. There were two design options considered for this user interface. 
 		%[Intro]
 		}
 
@@ -255,7 +253,7 @@ public interface IDataConnection : INotifyPropertyChanged
 		\end{figure}
 		
 		\paragraph{}{
-		The home module will offer an overview of the components of the UI Shell and how to navigate them. This will provide less cognitive load for the user when they begin to explore the other modules, as they will be able to easily use the different components through recognition.
+		The home module will offer an overview of the components of the UI Shell and how to navigate them. This will reduce cognitive load for the user when they begin to explore the other modules, as they will be able to easily use the different components through recognition.
 		}
 		
 		\paragraph{}{

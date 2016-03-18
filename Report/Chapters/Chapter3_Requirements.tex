@@ -1,23 +1,23 @@
 \section{Introduction}
 	\paragraph{}{
-	This chapter will outline the functional and non-functional requirements of the project, how they will be supported in the system as well as the processes used to capture these requirements.
+	This chapter will outline the functional and non-functional requirements of the project, how they will be supported in the system and the techniques used to capture these requirements.
 	}		
 
 \section{Techniques for Requirements Capture}	
 	\paragraph{}{
-	Traditional techniques \cite{ReqEng}, such as surveys, interviews and analysis of existing documentation and systems, were used to capture the requirements of the system.
+	Traditional techniques\cite{ReqEng}, such as surveys, interviews and analysis of existing documentation and systems, were used to capture the requirements of the system.
 	%[SQIRO] - Need to get Object Oriented Systems Analysis and Design using UML
 	}
 	\paragraph{}{
-	The process began with background reading into the domain, as outlined in chapter 2. By analysing what functions were available under the OBDII standards, as well as the functions supported by the ELM327 device, it helped to create a base line for the functional requirements of the project.
+	The process began with background reading into the domain, as outlined in chapter 2. This involved analysing what functions were available under the OBDII standards, as well as the functions supported by the ELM327 device. Overall, this helped to create a base line for the functional requirements of the project.
 	%[Reading - what modes are available, what other tools are there etc.]
 	}	
 	\paragraph{}{
-	Once a list of available functions was compiled, a number of similar applications were analysed. This involved [checking] which functions were implemented, as well as how they were implemented. The functions that each of these applications supported can be found in table \ref{tab:Features} in chapter 2. By analysing how a function was implemented, it served to highlight which non-functional requirements the application supported and which ones our system should support.
+	Once a list of available functions was compiled, a number of similar applications were analysed. This involved finding which functions were implemented, as well as how they were implemented. The functions that each of these applications supported can be found in table \ref{tab:Features} in chapter 2. By analysing how a function was implemented, it served to highlight which non-functional requirements these similar applications supported and which ones the system should support.
 	%[Reviewed similar applications]
 	}
 	\paragraph{}{
-	As the system involved communication with vehicles, it was important to interview people within the motor industry. These people included family members, who have extensive experience in the motor industry, and colleagues that I met during my co-operative education. These interviews were informal in nature and the participants were asked what they valued most in a diagnostic scan tool. This served to determine what the system needed from a technical aspect, such as which functions to include in order to effectively diagnose a vehicle.  
+	As the system involved communication with vehicles, it was important to interview people within the motor industry. These people included family members, who have extensive experience in the motor industry, and colleagues that I met during my co-operative education. These interviews were qualitative in nature and the participants were asked what they valued most in a diagnostic scan tool. This served to determine what the system needed from a technical aspect, such as which functions to include in order to effectively diagnose a vehicle.  
 	%[Spoke to people in industry - Co-op and family]
 	}
 	\paragraph{}{
@@ -57,9 +57,9 @@
 		}
 	\subsection{Security}
 		\paragraph{}{
-		Security can be defined as "a measure of the system's ability to resist unauthorized usage while still providing its services to legitimate users" \cite{SAinP}. As this application is communicating directly with a vehicle, there may be a danger of damage being done to the vehicle and its components. It must be ensured that no harm can be caused by accidental misuse of the application. This will include proper handling of communication, in the event that a user unplugs the ELM327 device during a procedure, as well as providing the user with information on how to use the application correctly.
+		Security can be defined as "a measure of the system's ability to resist unauthorized usage while still providing its services to legitimate users"\cite{SAinP}. As this application is communicating directly with a vehicle, there may be a danger of damage being done to the vehicle and its components. It must be ensured that no harm can be caused by accidental misuse of the application. This will include proper handling of communication, in the event that a user unplugs the ELM327 device during a procedure, as well as providing the user with information on how to use the application correctly.
 		}		
 	\subsection{Usability}
 		\paragraph{}{
-		Usability is concerned with how easy it is for the user to accomplish a desired task and the user support the system provides \cite{SAinP}. The application must be intuitive and easy to use for someone with limited technical knowledge of vehicles. This will include limiting the use of technical terms and creating a coherent UI. The application will follow Microsoft's user experience guidelines, so that users of other Windows 10 application will find it easy to use.
+		Usability is concerned with how easy it is for the user to accomplish a desired task and the user support the system provides\cite{SAinP}. The application must be intuitive and easy to use for someone with limited technical knowledge of vehicles. This will include limiting the use of technical terms and creating a coherent UI. The application will follow Microsoft's user experience guidelines, so that users of other Windows 10 application will find it easy to use.
 		}

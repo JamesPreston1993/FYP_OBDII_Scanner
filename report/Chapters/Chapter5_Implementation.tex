@@ -48,7 +48,7 @@
 \section{Bluetooth Communication}
 	\subsection{Description}
 		\paragraph{}{
-		As the prototype had implemented a subset of the functionality for the communication, it was initially thought that this code code be updated and expanded to create the Bluetooth connection layer. However, during the development process, two key issues became evident, as detailed in section \ref{ssec:BluetoothAPI}. Firstly, the 32Feet Bluetooth API was not supported for UWP applications. Secondly, while UWP applications have their own Bluetooth API, it does not work with the ELM327 simulation software.
+		As the prototype had implemented a subset of the functionality for the communication, it was initially thought that this code could be updated and expanded to create the Bluetooth connection layer. However, during the development process, two key issues became evident, as detailed in section \ref{ssec:BluetoothAPI}. Firstly, the 32Feet Bluetooth API is not supported for UWP applications. Secondly, while UWP applications have their own Bluetooth API, it does not work with the ELM327 simulation software.
 		%Implementation of the Bluetooth communication layer of the application began immediately after the setup of the development environment. The goal of this stage was to implement generic Bluetooth communication, such as establishing a connection with the ELM327 device and configuring it, rather than working on module specific communication, such as converting responses. The configuration steps involved resetting the device, allowing the device to auto-detect the communication protocol, turning off echoing of messages and allowing for long responses.
 		}
 		\paragraph{}{
@@ -167,12 +167,12 @@ return response;
 			\paragraph{Occurred during:}
 			Week 1
 			\paragraph{Time taken to resolve:}
-			One week to find a workaround and half a week to set up ECU.
+			One week to find a workaround and half a week to set up the ECU test bench.
 			\paragraph{Attempts to resolve:}
 			Several attempts to contact the developer were made through emails and the Google Play Store, where the application was bought. Unfortunately, no response was received and a decision was reached that the application could not be utilised for this project, as it seemed highly unlikely that the application would be updated to support the Bluetooth API. 
 %Looked for other apps
 			\paragraph{Solution:}
-			To simulate connection to a vehicle, an ECU test bench was created as outlined in section \ref{sec:DeveEnv}. This had an impact on the timeline of the project, as a number of components, such as an ECU and a wiring diagram, had to be sourced as well as assembling the test bench itself. Ultimately, the ECU test bench had the advantage of extensibility over the ECU simulation software, as the latter only supported one protocol, whereas the former can be extended with new ECUs that support various protocols.
+			To simulate connection to a vehicle, an ECU test bench was created as outlined in section \ref{sec:DeveEnv}. This had an impact on the timeline of the project, as a number of components, such as an ECU and a wiring diagram, had to be sourced and assembled. Ultimately, the ECU test bench had the advantage of extensibility over the ECU simulation software, as the latter only supported one protocol, whereas the former can be extended with new ECUs that support various protocols.
 		}
 		\label{ssec:SimSoftware}		
 
@@ -244,7 +244,7 @@ return codes;
 		}
 		
 		\paragraph{}{
-		Unfortunately, due to a number of constraints, additional information for DTCs was not be implemented in the final product. As the project progressed, it became evident that there would not be enough time to gather information on the causes and solutions of each DTC. This was because of the large amount of DTCs, which exceeds four thousand. Some consideration was made for implementing a subset of these DTCs, but given the time frame, it would not be possible to find a reputable source for this information, gain permission for its use and validate the information for all DTCs.
+		Unfortunately, due to a number of constraints, additional information for DTCs could not be implemented in the final product. As the project progressed, it became evident that there would not be enough time to gather information on the causes and solutions of each DTC. This was because of the large amount of DTCs, which exceeds four thousand. Some consideration was made for implementing a subset of these DTCs, but given the time frame, it would not be possible to find a reputable source for this information, gain permission for its use and validate the information for all DTCs.
 		% DTC Additional Information
 		}						
 		
@@ -256,7 +256,7 @@ return codes;
 		}
 		
 		\paragraph{}{
-		The first stage of the data module is to compile a list of supported pids. The process for acquiring all supported pids is outlined in section \ref{ssec:Data}. However, as seen in figure \ref{code:SupportedPids}, the data module only acquires the first two sets of supported pids, totalling a maximum of sixty four supported pids. This was due to the potential performance issues that may arise from rendering too many graphs and also due to the limited timeframe of the project, as it would require conversion code to be written for each pid.
+		The first stage of the data module is compiling a list of supported pids. The process for acquiring all supported pids is outlined in section \ref{ssec:Data}. However, as seen in figure \ref{code:SupportedPids}, the data module only acquires the first two sets of supported pids, totalling a maximum of sixty four supported pids. This was due to the potential performance issues that may arise from rendering too many graphs and also due to the limited timeframe of the project, as it would require conversion code to be written for each pid.
 		%Supported pids as outlined in section \ref{ssec:Data}
 		%Get supported pids
 		}
@@ -377,13 +377,13 @@ private static ValueType GetValueType(IPid pid, IDataItem item)
 	\subsection{Issues}{		
 		\subsubsection{Issue 1: Data collection speed}{
 			\paragraph{Description:}
-			When gathering data samples, it was discovered that the time taken to send a request and receive a response was around 300 milliseconds per request. When a large number of pids are request, it took around seven seconds per sample.
+			When gathering data samples, it was discovered that the time taken to send a request and receive a response was around 300 milliseconds per request. When a large number of pids are requested, it took around seven seconds per sample.
 			\paragraph{Occurred during:}
 			Week 12
 			\paragraph{Time taken to resolve:}
 			Approximately three weeks
 			\paragraph{Attempts to resolve:}
-			The application was then tested with other vehicle protocols to no avail. A number of attempts were also made to re-factor the Bluetooth communication system. However, these attempts did not see any improvement in performance.
+			The application was tested with other ECUs and vehicle protocols to see if the issue was with the test bench. A number of attempts were also made to re-factor the Bluetooth communication system. However, these attempts did not see any improvement in performance.
 			%[NUM PIDS LIMITED]
 			\paragraph{Solution:}
 			A solution was found after more research was conducted on the ELM327 device. By default, the device will wait 200 milliseconds before returning a response. To bypass this, the user can pass a numerical parameter with each request, that denotes how many bytes are expected in the response. Once the device has collected this number of bytes, it will skip the waiting period and return the response immediately. This decreased the response time from 300 milliseconds to 170 milliseconds, which was a huge improvement, but the data collection was still slow.
@@ -406,11 +406,11 @@ private static ValueType GetValueType(IPid pid, IDataItem item)
 
 \section{Simulated Communication}
 		\paragraph{}{
-		While implementing the data module, a potential problem was discovered. While the ECU test bench sent back data that could be graphed, the values were static and could not be changed. This would make it difficult to test the data graphing, as it would require communication with a live vehicle to gather dynamic data values. Instead, a simulation connection class was created.
+		While implementing the data module, a potential problem was discovered. While the ECU test bench sent back data that could be graphed, the values were static and could not be changed. This made it difficult to test the data graphing, as it required communication with a live vehicle to gather dynamic data values. Instead, a simulation connection class was created.
 		%[Preparation for data module, acts like an ECU, behaves like real world (time, responses etc)]
 		}
 		\paragraph{}{
-		The simulation connection class implements the IDataConnection interface seen in figure \ref{code:ConnectionInterface}, but instead of connecting to a Bluetooth device, it handles the requests and returns a response in the format that the ELM327 would use, sending response in hexadecimal format. Because of this, the simulation connection more accurately represents communication with a vehicle and did not require a refactor of the code in the communication layer.
+		The simulation connection class implements the IDataConnection interface seen in figure \ref{code:ConnectionInterface}, but instead of connecting to a Bluetooth device, it handles the requests and returns a response in the format that the ELM327 would use, sending responses in hexadecimal format. Because of this, the simulation connection more accurately represents communication with a vehicle and did not require a refactor of the code in the communication system layer.
 		}	
 		\begin{figure}[h]
 			\begin{lstlisting}
@@ -447,7 +447,7 @@ if (command.StartsWith("01"))
 		\end{figure}
 
 		\paragraph{}{
-		As shown in the code fragment seen  in figure \ref{code:SimConnectionData}, a small subset of pids are supported, and each of these pids will return data when a request is made. As each pid has a maximum and minimum possible value, a random value between these two will be generated and this will be the value that the user sees on-screen. The value  is passed through a conversion equation, in reverse order to convert it to hexadecimal format. Finally, the response header is prefixed to this hexadecimal message and is returned to the caller. A more detailed description of how these conversions work can be found in section \ref{ssec:DataModuleDesc}.
+		As shown in the code fragment seen  in figure \ref{code:SimConnectionData}, a small subset of pids are supported, and each of these pids will return data when a request is made. As each pid has a maximum and minimum possible value, a random value between these two will be generated and this will be the value that the user sees on-screen. The value  is passed through a conversion equation, as discussed in section \ref{ssec:DataModuleDesc}, in reverse order to convert it to hexadecimal format. Finally, the response header is prefixed to this hexadecimal message and is returned to the caller.
 		}
 		\paragraph{}{
 		Due to the success of the simulation connection with respect to the data module, it was expanded to work with the DTC module, returning a set of current, pending and permanent DTCs, as seen in figure \ref{code:SimConnectionDTC}.
@@ -522,11 +522,11 @@ return availableDevices;
 \section{Android Port}
 	\subsection{Description}		
 		\paragraph{}{
-		A key aspect of the project is the extensibility and portability of the system. To prove this, the system was ported from Windows 10 to Android using the Xamarin framework. Due to time constraints, only a subset of features were made available on Android, but can be easily implemented in future iterations.
+		A key aspect of the project is the extensibility and portability of the system. To prove this, the system was ported from Windows 10 to Android using the Xamarin framework. Due to time constraints, only a subset of features were made available on Android, but subsequent features can be easily implemented in future iterations.
 		%[INTRO]
 		}
 		\paragraph{}{
-		As the project was initially developed as a UWP application, the platform specific code had to be separated from the shared code. The shared code corresponds to the host, module and communication layers in the system, where as the platform specific code corresponds to the UI and Bluetooth layers. The core code was put into a Portable Class Library (PCL), a library that can be used across multiple platforms, such as Windows 8 and 8.1 applications, WPF applications and application developed using Xamarin.
+		As the project was initially developed as a UWP application, the platform specific code had to be separated from the shared code. The shared code corresponds to the host, module and communication layers in the system, where as the platform specific code corresponds to the UI and Bluetooth layers. The core code was put into a Portable Class Library (PCL), a library that can be used across multiple platforms, such as Windows 8 and 8.1 applications, WPF applications and applications developed using Xamarin.
 		%[PORT PREP + PCL]
 		}
 		
@@ -607,7 +607,7 @@ public async Task<string> SendCommand(string command)
 		\end{figure}
 		
 		\paragraph{}{
-		The second stage of porting the system was creating a new UI layer. Figure \ref{code:AndroidCodeUI} shows the implementation for the DTC Module user interface. As the system utilises MVVM, where viewmodel notifies of any property changes, the user interface only needs to subscribe to these notifications and perform the relevant actions. In the case of the DTC user interface, the user interface listens for changes to the module viewmodel and redraws the lists of DTCs when it is notified.
+		The second stage of porting the system was creating a new UI layer. Figure \ref{code:AndroidCodeUI} shows the implementation for the DTC Module user interface. As the system utilises MVVM, where the viewmodel notifies of any property changes, the user interface only needs to subscribe to these notifications and perform the relevant actions. In the case of the DTC user interface, the user interface listens for changes to the module viewmodel and redraws the lists of DTCs when it is notified.
 		%[UI + CODE + MVVM]
 		}
 		\begin{figure}[h]
@@ -647,14 +647,14 @@ private void RaiseViewModelChanged(object sender, PropertyChangedEventArgs e)
 
 \section{Help Information}
 		\paragraph{}{
-		Once the majority of modules had been implemented, it became clear that the way the modules instructed the end user on how to use them was not optimal. Firstly, these instructions were intrusive and took up valuable screen real estate. This would be an issue when the application is deployed on devices smaller screens, such as mobile phones. Secondly, over time, the end user will learn to use the application without instructions, at which point the on-screen instructions become redundant.
+		Once the majority of modules had been implemented, it became clear that the way the modules instructed the end user on how to use them was not optimal. Firstly, these instructions were intrusive and took up valuable screen real estate. This would be an issue when the application is deployed on devices with smaller screens, such as mobile phones. Secondly, over time, the end user will learn to use the application without instructions, at which point the on-screen instructions become redundant.
 		%[Moving help info out of other modules, help shouldn't interrupt modules, UI matches on both platforms]
 		}
 		\paragraph{}{
 		A decision was made to re-factor the application so that the instructions were not integrated with the user interface of the module. Instead, the solution was to provide a means of viewing instructions that was separate from the module, but could be accessed without leaving the current module. This was achieved by implementing a pop out window on the right hand side of the screen.
 		}
 		\paragraph{}{
-		The Module interface (see figure \ref{code:ModuleInterface}) was re-factored to include a list of help items, with each help item having a title and a description. As seen in figure \ref{code:HelpItem}, which shows the implementation of help items for the connection module, the help items are created by a factory method and assigned to a module.
+		The Module interface (see figure \ref{code:ModuleInterface}) was re-factored to include a list of help items, with each help item having a title and a description. As seen in figure \ref{code:HelpItem}, which shows the implementation of help items for the connection module, the help items are created by a factory method and assigned to a module. The help items are then displayed by clicking the help icon at the top of the screen.
 		}
 		
 		\begin{figure}[h]
@@ -694,13 +694,13 @@ public static class HelpItemFactory
 	}	
 }
 			\end{lstlisting}
-			\caption{Help item interface and example of how they are implemented for the connection module}
+			\caption{Help item interface and an example of how they are implemented for the connection module}
 			\label{code:HelpItem}
 		\end{figure}
 	\newpage
 \section{Home Module}
 		\paragraph{}{
-		The home module is the least technical of all the modules in the system. It serves as a means of teaching how to utilise the various functions of the application. The user can find a list of functions that are available to use, as well as how and when to use them. This helps to guide new users on where to start when they first load the application.
+		The home module is the least technical of all the modules in the system. It serves as a means of teaching users how to utilise the various functions of the application. The user can find a list of functions that are available to use, as well as how and when to use them. This helps to guide new users on where to start when they first load the application.
 		}
 				
 		\paragraph{}{
@@ -714,7 +714,7 @@ public static class HelpItemFactory
 		%[INTRO]
 		}
 		\paragraph{}{
-		The module interface was re-factored to include a formatted message that can be sent by email. Figure \ref{code:EmailCodes} shows the implementation for the DTC module, listing all DTCs that have been found. The email system was only implemented for the DTC Module as the other non-technical modules do not require aid from a mechanic. The only other technical module, the data module, requires aid from a mechanic, but sending the data values for each pid would not be sufficient information for the mechanic to make a preliminary diagnosis.
+		The module interface was re-factored to include a formatted message that can be sent by email. Figure \ref{code:EmailCodes} shows the implementation for the DTC module, listing all DTCs that have been found. The email system was only implemented for the DTC Module as the other non-technical modules do not require aid from a mechanic. The only other technical module, the data module, does require aid from a mechanic, but sending the data values for each pid would not be sufficient information for the mechanic to make a preliminary diagnosis.
 		%Codes only, Module refactor
 		}
 
@@ -746,7 +746,7 @@ public string FormatForEmail()
 		\end{figure}	
 		
 		\paragraph{}{
-		Rather than sending an email directly from the application, the emailing system opens the users default email application with a pre-set subject and body for the email, as seen in figure \ref{code:Email}. This allows the user to select which account to send the email from as well as the recipients of the email. This provides an added security for the application, as their email credentials are not stored in the application and they can validate the content of the email.
+		Rather than sending an email directly from the application, the emailing system opens the users default email application with a pre-set subject and body for the email, as seen in figure \ref{code:Email}. This allows the user to select which account to send the email from as well as the recipients of the email. This provides increased security for the application, as the user's email credentials are not stored in the application and they can validate the content of the email.
 		%added security as UWP lets user pick their email address and recipient 		
 		}		
 		
