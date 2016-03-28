@@ -60,7 +60,6 @@ namespace VSDACore.Modules.Data
                     A = Convert.ToInt32(Convert.ToByte(request.Substring(0, 2), 16));
                     value = (A - 128) * (100 / 128);
                     stringValue = value.ToString();
-                    // Do
                     break;
 
                 // (A * 100) / 255
@@ -69,16 +68,6 @@ namespace VSDACore.Modules.Data
                 case "2C":
                 case "2E":
                 case "2F":
-                case "45":
-                case "47":
-                case "48":
-                case "49":
-                case "4A":
-                case "4B":
-                case "4C":
-                case "52":
-                case "5A":
-                case "5B":
                     A = Convert.ToInt32(Convert.ToByte(request.Substring(0, 2), 16));
                     value = (A * 100) / 255;
                     stringValue = value.ToString();
@@ -88,8 +77,6 @@ namespace VSDACore.Modules.Data
                 // A - 40
                 case "05":
                 case "0F":
-                case "46":
-                case "5C":
                     A = Convert.ToInt32(Convert.ToByte(request.Substring(0, 2), 16));
                     value = A - 40;
                     stringValue = value.ToString();
@@ -140,8 +127,6 @@ namespace VSDACore.Modules.Data
                 case "1F":
                 case "21":
                 case "31":
-                case "4D":
-                case "4E":
                     A = Convert.ToInt32(Convert.ToByte(request.Substring(0, 2), 16));
                     B = Convert.ToInt32(Convert.ToByte(request.Substring(2, 2), 16));
                     value = (A * 256) + B;
@@ -150,10 +135,77 @@ namespace VSDACore.Modules.Data
 
                 // ((A * 256) + B) * 0.079
                 case "22":
+                    A = Convert.ToInt32(Convert.ToByte(request.Substring(0, 2), 16));
+                    B = Convert.ToInt32(Convert.ToByte(request.Substring(2, 2), 16));
+                    value = ((A * 256) + B) * 0.079;
+                    stringValue = value.ToString();
                     break;
 
-                    //TODO: Other conversions
+                // A / 200
+                case "14":
+                case "15":
+                case "16":
+                case "17":
+                case "18":
+                case "19":
+                case "1A":
+                case "1B":
+                    A = Convert.ToInt32(Convert.ToByte(request.Substring(0, 2), 16));
+                    value = A / 200;
+                    stringValue = value.ToString();
+                    break;
+
+                // (8 / 65536) * (256 * C + D)
+                case "24":
+                case "25":
+                case "26":
+                case "27":
+                case "28":
+                case "29":
+                case "2A":
+                case "2B":
+                    C = Convert.ToInt32(Convert.ToByte(request.Substring(4, 2), 16));
+                    D = Convert.ToInt32(Convert.ToByte(request.Substring(6, 2), 16));
+                    value = (8 / 65536) * (256 * C + D);
+                    stringValue = value.ToString();
+                    break;
+
+                // ((256 * C + D) / 256) - 128
+                case "34":
+                case "35":
+                case "36":
+                case "37":
+                case "38":
+                case "39":
+                case "3A":
+                case "3B":
+                    C = Convert.ToInt32(Convert.ToByte(request.Substring(4, 2), 16));
+                    D = Convert.ToInt32(Convert.ToByte(request.Substring(6, 2), 16));
+                    value = ((256 * C + D) / 256) - 128;
+                    stringValue = value.ToString();
+                    break;
+
+                // 10 * ((256 * A) + B)
+                case "23":
+                    A = Convert.ToInt32(Convert.ToByte(request.Substring(0, 2), 16));
+                    B = Convert.ToInt32(Convert.ToByte(request.Substring(2, 2), 16));
+                    value = 10 * ((256 * A) + B);
+                    stringValue = value.ToString();
+                    break;
+
+                // (((256 * A) + B) / 10) - 40
+                case "3C":
+                case "3D":
+                case "3E":
+                case "3F":
+                    A = Convert.ToInt32(Convert.ToByte(request.Substring(0, 2), 16));
+                    B = Convert.ToInt32(Convert.ToByte(request.Substring(2, 2), 16));
+                    value = 10 * (((256 * A) + B) / 10) - 40;
+                    stringValue = value.ToString();
+                    break;
+
             }
+
             IDataItem dataItem = new DataItem(value, stringValue);
             dataItem.Type = GetValueType(pid, dataItem);
             return dataItem;
