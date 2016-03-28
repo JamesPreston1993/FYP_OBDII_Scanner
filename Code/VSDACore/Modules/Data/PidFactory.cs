@@ -10,18 +10,16 @@ namespace VSDACore.Modules.Data
     {
         public static IPid CreatePid(string pidHex)
         {
-            string name = "No name";
+            string name = "Unsupported pid";
             double minValue = 0;
             double maxValue = 0;
 
             switch (pidHex)
             {
-                // NOTE: Only a subset of PID are included (01 - 5F) and need to be confirmed
-                // Names = 01 - 5F
-                // Min & Max Values = 01 - 33
-                case "01": name = "Monitor status since DTCs cleared"; break;
-                case "02": name = "Freeze DTC"; break;
-                case "03": name = "Fuel system status"; break;
+                // 01 - 1F             
+                //case "01": name = "Monitor status since DTCs cleared"; break;
+                //case "02": name = "Freeze DTC"; break;
+                //case "03": name = "Fuel system status"; break;
                 case "04": name = "Calculated engine load value"; minValue = 0; maxValue = 100; break;
                 case "05": name = "Engine coolant temperature"; minValue = -40; maxValue = 215; break;
                 case "06": name = "Short term fuel % trim—Bank 1"; minValue = -100; maxValue = 99.22; break;
@@ -29,43 +27,40 @@ namespace VSDACore.Modules.Data
                 case "08": name = "Short term fuel % trim—Bank 2"; minValue = -100; maxValue = 99.22; break;
                 case "09": name = "Long term fuel % trim—Bank 2"; minValue = -100; maxValue = 99.22; break;
                 case "0A": name = "Fuel pressure"; minValue = 0; maxValue = 765; break;
-                case "0B": name = "Intake manifold absolute pressure"; minValue = 0; maxValue = 255; break;
-                //case "0C": name = "Engine RPM"; minValue = 0; maxValue = 16383.75; break;
+                case "0B": name = "Intake manifold absolute pressure"; minValue = 0; maxValue = 255; break;                
                 case "0C": name = "Engine RPM"; minValue = 0; maxValue = 16384; break;
                 case "0D": name = "Vehicle speed"; minValue = 0; maxValue = 255; break;
                 case "0E": name = "Timing advance"; minValue = -64; maxValue = 63.5; break;
                 case "0F": name = "Intake air temperature"; minValue = -40; maxValue = 215; break;
                 case "10": name = "MAF air flow rate"; minValue = 0; maxValue = 655.35; break;
                 case "11": name = "Throttle position"; minValue = 0; maxValue = 100; break;
-                case "12": name = "Commanded secondary air status"; break;
-                case "13": name = "Oxygen sensors present"; break;
-                // Problem Area Start
-                case "14": name = "Bank 1, Sensor 1: Oxygen sensor voltage, Short term fuel trim"; break;
-                case "15": name = "Bank 1, Sensor 2: Oxygen sensor voltage, Short term fuel trim"; break;
-                case "16": name = "Bank 1, Sensor 3: Oxygen sensor voltage, Short term fuel trim"; break;
-                case "17": name = "Bank 1, Sensor 4: Oxygen sensor voltage, Short term fuel trim"; break;
-                case "18": name = "Bank 2, Sensor 1: Oxygen sensor voltage, Short term fuel trim"; break;
-                case "19": name = "Bank 2, Sensor 2: Oxygen sensor voltage, Short term fuel trim"; break;
-                case "1A": name = "Bank 2, Sensor 3: Oxygen sensor voltage, Short term fuel trim"; break;
-                case "1B": name = "Bank 2, Sensor 4: Oxygen sensor voltage, Short term fuel trim"; break;
-                // Problem Area End
-                case "1C": name = "OBD standards this vehicle conforms to"; break;
-                case "1D": name = "Oxygen sensors present"; break;
-                case "1E": name = "Auxiliary input status"; break;
+                //case "12": name = "Commanded secondary air status"; break;
+                //case "13": name = "Oxygen sensors present"; break;                
+                case "14": name = "Bank 1, Sensor 1: Oxygen sensor voltage"; minValue = 0; maxValue = 1.275; break;
+                case "15": name = "Bank 1, Sensor 2: Oxygen sensor voltage"; minValue = 0; maxValue = 1.275; break;
+                case "16": name = "Bank 1, Sensor 3: Oxygen sensor voltage"; minValue = 0; maxValue = 1.275; break;
+                case "17": name = "Bank 1, Sensor 4: Oxygen sensor voltage"; minValue = 0; maxValue = 1.275; break;
+                case "18": name = "Bank 2, Sensor 1: Oxygen sensor voltage"; minValue = 0; maxValue = 1.275; break;
+                case "19": name = "Bank 2, Sensor 2: Oxygen sensor voltage"; minValue = 0; maxValue = 1.275; break;
+                case "1A": name = "Bank 2, Sensor 3: Oxygen sensor voltage"; minValue = 0; maxValue = 1.275; break;
+                case "1B": name = "Bank 2, Sensor 4: Oxygen sensor voltage"; minValue = 0; maxValue = 1.275; break;
+                //case "1C": name = "OBD standards this vehicle conforms to"; break;
+                //case "1D": name = "Oxygen sensors present"; break;
+                //case "1E": name = "Auxiliary input status"; break;
                 case "1F": name = "Run time since engine start"; minValue = 0; maxValue = 65535; break;
+                
+                // 21 - 3F
                 case "21": name = "Distance traveled with malfunction indicator lamp (MIL) on"; minValue = 0; maxValue = 65535; break;
                 case "22": name = "Fuel rail Pressure (relative to manifold vacuum)"; minValue = 0; maxValue = 5177.265; break;
                 case "23": name = "Fuel rail Pressure (diesel, or gasoline direct inject)"; minValue = 0; maxValue = 655350; break;
-                // Problem Area Start
-                case "24": name = "O2S1_WR_lambda(1): Equivalence Ratio Voltage"; break;
-                case "25": name = "O2S2_WR_lambda(1): Equivalence Ratio Voltage"; break;
-                case "26": name = "O2S3_WR_lambda(1): Equivalence Ratio Voltage"; break;
-                case "27": name = "O2S4_WR_lambda(1): Equivalence Ratio Voltage"; break;
-                case "28": name = "O2S5_WR_lambda(1): Equivalence Ratio Voltage"; break;
-                case "29": name = "O2S6_WR_lambda(1): Equivalence Ratio Voltage"; break;
-                case "2A": name = "O2S7_WR_lambda(1): Equivalence Ratio Voltage"; break;
-                case "2B": name = "O2S8_WR_lambda(1): Equivalence Ratio Voltage"; break;
-                // Problem Area End
+                case "24": name = "Oxygen Sensor 1: Voltage"; minValue = 0; maxValue = 8; break;
+                case "25": name = "Oxygen Sensor 2: Voltage"; minValue = 0; maxValue = 8; break;
+                case "26": name = "Oxygen Sensor 3: Voltage"; minValue = 0; maxValue = 8; break;
+                case "27": name = "Oxygen Sensor 4: Voltage"; minValue = 0; maxValue = 8; break;
+                case "28": name = "Oxygen Sensor 5: Voltage"; minValue = 0; maxValue = 8; break;
+                case "29": name = "Oxygen Sensor 6: Voltage"; minValue = 0; maxValue = 8; break;
+                case "2A": name = "Oxygen Sensor 7: Voltage"; minValue = 0; maxValue = 8; break;
+                case "2B": name = "Oxygen Sensor 8: Voltage"; minValue = 0; maxValue = 8; break;
                 case "2C": name = "Commanded EGR"; minValue = 0; maxValue = 100; break;
                 case "2D": name = "EGR Error"; minValue = -100; maxValue = 99.22; break;
                 case "2E": name = "Commanded evaporative purge"; minValue = 0; maxValue = 100; break;
@@ -74,20 +69,21 @@ namespace VSDACore.Modules.Data
                 case "31": name = "Distance traveled since codes cleared"; minValue = 0; maxValue = 65535; break;
                 case "32": name = "Evap. System Vapor Pressure"; minValue = -8192; maxValue = 8192; break;
                 case "33": name = "Barometric pressure"; minValue = 0; maxValue = 255; break;
-                // Problem Area Start
-                case "34": name = "O2S1_WR_lambda(1): Equivalence Ratio Current"; break;
-                case "35": name = "O2S2_WR_lambda(1): Equivalence Ratio Current"; break;
-                case "36": name = "O2S3_WR_lambda(1): Equivalence Ratio Current"; break;
-                case "37": name = "O2S4_WR_lambda(1): Equivalence Ratio Current"; break;
-                case "38": name = "O2S5_WR_lambda(1): Equivalence Ratio Current"; break;
-                case "39": name = "O2S6_WR_lambda(1): Equivalence Ratio Current"; break;
-                case "3A": name = "O2S7_WR_lambda(1): Equivalence Ratio Current"; break;
-                case "3B": name = "O2S8_WR_lambda(1): Equivalence Ratio Current"; break;
-                // Problem Area End
-                case "3C": name = "Catalyst Temperature Bank 1, Sensor 1"; break;
-                case "3D": name = "Catalyst Temperature Bank 2, Sensor 1"; break;
-                case "3E": name = "Catalyst Temperature Bank 1, Sensor 2"; break;
-                case "3F": name = " Bank 2, Sensor 2Catalyst Temperature"; break;
+                case "34": name = "Oxygen Sensor 1: Current"; minValue = -128; maxValue = 128; break;
+                case "35": name = "Oxygen Sensor 2: Current"; minValue = -128; maxValue = 128; break;
+                case "36": name = "Oxygen Sensor 3: Current"; minValue = -128; maxValue = 128; break;
+                case "37": name = "Oxygen Sensor 4: Current"; minValue = -128; maxValue = 128; break;
+                case "38": name = "Oxygen Sensor 5: Current"; minValue = -128; maxValue = 128; break;
+                case "39": name = "Oxygen Sensor 6: Current"; minValue = -128; maxValue = 128; break;
+                case "3A": name = "Oxygen Sensor 7: Current"; minValue = -128; maxValue = 128; break;
+                case "3B": name = "Oxygen Sensor 8: Current"; minValue = -128; maxValue = 128; break;                
+                case "3C": name = "Catalyst Temperature Bank 1, Sensor 1"; minValue = -40; maxValue = 6513.5; break;
+                case "3D": name = "Catalyst Temperature Bank 2, Sensor 1"; minValue = -40; maxValue = 6513.5; break;
+                case "3E": name = "Catalyst Temperature Bank 1, Sensor 2"; minValue = -40; maxValue = 6513.5; break;
+                case "3F": name = "Catalyst Temperature Bank 2, Sensor 2"; minValue = -40; maxValue = 6513.5; break;
+                default: return null;
+                
+                /*
                 case "41": name = "Monitor status this drive cycle"; break;
                 case "42": name = "Control module voltage"; break;
                 case "43": name = "Absolute load value"; break;
@@ -121,9 +117,9 @@ namespace VSDACore.Modules.Data
                 case "5D": name = "Fuel injection timing"; break;
                 case "5E": name = "Engine fuel rate"; break;
                 case "5F": name = "Emission requirements to which vehicle is designed"; break;
-
+                */
             }
-
+            
             IPid pid = new Pid(pidHex, name, minValue, maxValue);
             return pid;
         }
