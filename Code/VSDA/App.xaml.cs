@@ -14,6 +14,8 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using VSDA.Connection;
 using VSDACore.Modules.Home;
+using Windows.UI.Notifications;
+using Windows.Data.Xml.Dom;
 
 namespace VSDA
 {
@@ -90,7 +92,8 @@ namespace VSDA
                 // parameter                
                 rootFrame.Content = new HostView(new HostViewModel(this.host));
             }
-            // Ensure the current window is active
+
+            // Ensure the current window is active           
             Window.Current.Activate();
         }
 
@@ -114,8 +117,19 @@ namespace VSDA
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: Save application state and stop any background activity
+
+            // Send notification
+            ToastTemplateType toastType = ToastTemplateType.ToastText01;
+            XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(toastType);
+
+            XmlNodeList toastTextElements = toastXml.GetElementsByTagName("text");
+            toastTextElements[0].AppendChild(toastXml.CreateTextNode("Disconnect your ELM327 device before leaving the vehicle!"));
+
+            ToastNotification toast = new ToastNotification(toastXml);
+            ToastNotificationManager.CreateToastNotifier().Show(toast);
+
             deferral.Complete();
-        }
+        }       
+
     }
 }
