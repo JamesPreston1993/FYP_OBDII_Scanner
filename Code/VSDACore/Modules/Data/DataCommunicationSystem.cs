@@ -66,7 +66,8 @@ namespace VSDACore.Modules.Data
                             }
                             string pidHex = hex.ToString("X2");
                             IPid pid = PidFactory.CreatePid(pidHex);
-                            supportedPids.Add(pid);
+                            if(pid != null)
+                                supportedPids.Add(pid);
                         }
                     }
                 }
