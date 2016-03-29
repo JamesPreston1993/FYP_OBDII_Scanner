@@ -29,8 +29,8 @@
             </Grid.RowDefinitions>
             <!-- Header -->
             <TextBlock Grid.Row="0" Text="Data Items" FontSize="24" Margin="10,10,0,0" />
-            <TextBlock Grid.Row="1" Text="[Explanation]" FontSize="18" Margin="10,0,0,0" />
-            <TextBlock Grid.Row="2" Height="20" />
+            <TextBlock Grid.Row="1" Text="Press play to begin reading data" FontSize="18" TextWrapping="WrapWholeWords" Margin="10,0,0,0" MinHeight="30"/>
+            <TextBlock Grid.Row="2" Text="Press an item below to jump to its graph" FontSize="18" TextWrapping="WrapWholeWords" Margin="10,0,0,0" MinHeight="30"/>
 
             <ScrollViewer Background="{StaticResource ModulePageButtonBackground}" Grid.Row="3" VerticalScrollBarVisibility="Auto" VerticalScrollMode="Enabled" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
                 <Grid x:Name="DataList" HorizontalAlignment="Stretch" VerticalAlignment="Top" />
