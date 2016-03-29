@@ -28,7 +28,7 @@ namespace VSDACore.Modules.Data
                 case "09": name = "Long term fuel % trim—Bank 2"; minValue = -100; maxValue = 99.22; break;
                 case "0A": name = "Fuel pressure"; minValue = 0; maxValue = 765; break;
                 case "0B": name = "Intake manifold absolute pressure"; minValue = 0; maxValue = 255; break;                
-                case "0C": name = "Engine RPM"; minValue = 0; maxValue = 16384; break;
+                case "0C": name = "Engine RPM"; minValue = 0; maxValue = 8000; break;
                 case "0D": name = "Vehicle speed"; minValue = 0; maxValue = 255; break;
                 case "0E": name = "Timing advance"; minValue = -64; maxValue = 63.5; break;
                 case "0F": name = "Intake air temperature"; minValue = -40; maxValue = 215; break;
