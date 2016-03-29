@@ -77,9 +77,15 @@ namespace VSDA.UI
                 try
                 {
                     IDataItem currentItem = this.pidViewModel.DataItems.Last();
-                    
+
+                    double itemValue = currentItem.Value;
+                    if (itemValue > this.pidViewModel.MaxPossibleValue)
+                        itemValue = this.pidViewModel.MaxPossibleValue;
+                    else if (itemValue < this.pidViewModel.MinPossibleValue)
+                        itemValue = this.pidViewModel.MinPossibleValue;
+
                     Point point = new Point(this.pidViewModel.CurrentSample * this.xAxisScale,
-                                            this.graphHeight - (this.graphHeight * (currentItem.Value - this.pidViewModel.MinPossibleValue) / this.yAxisRange));
+                                            this.graphHeight - (this.graphHeight * (itemValue - this.pidViewModel.MinPossibleValue) / this.yAxisRange));
                     this.Points.Add(point);
 
                     Color currentColor;
