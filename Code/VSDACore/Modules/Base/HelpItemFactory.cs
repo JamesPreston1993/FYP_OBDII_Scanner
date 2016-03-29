@@ -46,9 +46,11 @@ namespace VSDACore.Modules.Base
             IList<IHelpItem> connectionHelpItems = new List<IHelpItem>();
 
             connectionHelpItems.Add(new HelpItem("What device do I need?", "You will need an ELM327 Bluetooth device (version 1.3 or later)"));
+            connectionHelpItems.Add(new HelpItem("Where do I connect the device?", "The ELM327 is connected to the OBDII port. This a 16 pin port usually found under the steering wheel or in the centre console"));
             connectionHelpItems.Add(new HelpItem("Setup", "1) Enable Bluetooth on your PC / tablet\n" +
-                                                          "2) Pair the ELM327 device with your PC / tablet / phone in your device settings\n" +
-                                                          "3) Select your ELM327 device from the device list"));
+                                                          "2) Plug the ELM327 device into the OBDII port\n" +
+                                                          "3) Pair the ELM327 device with your PC / tablet / phone in your device settings\n" +
+                                                          "4) Select your ELM327 device from the device list"));
 
             return connectionHelpItems;
         }
