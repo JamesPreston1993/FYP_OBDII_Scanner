@@ -41,7 +41,7 @@ namespace VSDAAndroid
 
                 IList<IModule> modules = new List<IModule>();
                 modules.Add(new DTCModule());
-                modules.Add(new DataModule());
+                //modules.Add(new DataModule());
                 modules.Add(new BluetoothModule());                
 
                 IHost host = new Host(modules);
