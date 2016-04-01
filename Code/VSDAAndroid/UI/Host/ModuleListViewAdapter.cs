@@ -1,6 +1,7 @@
 using Android.Content;
 using Android.Views;
 using Android.Widget;
+using VSDACore.Connection;
 using VSDACore.Host;
 
 namespace VSDAAndroid.UI.Host
@@ -48,7 +49,8 @@ namespace VSDAAndroid.UI.Host
             view.Click += delegate
             {
                 // Set Module
-                this.host.CurrentModule = this.host.Modules[position];
+                if(ConnectionManager.Instance.IsInitialized)
+                    this.host.CurrentModule = this.host.Modules[position];
             };
 
             return view;
