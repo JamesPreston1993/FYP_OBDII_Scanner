@@ -27,7 +27,10 @@ namespace VSDAAndroid.UI.Codes
         private void SetAttributes()
         {
             // Text
-            this.Text = string.Format("{0} - {1}", code.Name, code.Description);
+            if(code != null)
+                this.Text = string.Format("{0} - {1}", code.Name, code.Description);
+            else
+                this.Text = "No Codes Found";
             this.TextSize = 20.0f;
 
             // Color

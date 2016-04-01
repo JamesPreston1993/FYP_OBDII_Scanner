@@ -75,20 +75,29 @@ namespace VSDAAndroid.UI.Codes
             // Current Codes
             foreach (ICodeViewModel code in this.module.CurrentCodes)
             {
-                currentCodesLayout.AddView(new CodeView(this.Activity.ApplicationContext, code));
+                this.currentCodesLayout.AddView(new CodeView(this.Activity.ApplicationContext, code));
             }
+
+            if(this.module.CurrentCodes.Count == 0)
+                this.currentCodesLayout.AddView(new CodeView(this.Activity.ApplicationContext, null));
 
             // Pending Codes
             foreach (ICodeViewModel code in this.module.PendingCodes)
             {
-                pendingCodesLayout.AddView(new CodeView(this.Activity.ApplicationContext, code));
+                this.pendingCodesLayout.AddView(new CodeView(this.Activity.ApplicationContext, code));
             }
+
+            if (this.module.PendingCodes.Count == 0)
+                this.pendingCodesLayout.AddView(new CodeView(this.Activity.ApplicationContext, null));
 
             // Permanent Codes
             foreach (ICodeViewModel code in this.module.PermanentCodes)
             {
-                permanentCodesLayout.AddView(new CodeView(this.Activity.ApplicationContext, code));
+                this.permanentCodesLayout.AddView(new CodeView(this.Activity.ApplicationContext, code));
             }
+
+            if (this.module.PermanentCodes.Count == 0)
+                this.permanentCodesLayout.AddView(new CodeView(this.Activity.ApplicationContext, null));
         }
 
         private void RaiseViewModelChanged(object sender, PropertyChangedEventArgs e)
