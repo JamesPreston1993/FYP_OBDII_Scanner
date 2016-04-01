@@ -169,22 +169,36 @@ namespace VSDAAndroid.Connection
                 for (int i = 0; i < charArray.Length; i++)
                     outgoingMessage[i] = (byte)charArray[i];
 
-                // Write
-                await this.socket.OutputStream.WriteAsync(outgoingMessage, 0, outgoingMessage.Length);
-
-                // Read
-                while (!response.Contains(">"))
+                try
                 {
-                    byte[] incomingMessage = new byte[1024];
-                    await this.socket.InputStream.ReadAsync(incomingMessage, 0, incomingMessage.Length);
+                    // Write
+                    await this.socket.OutputStream.WriteAsync(outgoingMessage, 0, outgoingMessage.Length);
 
-                    foreach (byte b in incomingMessage)
+                    // Read
+                    while (!response.Contains(">"))
                     {
-                        if (b != 0)
+                        byte[] incomingMessage = new byte[1024];
+                        await this.socket.InputStream.ReadAsync(incomingMessage, 0, incomingMessage.Length);
+
+                        foreach (byte b in incomingMessage)
                         {
-                            response += Convert.ToChar(b);
+                            if (b != 0)
+                            {
+                                response += Convert.ToChar(b);
+                            }
                         }
-                    }                    
+                    }
+                }
+                catch(Java.IO.IOException)
+                {
+                    response = "No connection";
+                    this.IsInitialized = false;
+                }
+
+                if (response.Contains("UNABLE TO CONNECT"))
+                {
+                    response = "No connection";
+                    this.IsInitialized = false;
                 }
 
                 DateTime endTime = DateTime.Now;
@@ -203,16 +217,16 @@ namespace VSDAAndroid.Connection
         {
             Protocol protocol;
 
-            if (response.Contains("ISO 9141-2"))
+            if (response.Contains("9141-2"))
                 protocol = Protocol.ISO9141;
-            else if (response.Contains("SAE J1850 PWM"))
-                protocol = Protocol.PWM;
-            else if (response.Contains("SAE J1850 VPW"))
-                protocol = Protocol.VPW;
-            else if (response.Contains("ISO 14230-4 KWP"))
+            else if (response.Contains("KWP"))
                 protocol = Protocol.KWP;
-            else if (response.Contains("ISO 15765-4 CAN"))
+            else if (response.Contains("CAN"))
                 protocol = Protocol.CAN;
+            else if (response.Contains("PWM"))
+                protocol = Protocol.PWM;
+            else if (response.Contains("VPW"))
+                protocol = Protocol.VPW;
             else
                 protocol = Protocol.Unknown;
 
