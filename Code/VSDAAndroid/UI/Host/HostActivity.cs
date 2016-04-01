@@ -140,7 +140,8 @@ namespace VSDAAndroid.UI.Host
             }
             else if (e.PropertyName == "IsInitialized")
             {
-
+                if (ConnectionManager.Instance.IsInitialized == false)
+                    Toast.MakeText(this.ApplicationContext, "Device disconnected", ToastLength.Long);
             }
         }
     }
