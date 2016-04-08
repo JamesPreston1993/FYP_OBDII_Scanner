@@ -33,7 +33,7 @@ namespace VSDACore.Modules.Data
         {
             IList<IPid> supportedPids = new List<IPid>();
 
-            for (int i = 0; i < 2; i++)
+            for (byte i = 0x00; i <= 0x20; i += 0x20)
             {
                 string request = await this.dataConnection.SendCommand("01" + (i * 20).ToString("D2") + "1");
 
@@ -55,18 +55,14 @@ namespace VSDACore.Modules.Data
                     {
                         if (binary.Substring(j, 1) == "1")
                         {
-                            byte hex = Convert.ToByte(j + 1);
-                            switch (i)
-                            {
-                                case 0: hex += 0x00; break;
-                                case 1: hex += 0x20; break;
-                                case 2: hex += 0x40; break;
-                                case 3: hex += 0x60; break;
-                                case 4: hex += 0x80; break;
-                            }
+                            // Get the hex value for the pid
+                            byte hex = i;
+                            hex += Convert.ToByte(j + 1);
+
+                            // Create the pid
                             string pidHex = hex.ToString("X2");
-                            IPid pid = PidFactory.CreatePid(pidHex);
-                            if(pid != null)
+                            IPid pid = PidFactory.CreatePid(pidHex);                            
+                            if (pid != null)
                                 supportedPids.Add(pid);
                         }
                     }
