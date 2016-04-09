@@ -1,10 +1,15 @@
 \documentclass[12pt]{report}
-\usepackage[a4paper, left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm]{geometry}
+\usepackage[a4paper, left=3.5cm, right=1.5cm, top=2.5cm, bottom=2.5cm]{geometry}
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{color}
 \usepackage{multirow}
 \usepackage{tabularx}
+\usepackage[export]{adjustbox}
+\usepackage[toc]{appendix}
+\usepackage{pdfpages}
+
+
 \usepackage[hidelinks]{hyperref}
 \hypersetup
 {
@@ -14,7 +19,7 @@
 
 \graphicspath{ {images/} }
 
-
+\newcommand{\comment}[1]{}
 
 % Code fragment formatting
 \definecolor{dkgreen}{rgb}{0,0.6,0}
@@ -43,15 +48,19 @@
 
 \begin{titlepage}
 	\begin{center}		
+		\vspace*{1cm}
+		\begin{figure}[h]
+			\includegraphics[width=0.75\textwidth , center]{UL.png}
+		\end{figure}
 		\vspace*{5cm}
 		\textbf{\LARGE{Vehicle Self Diagnosis Application}}\\
-		\vspace{6cm}
+		\vspace{5cm}
 		\large{		
 		\textbf{Name:} James Preston\\
 		\textbf{ID:} 12159247\\
 		\textbf{Course:} LM110 - Computer Games Development\\
 		\textbf{Supervisor:} Mr. J.J. Collins\\
-		\textbf{Date:} 18\textsuperscript{th} March 2016 \\
+		\textbf{Date:} 14\textsuperscript{th} April 2016 \\
 		}
 	\end{center}
 \end{titlepage}
@@ -79,19 +88,22 @@
 		\input{Chapters/Chapter5_Implementation}
 	\newpage
 
-	\chapter{Testing and Evaluation}
+	\chapter{Evaluation}
 		\input{Chapters/Chapter6_Testing}
 	\newpage
 	
 	\chapter{Discussion and Conclusions}
 		\input{Chapters/Chapter7_Conclusions}		
 	\newpage	
+	
+
+	\begin{thebibliography}{15}
 		
-	\begin{thebibliography}{10}
 		\bibitem{SAE} SAE J1979:  E/E Diagnostic Test Modes (2014) California: SAE International.		
 		\bibitem{Cabala} {\v C}abala, M., Gamec, J. (2012) 'Wireless Real-Time Vehicle Monitoring Based on Android Mobile Device', Acta Electrotechnica et Informatica, 12(4).
 		\bibitem {FAQ} CARB, (2015). Frequently Asked Questions (FAQ) About On-Board Diagnostic II (OBD II) Systems. [online] Arb.ca.gov. Available at: http://www.arb.ca.gov/msprog/obdprog/obdfaq.htm [Accessed 30 Nov. 2015].
 		\bibitem{ELM327} ELM Electronics Inc. (2014) ELM327 AT Commands [online], available: 	http://elmelectronics.com/ELM327/AT{\_}Commands.pdf [accessed 7 Sep 2015].
+		\bibitem{OSMarketShare} Netmarketshare.com. (2016). Operating system market share. [online] Available at: https://www.netmarketshare.com/operating-system-market-share.aspx?qprid=10{\&}qpcustomd=0 [Accessed 8 Apr. 2016].		
 		\bibitem{Fowler} Fowler M. (2003) ‘Layering’, Patterns of Enterprise
 	Application Architecture, Boston: Addison-Wesley, 17{-–}24.
 		\bibitem{MVVM} Likness, J. (2010) Model-View-ViewModel (MVVM) Explained - CodeProject. [online] Codeproject.com. Available at: http://www.codeproject.com/Articles/100175/Model-View-ViewModel-MVVM-Explained [Accessed 30 Nov. 2015].
@@ -100,7 +112,20 @@
 		\bibitem{ReqEng} Nuseibeh, B. and Easterbrook, S., 2000, May. Requirements engineering: a roadmap. In Proceedings of the Conference on the Future of Software Engineering (pp. 35-46). ACM.
 Vancouver
 		\bibitem{Android} Developer.android.com. (2016). Android Developers. [online] Available at: http://developer.android.com/ [Accessed 18 Jan. 2016].
-
-	\end{thebibliography}	
+		\bibitem{Heuristics} Nngroup.com. (2016). 10 Heuristics for User Interface Design: Article by Jakob Nielsen. [online] Available at: https://www.nngroup.com/articles/ten-usability-heuristics [Accessed 15 Feb. 2016].
+		\bibitem{CodeMetrics} Msdn.microsoft.com. (2016). Code Metrics Values. [online] Available at: https://msdn.microsoft.com/en-us/library/bb385914.aspx?f=255{\&}MSPPError=-2147217396 [Accessed 9 Apr. 2016].
+	\end{thebibliography}
+		
 	\newpage
+	
+	\begin{appendix}
+		\chapter{Ethics Application}{
+			\includepdf[pages={1-7}]{FYP-EthicsApplication-12159247.pdf}
+			\label{app:Ethics}
+		}
+		\chapter{Usability Survey}{
+			\includepdf[pages={8-9}]{FYP-EthicsApplication-12159247.pdf}
+			\label{app:Survey}
+		}
+	\end{appendix}
 \end{document}
