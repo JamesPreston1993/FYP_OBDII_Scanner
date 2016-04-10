@@ -3,10 +3,10 @@
 	As of 1996 in the United States and 2000 in the European Union, all vehicles must be fitted with an OBDII system. This system is detailed by a number of standards introduced by the Society of Automotive Engineers (SAE) and the California Air Resource Board (CARB). These standards define the hardware, software and communication requirements of the system.
 	}
 	\paragraph{}{
-	All OBDII compliant vehicles must have an OBDII port (see figure \ref{fig:OBDport}). This a standardized 16 pin connector that is located within three feet of the driver seat, usually under the dashboard. This allows any generic diagnostic scan tool to connect to the vehicle and read data. While the connector is standardized, there are multiple communication protocols used by different manufacturers. These communication protocols provide the same data, but send it to the scan tool in a different format.
+	All OBDII compliant vehicles must have an OBDII port, shown in Figure \ref{fig:OBDport}. This a standardized 16 pin connector that is located within three feet of the driver seat, usually under the dashboard. This allows any generic diagnostic scan tool to connect to the vehicle and read data. While the connector is standardized, there are multiple communication protocols used by different manufacturers. These communication protocols provide the same data, but send it to the scan tool in a different format.
 	}
 	\paragraph{}{
-	The OBDII port provides a connection to the ECU in the vehicle (see figure \ref{fig:ECU}). This is a computer that is connected to sensors and subsystems within the vehicle. These sensors are constantly monitoring the various aspects of the vehicle, such as engine speed and temperature. This data is sent to the ECU, allowing scan tools to read it. If these sensors detect that a data value is outside of the expected range, it may cause the malfunction indicator lamp (MIL) to be illuminated.
+	The OBDII port provides a connection to the ECU in the vehicle, as shown in Figure \ref{fig:ECU}. This is a computer that is connected to sensors and subsystems within the vehicle. These sensors are constantly monitoring the various aspects of the vehicle, such as engine speed and temperature. This data is sent to the ECU, allowing scan tools to read it. If these sensors detect that a data value is outside of the expected range, it may cause the malfunction indicator lamp (MIL) to be illuminated.
 	}
 	\begin{figure}[h]
 		\begin{center}								
@@ -117,10 +117,7 @@
 	\label{ssec:DTC}
 	\subsection{Clear Codes}{
 		\paragraph{}{
-		The clear codes function allows one to clear all emissions-related diagnostic information from the ECU and can be accessed by mode 04. This removes stored and pending DTCs, on-board monitoring test results, oxygen sensor data, freeze frame data and data items pertaining to DTC and MIL information, such as distance travelled while MIL is activated.
-		}
-		\paragraph{}{
-		In some cases, clear codes can turn off the MIL permanently. However, if the underlying issues are still present after the clear codes command has been sent, the MIL will illuminate again.
+		The clear codes function allows one to clear all emissions-related diagnostic information from the ECU and can be accessed by mode 04. This removes stored and pending DTCs, on-board monitoring test results, oxygen sensor data, freeze frame data and data items pertaining to DTC and MIL information, such as distance travelled while MIL is activated. In some cases, clear codes can turn off the MIL permanently. However, if the underlying issues are still present after the clear codes command has been sent, the MIL will illuminate again.
 		}
 	}
 	\label{ssec:ClearCodes}
@@ -165,7 +162,7 @@
 \section{Technology}
 	\subsection{ELM327}
 		\paragraph{}{
-		The ELM327 device (see figure \ref{fig:ELM327}) used for this project is a compact Bluetooth dongle that can connect to the OBDII port on modern vehicles. The device is relatively inexpensive, with the model used in this project costing {\textsterling}12.95. It supports all OBDII protocols and abstracts the data transfer process by including its own set of commands to handle communication.				
+		The ELM327 device, as shown in Figure \ref{fig:ELM327}, used for this project is a compact Bluetooth dongle that can connect to the OBDII port on modern vehicles. The device is relatively inexpensive, with the model used in this project costing {\textsterling}12.95. It supports all OBDII protocols and abstracts the data transfer process by including its own set of commands to handle communication.				
 		}
 		\paragraph{}{
 		The commands that the device supports allow users to either manually or automatically select the protocol, depending on if they know which protocol their vehicle uses. These commands also handle initialization of the device, setting up communication, and formatting the data received from the vehicle. Once the device has been configured, the user can send requests to the vehicle. These requests are in the same format that they are found in the SAE J1979 document, and no further formatting is required.
@@ -186,7 +183,7 @@
 		This project will be deployed on Windows 10 using Microsoft's Universal Windows Platform (UWP). This will allow the application to be deployed on all Windows 10 devices, such as phones, tablets and laptops, using a single code base.
 		}
 		\paragraph{}{
-		Windows is the de facto standard for home users. Most PCs and laptops are sold with Windows pre-installed. Windows 10, the latest iteration of the Windows operating system, is available as a free download to all owners of Windows 7 and Windows 8. Due to it's availability and pricing, it appears that Windows 10 may be a popular choice for home users, and as of October 2015 there are over 110 million devices running Windows 10.
+		Windows is the de facto standard for home users. Most PCs and laptops are sold with Windows pre-installed. Windows 10, the latest iteration of the Windows operating system, is available as a free download to all owners of Windows 7 and Windows 8. Due to it's availability and pricing, it appears that Windows 10 may be a popular choice for home users, and at the time of writing this report there are over 200 million devices running Windows 10 \cite{Win10Nums}.
 		}
 		\paragraph{}{
 		With the release of Windows 10 came the Universal Windows Platform (UWP). This allowed developers to create applications that could be deployed on all Windows 10 devices, without having to create separate code bases. A similar concept was available in Windows 8.1, but it had it's limitations. Deployment was limited to Windows 8.1 phones and Windows 8 tablets/PCs, and there were separate code bases for the phone and desktop/tablet projects, making maintainability and extensibility of the system more complex.
@@ -284,7 +281,7 @@
 	When considering architectural patterns for the project, it made sense to utilise the model-view-viewmodel (MVVM) architectural pattern. The MVVM architectural pattern is based on Martin Fowler's presentation model design pattern and abstracts the user interface's state from it's behaviour. It was introduced by Microsoft in 2005 to be used with the Windows Presentation Foundation (WPF) platform and is used in UWP development.
 			\begin{figure}[h]
 				\begin{center}											
-					\includegraphics[width=\textwidth]{MVVM.png}
+					\includegraphics[width=0.75\textwidth]{MVVM.png}
 					\caption{Model-view-viewmodel diagram}											\label{fig:MVVM}
 				\end{center}
 			\end{figure}
@@ -297,4 +294,10 @@
 	}
 	\paragraph{}{
 	The viewmodel is the liaison between the view and the model. The view may want to update the model, or vice versa, and it must pass these requests to the viewmodel to be handled. For example, a  user may enter text into a field to set a property of the model. This field will be bound to a property on the viewmodel, that will then validate and format the data and pass it back to the model through exposed methods and properties.
-	}	
+	}
+	
+\section{Conclusion}
+	\paragraph{}{
+	At the end of the background research stage, information regarding vehicle communication was collected and choices for technology and architectural patterns were able to be made. Overall, the information gathered during this stage served to inform the design and implementation stages of the project.
+	% Vehicle Communication, Technology and Architectural patterns
+	}
