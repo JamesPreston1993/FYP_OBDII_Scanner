@@ -214,7 +214,35 @@
 	When looking at similar applications, it appeared preferable to look at applications developed using the same technology and deployed on the same platform that the project intended to use. This lead to finding two similar applications available on Windows 10 through the Windows Store. Investigation included finding which modes these applications included, their communication process, the hardware required and the amount of technical information used. These findings are presented in table \ref{tab:Features}.
 	}
 	
-	\begin{table}[h]
+	
+	
+	\subsection{Diagnose your car}
+		\paragraph{}{
+		Diagnose your car is a Windows application available for Windows phones and PCs running Windows 8 and above. It is a paid application, with a free version available that removes some features and includes adverts. When discussing the application in this section, the focus will be on the PC version.
+		}
+		\paragraph{}{
+		The application requires an ELM327 device and a PC capable of Bluetooth connection. The user can find information on the ELM327 in the application, such as where to buy it and how much it costs. The user must pair their ELM327 device with their PC before using the application. Once they have completed this step, they can connect to the device by entering the device name, and the application will automatically connect to it.
+		}
+		\paragraph{}{
+		Diagnose your car allows access to DTCs and diagnostic data in the paid version. In the free version, diagnostic data is omitted and DTCs are displayed without their description. The diagnostic data that is provided is limited to a few generic PIDs, such as engine speed, vehicle speed and engine oil temperature. The data only displays the current value, so it does not track the data values over the period of communication. The application can also display DTCs, run the clear codes command and display the vehicle's VIN and the on/off status of the MIL.		
+		}
+		\paragraph{}{
+		The application attempts to restrict its use of technical terms. For example, the DTCs option is named "Read Defects" and it's icon is that of the MIL, implying that this option correlates to turning off the MIL. However, when the user selects an option, the technical terms begin to appear, with defects now being called stored, pending and permanent DTCs, without an explanation of each type. 
+		}		
+	\subsection{OBD dash}
+		\paragraph{}{
+		OBD dash is a free Windows application available for PC. Like Diagnose your car, the application requires an ELM327 device and a PC capable of Bluetooth connection. Information on how to connect the ELM327 device to the vehicle and use it can be found within the application. The Bluetooth device must be paired with the PC before using OBD dash. The user can select their device from a list of suitable paired devices on opening the application.	
+		%Modes included, Connection, UI etc
+		}
+		\paragraph{}{
+		OBD dash allows access to DTCs, diagnostic data and vehicle information. PIDs are displayed in dials, similar to those found on the dashboard of a vehicle, and the user can add or remove the PIDs they want to monitor. However, only the current value is displayed, so multiple values cannot be compared over time. DTCs are displayed with their code as well as their description. However, only current and pending DTCs are available through the application. The application also allows the user to view the VIN and protocol that the vehicle supports.
+		}
+		\paragraph{}{
+		Unlike Diagnose your Car, OBD dash uses technical terms frequently throughout the application. It refers to terms such as DTC and VIN without giving an explanation of what they are. While the application does include a help section that directs the user on how to use the application and configure the ELM327 device, it relies on the user having knowledge of protocols and OBD modes.
+		%Technical terms
+		}
+		
+		\begin{table}[h]
 		\begin{center}				
 			\begin{tabular}{| l | c | c |}
 			\hline
@@ -249,33 +277,7 @@
 			\label{tab:Features}
 		\end{center}
 	\end{table}
-	
-	\subsection{Diagnose your car}
-		\paragraph{}{
-		Diagnose your car is a Windows application available for Windows phones and PCs running Windows 8 and above. It is a paid application, with a free version available that removes some features and includes adverts. When discussing the application in this section, the focus will be on the PC version.
-		}
-		\paragraph{}{
-		The application requires an ELM327 device and a PC capable of Bluetooth connection. The user can find information on the ELM327 in the application, such as where to buy it and how much it costs. The user must pair their ELM327 device with their PC before using the application. Once they have completed this step, they can connect to the device by entering the device name, and the application will automatically connect to it.
-		}
-		\paragraph{}{
-		Diagnose your car allows access to DTCs and diagnostic data in the paid version. In the free version, diagnostic data is omitted and DTCs are displayed without their description. The diagnostic data that is provided is limited to a few generic PIDs, such as engine speed, vehicle speed and engine oil temperature. The data only displays the current value, so it does not track the data values over the period of communication. The application can also display DTCs, run the clear codes command and display the vehicle's VIN and the on/off status of the MIL.		
-		}
-		\paragraph{}{
-		The application attempts to restrict its use of technical terms. For example, the DTCs option is named "Read Defects" and it's icon is that of the MIL, implying that this option correlates to turning off the MIL. However, when the user selects an option, the technical terms begin to appear, with defects now being called stored, pending and permanent DTCs, without an explanation of each type. 
-		}		
-	\subsection{OBD dash}
-		\paragraph{}{
-		OBD dash is a free Windows application available for PC. Like Diagnose your car, the application requires an ELM327 device and a PC capable of Bluetooth connection. Information on how to connect the ELM327 device to the vehicle and use it can be found within the application. The Bluetooth device must be paired with the PC before using OBD dash. The user can select their device from a list of suitable paired devices on opening the application.	
-		%Modes included, Connection, UI etc
-		}
-		\paragraph{}{
-		OBD dash allows access to DTCs, diagnostic data and vehicle information. PIDs are displayed in dials, similar to those found on the dashboard of a vehicle, and the user can add or remove the PIDs they want to monitor. However, only the current value is displayed, so multiple values cannot be compared over time. DTCs are displayed with their code as well as their description. However, only current and pending DTCs are available through the application. The application also allows the user to view the VIN and protocol that the vehicle supports.
-		}
-		\paragraph{}{
-		Unlike Diagnose your Car, OBD dash uses technical terms frequently throughout the application. It refers to terms such as DTC and VIN without giving an explanation of what they are. While the application does include a help section that directs the user on how to use the application and configure the ELM327 device, it relies on the user having knowledge of protocols and OBD modes.
-		%Technical terms
-		}
-
+\newpage
 \section{Architectural Patterns}
 	\paragraph{}{
 	When considering architectural patterns for the project, it made sense to utilise the model-view-viewmodel (MVVM) architectural pattern. The MVVM architectural pattern is based on Martin Fowler's presentation model design pattern and abstracts the user interface's state from it's behaviour. It was introduced by Microsoft in 2005 to be used with the Windows Presentation Foundation (WPF) platform and is used in UWP development.
