@@ -81,12 +81,55 @@
 	}
 	
 	\paragraph{}{
-	Once all participants had completed the survey, the results were analysed.
-	%[RESULTS]
+	Once all participants had completed the survey, the results were analysed. For the quantitative questions, the answer was transformed between zero and four if the question was positive, such as "I found the look and feel of the application attractive". If the questions was negative, such as "I found the application slow or unresponsive", the answer was transformed into numbers between zero and negative four. The average value for each question was calculated to provide an insight into the overall opinion of the usability of the application. The results of this process can be seen in Table \ref{tab:UsabilityScores}.
+	
+	\begin{table}[ht]
+		\begin{center}				
+			\begin{tabularx}{\textwidth}{| X | l |}
+				\hline
+				\textbf{Question} & \textbf{Score}\\
+				\hline
+				I found the application slow or unresponsive & 0\\
+				\hline
+				I found it easy to understand the available options on each screen & 3.6\\
+				\hline
+				I always knew the status of the application & 2.6\\
+				\hline
+				I felt in control of the application when I was using it & 3.6\\
+				\hline
+				I found the look and feel was consistent across the application & 3.5\\
+				\hline
+				I found it easy to recover from any mistakes I made & 3.3\\
+				\hline
+				I had to go back to the help guide often & -2.3\\
+				\hline
+				I liked the flow and organisation of the menus / options & 3.3\\
+				\hline
+				I found it easy to learn how to use the application & 3.6\\
+				\hline
+				I could understand the information given by the application & 3.6\\
+				\hline
+				I found the information was displayed in a logical way & 4\\
+				\hline
+				I found the look and feel of the application attractive & 3.6\\
+				\hline
+				I found the error messages easy to understand & 3.6\\
+				\hline
+				I found the instructions and help information useful & 4\\
+				\hline
+				I found the user input options (buttons, scrolling etc.) did what I expected them to do & 3.6\\
+				\hline
+			\end{tabularx}
+			\caption{Quantitative Results of Usability Study}
+			\label{tab:UsabilityScores}
+		\end{center}
+	\end{table}
+	
+	%[RESULTS] Information panels on home page were confused for buttons
 	}
 	
 	\paragraph{}{
-	The analysis of the results highlighted a few usability issues and areas for future work. For example,
+	The analysis of the results highlighted a few usability issues. For example, during the evaluation it was noticed that the participants frequently mistook the information panels on the home page as buttons that were used to navigate to the modules and that icons and buttons were too small on the tablet that was used for testing. Despite these issues, given the quantitative analysis of the usability study, it was deemed that the the application was usable.
 	%[REFLECTIONS]
 	}		
 	\label{sec:Usability}
@@ -98,12 +141,12 @@
 	Code metrics were gathered as a means of determining the overall software quality. While the code metrics that were gathered are only a snapshot of the software quality at a single point in time, in this case at the end of the development process, if the code metrics are gathered periodically throughout the development process, they can track the increase or decrease in quality over time.
 	}
 	\paragraph{}{
-	The main tool used to capture the code metrics was Visual Studio. The metrics that are available are lines of code, maintainability index, class coupling, cyclomatic complexity and depth of inheritance. The metrics were run on each project: the core library, the UWP application and the android application. The results for each can be found in Tables \ref{tab:CoreLib}, \ref{tab:UWPApp} and \ref{tab:AndroidApp} respectively.
+	The main tool used to capture the code metrics was Visual Studio. The metrics that are available are lines of code, maintainability index, class coupling, cyclomatic complexity and depth of inheritance. The metrics were run on each project: the Android application, the UWP application and the the core library. The results for each can be found in Tables \ref{tab:AndroidApp}, \ref{tab:UWPApp} and \ref{tab:CoreLib} respectively.
 	% Tools used to capture metrics
 	% Currently give a snaphot of software quality, but by capturing metrics over time we see quality throughout a project	
 	}
 	
-	\subsection{Lines of Codes}
+	\subsection*{Lines of Codes}
 		\paragraph{}{
 		This metric indicates the number of lines of executable code. High numbers may indicate that "a type or method is trying to do too much work and should be split up" \cite{CodeMetrics}.
 		}
@@ -112,7 +155,7 @@
 		%Interpretation
 		}
 		
-	\subsection{Maintainability Index}
+	\subsection*{Maintainability Index}
 		\paragraph{}{
 		Maintainability Index is the measure of the maintainability of the code. It is a numerical value between zero and one hundred, which is then used to determine a rating. Values between zero and nine are given a red rating, indicating low maintainability. Values between ten and nineteen are given a yellow rating, indicating moderate maintainability. Finally, values between twenty and one hundred are given a green rating, indicating high maintainability.
 		}
@@ -121,7 +164,7 @@
 		%Interpretation
 		}
 	
-	\subsection{Class Coupling}
+	\subsection*{Class Coupling}
 		\paragraph{}{
 		Class coupling is the measure of "coupling to unique classes through parameters, local variables, return types, method calls, generic or template instantiations, base classes, interface implementations, fields defined on external types, and attribute decoration" \cite{CodeMetrics}. Good software design states that classes should have low coupling. High coupling can indicate "a design that is difficult to reuse and maintain because of its many interdependencies on other types." \cite{CodeMetrics}.
 		}
@@ -130,7 +173,7 @@
 		%Interpretation
 		}
 	
-	\subsection{Cyclomatic Complexity}
+	\subsection*{Cyclomatic Complexity}
 		\paragraph{}{
 		Cyclomatic complexity is the measure of "the structural complexity of the code" \cite{CodeMetrics}. Code that has a complex control, or a higher cyclomatic complexity value, may require more tests to achieve good code coverage, making it less maintainable.
 		}
@@ -139,7 +182,7 @@
 		%Interpretation
 		}
 	
-	\subsection{Depth of Inheritance}{
+	\subsection*{Depth of Inheritance}{
 		\paragraph{}{
 		Depth of Inheritance represents "the number of class definitions that extend to the root of the class hierarchy" \cite{CodeMetrics}. A higher value represents a deeper hierarchy meaning the code is more difficult to understand where a method or field is defined.
 		}
@@ -147,7 +190,68 @@
 		As expected, the depth of inheritance values were much greater in the UWP and Android code when compared to the core code. This is because these projects utilise and extend exist classes within the respective frameworks for user interface elements.
 		%Interpretation
 		}
-
+		
+		\begin{table}[ht]
+		\begin{scriptsize}			
+			\begin{center}				
+				\begin{tabularx}{\textwidth}{| l | X | l | l | l | l | l |}
+								
+				\hline
+				\textbf{Package} & \textbf{Class} & \textbf{Lines} & \textbf{MI} & \textbf{CC} & \textbf{Cyc} & \textbf{DoI}\\
+				\hline
+				Root & AppRoot & 14 & 84 & 9 & 8 & 1\\
+				\hline
+				Connection & BluetoothDataConnection & 63 & 77 & 24 & 31 & 1\\
+				\hline
+				\multirow{2}{*}{UI.Codes} & CodesFragment & 32 & 69 & 25 & 16 & 3\\\cline{2-7}
+										  & CodeView & 14 & 67 & 7 & 3 & 4\\\cline{2-7}
+				\hline
+				\multirow{2}{*}{UI.Connection} & ConnectionFragment & 49 & 65 & 32 & 20 & 3\\\cline{2-7}
+										  	   & DeviceView & 18 & 78 & 8 & 6 & 5\\\cline{2-7}
+				\hline
+				\multirow{2}{*}{UI.Data} & DataFragment & 21 & 76 & 25 & 10 & 3\\\cline{2-7}
+     							  	     & DataListView & 28 & 63 & 13 & 4 & 5\\\cline{2-7}
+				\hline
+				\multirow{4}{*}{UI.Host} & HostActivity & 35 & 69 & 36 & 19 & 9\\\cline{2-7}
+										 & HostModuleListToggle & 13 & 78 & 5 & 7 & 3\\\cline{2-7}
+										 & ModuleListViewAdapter & 17 & 76 & 17 & 7 & 3\\\cline{2-7}
+										 & HelpItemsListViewAdapter & 11 & 81 & 11 & 5 & 3\\\cline{2-7}
+				\hline
+				\end{tabularx}
+				\caption{Android Application Metrics}
+				\label{tab:AndroidApp}
+			\end{center}
+		\end{scriptsize}
+		\end{table}		
+		
+		\begin{table}[ht]
+		\begin{scriptsize}			
+			\begin{center}				
+				\begin{tabularx}{\textwidth}{| l | X | l | l | l | l | l |}
+								
+				\hline
+				\textbf{Package} & \textbf{Class} & \textbf{Lines} & \textbf{MI} & \textbf{CC} & \textbf{Cyc} & \textbf{DoI}\\
+				\hline				
+				Root & App & 36 & 70 & 40 & 11 & 2\\
+				\hline
+				Connection & BluetoothDataConnection & 64 & 77 & 25 & 24 & 1\\
+				\hline
+				\multirow{9}{*}{UI} & HostView & 74 & 57 & 55 & 28 & 7\\\cline{2-7}
+									& HomePage & 8 & 64 & 17 & 3 & 7\\\cline{2-7}
+									& ModuleHintView & 9 & 63 & 6 & 6 & 6\\\cline{2-7}
+									& ConnectionPage & 37 & 61 & 42 & 19 & 7\\\cline{2-7}
+									& DTCPage & 16 & 70 & 27 & 7 & 7\\\cline{2-7}
+									& DTCView & 8 & 77 & 6 & 2 & 6\\\cline{2-7}
+									& DataPage & 13 & 72 & 20 & 4 & 7\\\cline{2-7}
+									& DataView & 17 & 75 & 18 & 10 & 6\\\cline{2-7}
+									& DataGraph & 61 & 57 & 38 & 21 & 6\\\cline{2-7}
+				\hline
+				\end{tabularx}
+				\caption{UWP Application Metrics}
+				\label{tab:UWPApp}
+			\end{center}
+		\end{scriptsize}
+		\end{table}		
 		
 		\begin{table}[ht]
 		\begin{scriptsize}			
@@ -224,67 +328,6 @@
 		\end{scriptsize}
 		\end{table}
 
-		\begin{table}[ht]
-		\begin{scriptsize}			
-			\begin{center}				
-				\begin{tabularx}{\textwidth}{| l | X | l | l | l | l | l |}
-								
-				\hline
-				\textbf{Package} & \textbf{Class} & \textbf{Lines} & \textbf{MI} & \textbf{CC} & \textbf{Cyc} & \textbf{DoI}\\
-				\hline				
-				Root & App & 36 & 70 & 40 & 11 & 2\\
-				\hline
-				Connection & BluetoothDataConnection & 64 & 77 & 25 & 24 & 1\\
-				\hline
-				\multirow{9}{*}{UI} & HostView & 74 & 57 & 55 & 28 & 7\\\cline{2-7}
-									& HomePage & 8 & 64 & 17 & 3 & 7\\\cline{2-7}
-									& ModuleHintView & 9 & 63 & 6 & 6 & 6\\\cline{2-7}
-									& ConnectionPage & 37 & 61 & 42 & 19 & 7\\\cline{2-7}
-									& DTCPage & 16 & 70 & 27 & 7 & 7\\\cline{2-7}
-									& DTCView & 8 & 77 & 6 & 2 & 6\\\cline{2-7}
-									& DataPage & 13 & 72 & 20 & 4 & 7\\\cline{2-7}
-									& DataView & 17 & 75 & 18 & 10 & 6\\\cline{2-7}
-									& DataGraph & 61 & 57 & 38 & 21 & 6\\\cline{2-7}
-				\hline
-				\end{tabularx}
-				\caption{UWP Application Metrics}
-				\label{tab:UWPApp}
-			\end{center}
-		\end{scriptsize}
-		\end{table}
-		
-		\begin{table}[t]
-		\begin{scriptsize}			
-			\begin{center}				
-				\begin{tabularx}{\textwidth}{| l | X | l | l | l | l | l |}
-								
-				\hline
-				\textbf{Package} & \textbf{Class} & \textbf{Lines} & \textbf{MI} & \textbf{CC} & \textbf{Cyc} & \textbf{DoI}\\
-				\hline
-				Root & AppRoot & 14 & 84 & 9 & 8 & 1\\
-				\hline
-				Connection & BluetoothDataConnection & 63 & 77 & 24 & 31 & 1\\
-				\hline
-				\multirow{2}{*}{UI.Codes} & CodesFragment & 32 & 69 & 25 & 16 & 3\\\cline{2-7}
-										  & CodeView & 14 & 67 & 7 & 3 & 4\\\cline{2-7}
-				\hline
-				\multirow{2}{*}{UI.Connection} & ConnectionFragment & 49 & 65 & 32 & 20 & 3\\\cline{2-7}
-										  	   & DeviceView & 18 & 78 & 8 & 6 & 5\\\cline{2-7}
-				\hline
-				\multirow{2}{*}{UI.Data} & DataFragment & 21 & 76 & 25 & 10 & 3\\\cline{2-7}
-     							  	     & DataListView & 28 & 63 & 13 & 4 & 5\\\cline{2-7}
-				\hline
-				\multirow{4}{*}{UI.Host} & HostActivity & 35 & 69 & 36 & 19 & 9\\\cline{2-7}
-										 & HostModuleListToggle & 13 & 78 & 5 & 7 & 3\\\cline{2-7}
-										 & ModuleListViewAdapter & 17 & 76 & 17 & 7 & 3\\\cline{2-7}
-										 & HelpItemsListViewAdapter & 11 & 81 & 11 & 5 & 3\\\cline{2-7}
-				\hline
-				\end{tabularx}
-				\caption{Android Application Metrics}
-				\label{tab:AndroidApp}
-			\end{center}
-		\end{scriptsize}
-		\end{table}
 	}
 }
 
