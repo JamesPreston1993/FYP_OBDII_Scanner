@@ -17,7 +17,11 @@
 
 \graphicspath{ {images/} }
 
+\usepackage[authoryear,round]{natbib}
+\bibpunct{(}{)}{;}{a}{}{,}
+
 \newcommand{\comment}[1]{}
+\renewcommand{\cite}[1]{\citep{#1}}
 
 % Code fragment formatting
 \definecolor{dkgreen}{rgb}{0,0.6,0}
@@ -67,9 +71,10 @@
 	\newpage
 
 	\chapter{Introduction}
+		\nocite{*}
 		\input{Chapters/Chapter1_Introduction}
 	\newpage 
-	
+		
 	\chapter{Background}
 		\input{Chapters/Chapter2_Background}
 	\newpage
@@ -93,7 +98,12 @@
 	\chapter{Discussion and Conclusions}
 		\input{Chapters/Chapter7_Conclusions}		
 	\newpage	
+	
 		
+	\bibliographystyle{custom}
+	\bibliography{FYP_Report}	
+
+	\comment{
 	\begin{thebibliography}{15}
 		\bibitem{SAE} SAE J1979:  E/E Diagnostic Test Modes (2014) California: SAE International.		
 		\bibitem{Cabala} {\v C}abala, M., Gamec, J. (2012) 'Wireless Real-Time Vehicle Monitoring Based on Android Mobile Device', Acta Electrotechnica et Informatica, 12(4).
@@ -112,7 +122,7 @@ Vancouver
 		\bibitem{Win10Nums} Microsoft by the Numbers. (2016). Microsoft by the Numbers. [online] Available at: http://news.microsoft.com/bythenumbers/windows-ten [Accessed 7 Apr. 2016].
 		\bibitem{CodeMetrics} MSDN. (2016). Code Metrics Values. [online] Available at: https://msdn.microsoft.com/en-us/library/bb385914.aspx?f=255{\&}MSPPError=-2147217396 [Accessed 9 Apr. 2016].
 	\end{thebibliography}
-		
+	}
 	\newpage
 	
 	\begin{appendix}
