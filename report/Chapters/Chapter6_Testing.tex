@@ -1,12 +1,12 @@
 \section{Introduction}
 	\paragraph{}{
-	This chapter will outline the processes that were utilised to test the system that was implemented. This will include the testing of functional and non-functional requirements as well as the rating of usability of the application and software quality.
+	This chapter will outline the processes that were utilised to test and evaluate the system developed as part of this project. This will include the testing of functional and non-functional requirements as well as the rating of usability of the application and software quality.
 	}
 	
 \section{Support for Functional Requirements}
 	%Two types: Bench testing, real world testing, both capture different things
 	\paragraph{}{
-	Support for the functional requirements was difficult to evaluate given the domain of the system. This is because the system requires the retrieval of data from a vehicle, which cannot be manually manipulated by the user, for example, by setting a specific DTC or data value. While it still possible to manipulate some data, for example pressing the accelerator changes the engine speed value, it would require either a large base of vehicles for testing or the design and creation of a specific hardware device that would act as a configurable ECU, both of which were outside the scope of this project.
+	Support for the functional requirements was difficult to evaluate given the domain of the system. This is because the system requires the retrieval of data from a vehicle, which cannot be manually manipulated by the user, for example, by setting a specific DTC or data value. While it is still possible to manipulate some data, for example, pressing the accelerator changes the engine speed value, it would require either a large base of vehicles for testing or the design and creation of a specific hardware device that would act as a configurable ECU, both of which were outside the scope of this project.
 	%Intro
 	}
 
@@ -16,7 +16,7 @@
 	}
 	
 	\paragraph{}{
-	Bench testing was utilised for scenarios that required direct and controlled manipulation of data. This was mostly for the testing of user interface elements, such as smart graphing in the data module. Bench testing was carried out on each module in the application to ensure that the information presented on-screen to the user matched what was interpreted from the communication system. 
+	Bench testing was utilised for scenarios that required direct and controlled manipulation of data. This was mostly for the testing of user interface elements, such as smart graphing in the data module. Bench testing was carried out on each module in the application to ensure that the information presented to the user on-screen matched what was interpreted from the communication system. 
 	%Bench testing
 	% - UI
 	% - Extreme scenarios that require control of the values
@@ -58,7 +58,7 @@
 	% Security
 	}
 	\paragraph{}{
-	The usability of the system was evaluated through a usability survey involving domain experts, such as mechanics. The results of the survey was then analysed to determine the overall usability of the system. The process for creating and evaluating the results of the survey is discussed in detail in section \ref{sec:Usability}.
+	The usability of the system was evaluated through a usability survey involving domain experts, such as mechanics. The results of the survey were then analysed to determine the overall usability of the system. The process for creating and evaluating the results of the survey is discussed in detail in section \ref{sec:Usability}.
 	% Usability
 	}
 	
@@ -70,18 +70,18 @@
 	
 	\paragraph{}{
 	%[HOW SURVEY WAS CREATED]
-	As a significant figure in the area of usability, Nielsen's usability heuristics \cite{Heuristics} were utilised when creating the survey. It was ensured that each usability heuristic outlined by Nielsen could be evaluated by a corresponding question on the survey. The result was a quantitative survey, seen in Appendix B, that asked participants to rate each question from strongly disagree to strongly agree. This allowed for results from each question to be directly compared and retrieve statistical information about the usability of the application. It was also decided to include a section at the end of the survey, allowing participants to provide feedback on the positive and negative aspects of the application. While this did not fit with the quantitative research approach, this feedback served as a basis for future work on the system.
+	As a significant figure in the area of usability, Nielsen's usability heuristics \cite{Heuristics} were utilised when creating the survey. It was ensured that each usability heuristic outlined by Nielsen could be evaluated by a corresponding question on the survey. The result was a quantitative survey, seen in Appendix B, that asked participants to rate each question from strongly disagree to strongly agree. This allowed for results from each question to be directly compared and to retrieve statistical information about the usability of the application. It was also decided to include a section at the end of the survey, allowing participants to provide feedback on the positive and negative aspects of the application. While this did not fit with the quantitative research approach, this feedback served as a basis for future work on the system.
 	%This resulted in the creation of the survey seen in Appendix B. 
 	}
 	
 	\paragraph{}{
-	The usability study was conducted on domain experts, such as mechanics, who had previous experience with diagnostic scan tools. [Why?]. Potential candidates were approached and requested to take part in the survey and a time and date for the study was set with the candidates who accepted. On the day of the study, the candidates were given a tablet and an ELM327 device connected to the vehicle. The participants were requested to use the application for up to fifteen minutes and to privately fill out the survey.
+	The usability study was conducted on domain experts, such as mechanics, who had previous experience with diagnostic scan tools. Potential candidates were approached and requested to take part in the survey and a time and date for the study was set with the candidates who accepted. On the day of the study, the candidates were given a tablet and an ELM327 device connected to the vehicle. The participants were requested to use the application for up to fifteen minutes and to privately fill out the survey.
 	%Potential candidates were approached
 	%[HOW SURVEY WAS CARRIED OUT]
 	}
 	
 	\paragraph{}{
-	Once all participants had completed the survey, the results were analysed. For the quantitative questions, the answer was transformed between zero and four if the question was positive, such as "I found the look and feel of the application attractive". If the questions was negative, such as "I found the application slow or unresponsive", the answer was transformed into numbers between zero and negative four. The average value for each question was calculated to provide an insight into the overall opinion of the usability of the application. The results of this process can be seen in Table \ref{tab:UsabilityScores}.
+	Once all participants had completed the survey, the results were analysed. For the quantitative questions, each answer was transformed into a number between zero and four if the question was positive, such as "I found the look and feel of the application attractive". If the questions was negative, such as "I found the application slow or unresponsive", the answer was transformed into a number between zero and negative four. The average value for each question was calculated to provide an insight into the overall opinion of the usability of the application. The results of this process can be seen in Table \ref{tab:UsabilityScores}.
 	
 	\begin{table}[ht]
 		\begin{center}				
@@ -129,7 +129,7 @@
 	}
 	
 	\paragraph{}{
-	The analysis of the results highlighted a few usability issues. For example, during the evaluation it was noticed that the participants frequently mistook the information panels on the home page as buttons that were used to navigate to the modules and that icons and buttons were too small on the tablet that was used for testing. Despite these issues, given the quantitative analysis of the usability study, it was deemed that the the application was usable.
+	The analysis of the results highlighted a few usability issues. For example, during the evaluation it was noticed that the participants frequently mistook the information panels on the home page as buttons that could be used to navigate to the modules and that icons and buttons were too small on the tablet that was used for testing. Despite these issues, given the quantitative analysis of the usability study, it was deemed that the the application was usable.
 	%[REFLECTIONS]
 	}		
 	\label{sec:Usability}
@@ -151,7 +151,7 @@
 		This metric indicates the number of lines of executable code. High numbers may indicate that "a type or method is trying to do too much work and should be split up" \cite{CodeMetrics}.
 		}
 		\paragraph{}{
-		The number of lines of code cannot be used to evaluate the quality of the software alone. However,  by comparing the lines of code between each project, the portability of the system can be evaluated. The noticeable difference between the lines of code in the core library and the platform specific projects highlight that the majority system functionality could be shared between platforms without requiring duplication for each platform.
+		The number of lines of code cannot be used to evaluate the quality of the software alone. However,  by comparing the lines of code between each project, the portability of the system can be evaluated. The significant difference between the lines of code in the core library and the platform specific projects highlight that the majority of the system functionality could be shared between platforms without requiring duplication for each platform.
 		%Interpretation
 		}
 		
@@ -160,7 +160,7 @@
 		Maintainability Index is the measure of the maintainability of the code. It is a numerical value between zero and one hundred, which is then used to determine a rating. Values between zero and nine are given a red rating, indicating low maintainability. Values between ten and nineteen are given a yellow rating, indicating moderate maintainability. Finally, values between twenty and one hundred are given a green rating, indicating high maintainability.
 		}
 		\paragraph{}{
-		As all classes were given a green rating, it can be said that the overall maintainability of the system is high. The classes with the lowest maintainability indexes were the factory classes, such as PidFactory and DataConverter. This is because a lot of the logic is stored within the class. A solution would be to create a database or local file to store this information instead of storing it in the class itself.
+		As all classes were given a green rating, it can be said that the overall maintainability of the system is high. The classes with the lowest maintainability indexes were the factory classes, such as PidFactory and DataConverter. This is because a lot of the logic is stored within the class. A solution would be to create a database or local file to store this information and retrieve it on request instead of storing it in the class itself.
 		%Interpretation
 		}
 	
@@ -178,7 +178,7 @@
 		Cyclomatic complexity is the measure of "the structural complexity of the code" \cite{CodeMetrics}. Code that has a complex control, or a higher cyclomatic complexity value, may require more tests to achieve good code coverage, making it less maintainable.
 		}
 		\paragraph{}{
-		Overal, the cyclomatic complexity values in the core library was significantly greater than those of the UWP and Android projects. This can be attributed to the fact that all of the business logic is found in the core library. For this reason there are more conditions to be tested, for example in the DataConverter class, which checks the pid name and the current value, leading to an insurmountable number of paths. Much like the maintainability index, a solution to this would be to create a database or local file and send a single query, rather than using conditional statements.
+		Overall, the cyclomatic complexity values in the core library was significantly greater than those of the UWP and Android projects. This can be attributed to the fact that all of the business logic is found in the core library. For this reason, there are more conditions to be tested, for example in the DataConverter class, which checks the pid name and the current value, leading to an insurmountable number of paths. Much like the maintainability index, a solution to this would be to create a database or local file and send a single query, rather than using conditional statements.
 		%Interpretation
 		}
 	
@@ -187,7 +187,7 @@
 		Depth of Inheritance represents "the number of class definitions that extend to the root of the class hierarchy" \cite{CodeMetrics}. A higher value represents a deeper hierarchy meaning the code is more difficult to understand where a method or field is defined.
 		}
 		\paragraph{}{
-		As expected, the depth of inheritance values were much greater in the UWP and Android code when compared to the core code. This is because these projects utilise and extend exist classes within the respective frameworks for user interface elements.
+		As expected, the depth of inheritance values were much greater in the UWP and Android code when compared to the core code. This is because these projects utilise and extend exist classes within their respective frameworks for user interface elements.
 		%Interpretation
 		}
 		
