@@ -1,6 +1,6 @@
 \section{Introduction}
 	\paragraph{}{
-	As of 1996 in the United States and 2000 in the European Union, all vehicles must be fitted with an OBDII system. This system is detailed by a number of standards introduced by the Society of Automotive Engineers (SAE) and the California Air Resource Board (CARB). These standards define the hardware, software and communication requirements of the system.
+	As of 1996 in the United States and 2001 in the European Union, all vehicles must be fitted with an OBDII system \citep{Denton}. This system is detailed by a number of standards introduced by the Society of Automotive Engineers (SAE) and the California Air Resource Board (CARB). These standards "define hardware, electrical signalling, and message formats for communicating with a vehicle". \citep{Cabala}%define the hardware, software and communication requirements of the system.
 	}
 	\paragraph{}{
 	All OBDII compliant vehicles must have an OBDII port, shown in Figure \ref{fig:OBDport}. This a standardized 16 pin connector that is located within three feet of the driver seat, usually under the dashboard. This allows any generic diagnostic scan tool to connect to the vehicle and read data. While the connector is standardized, there are multiple communication protocols used by different manufacturers. These communication protocols provide the same data, but send it to the scan tool in a different format.
@@ -65,7 +65,7 @@
 		\end{table}	
 		}		
 		\paragraph{}{
-		Regardless of which protocol a vehicle uses, the process for requesting data is the same. The communication process is handled in hexadecimal format, and starts by selecting a mode. A mode represents a specific function to perform and there are ten in total from 01 to 0A. The functionality of each mode can be seen in table \ref{tab:Modes} and each will be discussed in sections \ref{ssec:DTC}, \ref{ssec:ClearCodes}, \ref{ssec:Data} and \ref{ssec:OtherModes}. Some modes require a parameter identifier (PID) to be passed, specifying the data item to retrieve. The ECU will send back a response and will have a different conversion method depending on the mode selected. The response will begin with the sum of the mode and $40 _{16}$, for example, if the user requested mode 03, the response would begin with 43.
+		Regardless of which protocol a vehicle uses, the process for requesting data is the same. The communication process is handled in hexadecimal format, and starts by selecting a mode. A mode represents a specific function to perform and there are ten in total from 01 to 0A. The functionality of each mode can be seen in Table \ref{tab:Modes} and each will be discussed in sections \ref{ssec:DTC}, \ref{ssec:ClearCodes}, \ref{ssec:Data} and \ref{ssec:OtherModes}. Some modes require a parameter identifier (PID) to be passed, specifying the data item to retrieve. The ECU will send back a response and will have a different conversion method depending on the mode selected. The response will begin with the sum of the mode and $40 _{16}$, for example, if the user requested mode 03, the response would begin with 43.
 		}
 		\begin{table}[h]
 			\begin{center}				
@@ -162,7 +162,7 @@
 \section{Technology}
 	\subsection{ELM327}
 		\paragraph{}{
-		The ELM327 device, as shown in Figure \ref{fig:ELM327}, used for this project is a compact Bluetooth dongle that can connect to the OBDII port on modern vehicles. The device is relatively inexpensive, with the model used in this project costing {\textsterling}12.95. It supports all OBDII protocols and abstracts the data transfer process by including its own set of commands to handle communication.				
+		The ELM327 device, as shown in Figure \ref{fig:ELM327}, used for this project is a compact Bluetooth dongle that can connect to the OBDII port on modern vehicles. The device is relatively inexpensive, with the model used in this project costing {\textsterling}12.95. It supports all OBDII protocols and abstracts the data transfer process by including its own set of commands to handle communication \citep{ELM327}.				
 		}
 		\paragraph{}{
 		The commands that the device supports allow users to either manually or automatically select the protocol, depending on if they know which protocol their vehicle uses. These commands also handle initialization of the device, setting up communication, and formatting the data received from the vehicle. Once the device has been configured, the user can send requests to the vehicle. These requests are in the same format that they are found in the SAE J1979 document, and no further formatting is required.
@@ -211,7 +211,7 @@
 %\newpage
 \section{Similar Applications}
 	\paragraph{}{
-	When looking at similar applications, it appeared preferable to look at applications developed using the same technology and deployed on the same platform that the project intended to use. This lead to finding two similar applications available on Windows 10 through the Windows Store. Investigation included finding which modes these applications included, their communication process, the hardware required and the amount of technical information used. These findings are presented in table \ref{tab:Features}.
+	When looking at similar applications, it appeared preferable to look at applications developed using the same technology and deployed on the same platform that the project intended to use. This lead to finding two similar applications available on Windows 10 through the Windows Store. Investigation included finding which modes these applications included, their communication process, the hardware required and the amount of technical information used. These findings are presented in Table \ref{tab:Features}.
 	}
 	
 	

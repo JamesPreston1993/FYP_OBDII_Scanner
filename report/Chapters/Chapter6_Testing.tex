@@ -16,7 +16,9 @@
 	}
 	
 	\paragraph{}{
-	Bench testing was utilised for scenarios that required direct and controlled manipulation of data. This was mostly for the testing of user interface elements, such as smart graphing in the data module. Bench testing was carried out on each module in the application to ensure that the information presented to the user on-screen matched what was interpreted from the communication system. 
+	Bench testing was utilised for scenarios that required direct and controlled manipulation of data. This was mostly for the testing of user interface elements, such as smart graphing in the data module. Bench testing was carried out on each module in the application to ensure that the information presented to the user on-screen matched what was interpreted from the communication system. Table \ref{tab:BenchTest} shows a subset of the bench tests that were performed.
+	
+	
 	%Bench testing
 	% - UI
 	% - Extreme scenarios that require control of the values
@@ -24,12 +26,56 @@
 	}
 	
 	\paragraph{}{
-	Real world testing involved connecting to vehicles or ECUs to test the communication system of the application. This approach was utilised to test the functionality of low level communication, such as the Bluetooth connection and data conversion. To verify the outputs of the system, they were compared to those of the similar applications discussed previously in this report. The purpose of real world testing was to ensure the functional requirement of being able to connect to and communicate with a live vehicle was met.
+	Real world testing involved connecting to vehicles or ECUs to test the communication system of the application. This approach was utilised to test the functionality of low level communication, such as the Bluetooth connection and data conversion. To verify the outputs of the system, they were compared to those of the similar applications discussed previously in this report. The purpose of real world testing was to ensure the functional requirement of being able to connect to and communicate with a live vehicle was met. Table \ref{tab:RealTest} shows a subset of the real world tests that were performed.
+	
+	
 	% Real world testing
 	% - Connection status of ELM327
 	% - Converting data from the ECU
 	% - Clear codes functionality
 	}
+	
+	\begin{table}[ht]
+		\begin{center}				
+			\begin{tabularx}{\textwidth}{| X | l |}
+				\hline
+				\textbf{Test Description} & \textbf{Result}\\
+				\hline
+				Smart-graphing colours match the data value type & Pass\\
+				\hline
+				Current value is updated when step forward and step back are pressed & Pass\\
+				\hline
+				DTC Lists are refreshed after Clear Codes is pressed & Pass\\
+				\hline				
+			\end{tabularx}
+			\caption{Bench Testing Tests}
+			\label{tab:BenchTest}
+		\end{center}
+	\end{table}
+	
+	\begin{table}[ht]
+		\begin{center}				
+			\begin{tabularx}{\textwidth}{| X | l |}
+				\hline
+				\textbf{Test Description} & \textbf{Result}\\
+				\hline
+				Connection module detects all paired devices & Pass\\
+				\hline
+				The vehicle communication protocol is correctly identified & Pass\\
+				\hline
+				All supported pids are returned & Pass\\
+				\hline
+				Engine speed data value increases when accelerator is pressed & Pass\\
+				\hline				
+				Pressing Clear Codes removes all Current DTCs from the DTC List & Pass\\
+				\hline
+				Notification is displayed on application shutdown / sleep & Pass\\
+				\hline				
+			\end{tabularx}
+			\caption{Real World Testing Tests}
+			\label{tab:RealTest}
+		\end{center}
+	\end{table}
 	
 	\paragraph{}{
 	Using these two approaches allowed for the testing of each diagnostic mode that was implemented in the system. This included robust testing of the user interface and the communication systems, which served to verify that the functional requirements of the project had been satisfied. 
@@ -146,7 +192,7 @@
 	% Currently give a snaphot of software quality, but by capturing metrics over time we see quality throughout a project	
 	}
 	
-	\subsection*{Lines of Codes}
+	\subsection*{Lines of Code}
 		\paragraph{}{
 		This metric indicates the number of lines of executable code. High numbers may indicate that "a type or method is trying to do too much work and should be split up" \cite{CodeMetrics}.
 		}
@@ -190,6 +236,14 @@
 		As expected, the depth of inheritance values were much greater in the UWP and Android code when compared to the core code. This is because these projects utilise and extend exist classes within their respective frameworks for user interface elements.
 		%Interpretation
 		}
+		
+
+\section{Conclusion}
+	\paragraph{}{
+	The evaluation of the system, through testing and gathering code metrics for software quality, highlighted that both the functional and non-functional requirements had been satisfied. Furthermore, the usability of the system was evaluated through live field studies with domain experts and the results found that the system had a high level of usability.
+	}		
+	\paragraph{}{
+	}
 		
 		\begin{table}[ht]
 		\begin{scriptsize}			
@@ -331,6 +385,7 @@
 	}
 }
 
+	
 	
 	%\paragraph{}{
 	%Testing of the application is essential in ensuring that the system satisfies the functional and non-functional requirements.

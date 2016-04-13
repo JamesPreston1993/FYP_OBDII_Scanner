@@ -148,7 +148,7 @@ return response;
 			The 32Feet Bluetooth API used in the prototype was incompatible with the UWP application. This meant that the prototype code that was written for Bluetooth connection could not be reused in the final product.
 				
 			\paragraph{Occurred during:}
-			Week 1
+			Semester 1, Week 1
 		
 			\paragraph{Time taken to resolve:} Half a week to identify the issue, one week to find an alternative solution and one week to implement this solution.
 		
@@ -165,7 +165,7 @@ return response;
 			The replacement Bluetooth API could not connect to the ECU simulation software. This meant connection to an actual vehicle was required to debug and test the application.
 			
 			\paragraph{Occurred during:}
-			Week 1
+			Semester 1, Week 1
 			\paragraph{Time taken to resolve:}
 			One week to find a workaround and half a week to set up the ECU test bench.
 			\paragraph{Attempts to resolve:}
@@ -380,7 +380,7 @@ private static ValueType GetValueType(IPid pid, IDataItem item)
 			\paragraph{Description:}
 			When gathering data samples, it was discovered that the time taken to send a request and receive a response was around 300 milliseconds per request. When a large number of pids are requested, it took around seven seconds per sample.
 			\paragraph{Occurred during:}
-			Week 12
+			Holiday period, Week 1
 			\paragraph{Time taken to resolve:}
 			Approximately three weeks
 			\paragraph{Attempts to resolve:}
@@ -392,7 +392,7 @@ private static ValueType GetValueType(IPid pid, IDataItem item)
 			\paragraph{Description:}
 			When gathering data samples, the graph plot line started to blur. This blurring became more severe as the number of samples increased. This affected the readability of the data graphs.
 			\paragraph{Occurred during:}
-			Week 14
+			Holiday period, Week 3
 			\paragraph{Time taken to resolve:}
 			Approximately two weeks
 			\paragraph{Attempts to resolve:}
@@ -518,7 +518,7 @@ return availableDevices;
 		\end{figure}
 		
 		\paragraph{}{
-		Once a list of available devices has been gathered, they are displayed on screen as buttons. When the user clicks one of these buttons, the system will attempt to connect to the associated device, using the process seen in figure \ref{code:BTConnectionInit}. If the connection cannot be established within five seconds, the user will be informed and can retry or select another device.
+		Once a list of available devices has been gathered, they are displayed on screen as buttons. When the user clicks one of these buttons, the system will attempt to connect to the associated device, using the process seen in Figure \ref{code:BTConnectionInit}. If the connection cannot be established within five seconds, the user will be informed and can retry or select another device.
 		}				
 		
 \section{Android Port}
@@ -533,7 +533,7 @@ return availableDevices;
 		}
 		
 		\paragraph{}{
-		After the preparation was complete, the first stage of porting the system was creating a new Bluetooth layer. Due to the design choices made for the system, this only required one class to be created, that implements the IDataConnection interface, seen in figure \ref{code:ConnectionInterface}, and utilises the Android Bluetooth API. While there was an initial learning curve, the basic principles of Bluetooth communication are the same, as seen in figure \ref{code:AndroidBluetoothInit}, that shows the initialization of the Bluetooth connection in the Android application.
+		After the preparation was complete, the first stage of porting the system was creating a new Bluetooth layer. Due to the design choices made for the system, this only required one class to be created, that implements the IDataConnection interface, seen in Figure \ref{code:ConnectionInterface}, and utilises the Android Bluetooth API. While there was an initial learning curve, the basic principles of Bluetooth communication are the same, as seen in Figure \ref{code:AndroidBluetoothInit}, that shows the initialization of the Bluetooth connection in the Android application.
 		%[BLUETOOTH INIT + CODE]
 		}
 		
@@ -568,7 +568,7 @@ public async Task<bool> Initialize()
 		\end{figure}		
 
 		\paragraph{}{
-		There are subtle differences in the Android Bluetooth API, that required more significant changes in the Bluetooth layer during the port. When sending requests and receiving responses, the messages must be sent as byte arrays. This is seen in figure \ref{code:AndroidBluetoothSend}, where the outgoing string message is converted into a byte array before being sent to the ELM327 device. While it was believed that the new API may be faster and therefore fix the data collection speed issue outlined in \ref{ssec:DataModuleIssues}, this was not the case, as the data collection speed was approximately the same.
+		There are subtle differences in the Android Bluetooth API, that required more significant changes in the Bluetooth layer during the port. When sending requests and receiving responses, the messages must be sent as byte arrays. This is seen in Figure \ref{code:AndroidBluetoothSend}, where the outgoing string message is converted into a byte array before being sent to the ELM327 device. While it was believed that the new API may be faster and therefore fix the data collection speed issue outlined in \ref{ssec:DataModuleIssues}, this was not the case, as the data collection speed was approximately the same.
 		%[BLUETOOTH SEND + CODE]
 		}
 
@@ -636,7 +636,7 @@ private void RaiseViewModelChanged(object sender, PropertyChangedEventArgs e)
 			\paragraph{Description:}
 			The Xamarin framework integrates with Visual Studio and allows Android emulators to be used for deploying applications. These emulators are virtual Android devices that can be used in place of physical devices. However, the application could not be deployed on the emulator.    
 			\paragraph{Occurred during:}
-			Week 13
+			Holiday period, Week 2
 			\paragraph{Time taken to resolve:}
 			Approximately two weeks
 			\paragraph{Attempts to resolve:}
@@ -656,7 +656,7 @@ private void RaiseViewModelChanged(object sender, PropertyChangedEventArgs e)
 		A decision was made to re-factor the application so that the instructions were not integrated with the user interface of the module. Instead, the solution was to provide a means of viewing instructions that was separate from the module, but could be accessed without leaving the current module. This was achieved by implementing a pop out window on the right hand side of the screen.
 		}
 		\paragraph{}{
-		The Module interface (see figure \ref{code:ModuleInterface}) was re-factored to include a list of help items, with each help item having a title and a description. As seen in figure \ref{code:HelpItem}, which shows the implementation of help items for the connection module, the help items are created by a factory method and assigned to a module. The help items are then displayed by clicking the help icon at the top of the screen.
+		The Module interface, shown in Figure \ref{code:ModuleInterface}, was re-factored to include a list of help items, with each help item having a title and a description. As seen in Figure \ref{code:HelpItem}, which shows the implementation of help items for the connection module, the help items are created by a factory method and assigned to a module. The help items are then displayed by clicking the help icon at the top of the screen.
 		}
 		
 		\begin{figure}[h]
@@ -748,7 +748,7 @@ public string FormatForEmail()
 		\end{figure}	
 		
 		\paragraph{}{
-		Rather than sending an email directly from the application, the emailing system opens the users default email application with a pre-set subject and body for the email, as seen in figure \ref{code:Email}. This allows the user to select which account to send the email from as well as the recipients of the email. This provides increased security for the application, as the user's email credentials are not stored in the application and they can validate the content of the email.
+		Rather than sending an email directly from the application, the emailing system opens the users default email application with a pre-set subject and body for the email, as seen in Figure \ref{code:Email}. This allows the user to select which account to send the email from as well as the recipients of the email. This provides increased security for the application, as the user's email credentials are not stored in the application and they can validate the content of the email.
 		%added security as UWP lets user pick their email address and recipient 		
 		}		
 		
@@ -768,6 +768,7 @@ private async void EmailButton_Click(object sender, RoutedEventArgs e)
 
 \section{Project Timeline}
 	\paragraph{}{
+	The project spanned two semesters and the intervening holiday period. This timeline included all aspects of development, from background research to design, implementation and evaluation. Table \ref{tab:ProjectTimeLine} highlights major milestones within the project and the corresponding weeks in which they were worked on. These timelines include time spent on background research, implementation and testing.
 	% Intro
 	% How long was spent on each section - includes research and testing
 	}
@@ -777,29 +778,35 @@ private async void EmailButton_Click(object sender, RoutedEventArgs e)
 				\hline
 				\textbf{Major Milestone} & \textbf{Total Weeks Taken to Complete}\\
 				\hline				
-				Development Environment & 2\\
+				Development Environment & Semester 1, Week 1 - Semester 1, Week 2\\
 				\hline
-				Prototyping & 1\\
+				Prototyping & Semester 1, Week 1\\
 				\hline
-				Bluetooth Communication & 6\\
+				\multirow{2}{*}{Bluetooth Communication} & Semester 1, Week 1 - Semester 1, Week 4\\
+														 & Holiday 1, Week 1 - Holiday 1, Week 3\\
 				\hline
-				DTC Module & 3\\
+				DTC Module & Semester 1, Week 5 - Semester 1, Week 9\\
 				\hline
-				Data Module & 4\\
+				\multirow{2}{*}{Data Module} & Holiday 1, Week 1 - Holiday 1, Week 3\\
+											 & Semester 2, Week 1 - Semester 2, Week 2\\
 				\hline				
-				Simulated Communication & 3\\
+				Simulated Communication & Holiday 1, Week 1 - Holiday 1, Week 3\\
 				\hline
-				Connection Module & 2\\
+				\multirow{2}{*}{Connection Module} & Holiday 1, Week 3\\
+				  								   & Semester 2, Week 4 - Semester 2, Week 4\\
 				\hline
-				Android Port & 4\\
+				\multirow{2}{*}{Android Port} & Holiday 1, Week 2 - Holiday 1, Week 3\\ %4
+											  & Semester 2, Week 1 - Semester 2, Week 4\\
 				\hline
-				Help Information & 2\\
+				Help Information & Semester 2, Week 1\\
 				\hline
-				Home Module & 2\\
+				Home Module & Semester 2, Week 6 - Semester 2, Week 7\\
 				\hline
-				Email & 2\\
+				Email & Semester 2, Week 6 - Semester 2, Week 7\\
 				\hline
-				Report Writing & 6 \\
+				\multirow{3}{*}{Report Writing} & Semester 1, Week 9 - Semester 1, Week 13 \\
+												& Semester 2, Week 6 - Semester 2, Week 7\\
+												& Semester 2, Week 9 - Semester 1, Week 13 \\
 				\hline
 				\end{tabularx}
 				\caption{Project Timeline}
@@ -807,7 +814,7 @@ private async void EmailButton_Click(object sender, RoutedEventArgs e)
 			\end{center}
 	\end{table}
 	
-\section{Conclusion}
+\section{Summary of Implementation}
 	\paragraph{}{
 	At the end of the implementation phase, the system consisted of three projects with a total of around 1694 lines of executable code and seventy five classes and interfaces. A more detailed description and statistics relating to these projects is available in section \ref{sec:Quality}. These three projects are:
 	 	\begin{enumerate}
@@ -827,4 +834,8 @@ private async void EmailButton_Click(object sender, RoutedEventArgs e)
 					\item 52 classes
 				\end{itemize}
 		\end{enumerate}
+	}
+	\paragraph{}{
+	Overall, the implementation phase was a success. The features outlined in this chapter were implemented to a high standard with minimal drift from the project timeline.  Although a number of issues were encountered, a solution was found with minimal disruption to the existing product.
+	% Summary
 	}

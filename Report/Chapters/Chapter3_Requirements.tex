@@ -49,7 +49,7 @@
 	A key outcome of capturing the requirements for this project was determining which OBDII modes to support. Due to the time frame of this project, it was impossible to include all modes, so a subset of modes that would be best suited for the target audience had to be selected.
 	}
 	\paragraph{}{
-	After reviewing similar applications and interviewing domain experts, it was decided that the application would include diagnostic data and DTCs. This corresponds to modes 01, 03, 07 and 0A in the OBDII standard. These modes provide a suitable amount of information to allow a user to diagnose their vehicle, but they also allow the developer to abstract technical information without sacrificing precision.
+	After reviewing similar applications and interviewing domain experts, it was decided that the application would include diagnostic data and DTCs. This corresponds to modes 01, 03, 07 and 0A in the OBDII standard. These modes provide a suitable amount of information to allow a user to obtain an understanding of the status of their vehicle, but they also allow the developer to abstract technical information without sacrificing precision.
 	}
 	\paragraph{}{
 	Modes 03, 07 and 0A, representing current, pending and permanent DTCs respectively, provide the means to quickly assess the severity of the issues with the vehicle. The application must display the severity of each DTC type to the end user. If the user needs more information before making a decision, the application must provide additional information on each DTC with minimal use of technical terms.
@@ -62,19 +62,19 @@
 	}
 
 \section{Non-Functional Requirements}
-	\subsection{Portability}
+	\subsection*{\textit{Portability}}
 		\paragraph{}{
 		To be able to target a large user base, it is important to release the application on multiple systems. For this reason, the system must be portable, so it can be redeployed as an Android or iOS application. To achieve this, the system should leverage the Xamarin framework, and should separate the core functionality of the application from the UI and system dependent features of the application.
 		}
-	\subsection{Extensibility}
+	\subsection*{\textit{Extensibility}}
 		\paragraph{}{
 		Due to the time frame of the project, it is impossible to include all features intended. Also, as new technology becomes available, the application may need to be extended to support it. The system design should consider a modular design where new features, such as supporting a new mode, can be integrated without requiring a restructure of the architecture.
 		}
-	\subsection{Security}
+	\subsection*{\textit{Security}}
 		\paragraph{}{
 		Security can be defined as "a measure of the system's ability to resist unauthorized usage while still providing its services to legitimate users"\cite{SAinP}. As this application is communicating directly with a vehicle, there may be a danger of damage being done to the vehicle and its components. It must be ensured that no harm can be caused by accidental misuse of the application. This will include proper handling of communication, in the event that a user unplugs the ELM327 device during a procedure, as well as providing the user with information on how to use the application correctly.
 		}		
-	\subsection{Usability}
+	\subsection*{\textit{Usability}}
 		\paragraph{}{
 		Usability is concerned with how easy it is for the user to accomplish a desired task and the user support the system provides\cite{SAinP}. The application must be intuitive and easy to use for someone with limited technical knowledge of vehicles. This will include limiting the use of technical terms and creating a coherent UI. The application will follow Microsoft's user experience guidelines, so that users of other Windows 10 application will find it easy to use.
 		}

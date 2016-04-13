@@ -67,10 +67,31 @@
 	\end{center}
 \end{titlepage}
 
+	\pagenumbering{roman}
+
+	\section*{Acknowledgements}
+		\paragraph{}{
+		I would like to thank my supervisor, Mr. J.J. Collins, for his guidance throughout this project. He has devoted a large amount of his time to ensure I was on track and to share knowledge that helped, not only the project, but also my personal development. For that, I will be forever grateful.
+		}
+		\paragraph{}{
+		I would like to thank my father, whose lifetime experience in the motor industry served as the motivation for commencing this project. His knowledge and guidance has been invaluable during the course of this project.
+		}
+		
+		\paragraph{}{
+		I would like to thank the faculty members of CSIS at the University of Limerick for who have taught me and encouraged me during my academic studies during the past four years. I would also like to thank Snap-on Diagnostics for their investment in my personal development during my co-operative education and summer internships.
+		% Lecturers of CSIS and UL
+		}		
+		
+		\paragraph{}{	
+		Finally, I would like to thank my family, friends and girlfriend who supported me and boosted my morale throughout my final year project and academic studies at the University of Limerick. I am especially grateful for their tolerance of my frequent arguments with compilers and my disheveled appearance over the past year.
+		}
+		
 	\tableofcontents
-	\newpage
+	\newpage	
 
 	\chapter{Introduction}
+		\pagenumbering{arabic}
+		\setcounter{page}{1}
 		\nocite{*}
 		\input{Chapters/Chapter1_Introduction}
 	\newpage 
@@ -101,7 +122,8 @@
 	
 		
 	\bibliographystyle{custom}
-	\bibliography{FYP_Report}	
+	\bibliography{FYP_Report}
+	\addcontentsline{toc}{chapter}{Bibliography}
 
 	\comment{
 	\begin{thebibliography}{15}
