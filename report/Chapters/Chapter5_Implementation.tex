@@ -1,6 +1,6 @@
 \section{Introduction}
 	\paragraph{}{
-	This chapter will outline the implementation and testing process adopted during the project. This will include information on how each component was implemented as well as any issues that occurred during the project and how they were resolved.
+	This chapter will outline the implementation process adopted during the project. This will include information on how each component was implemented as well as any issues that occurred during the project and how they were resolved.
 	}
 \section{Development Environment}{
 	\paragraph{}{
@@ -90,7 +90,7 @@ if (this.service != null)
 		\end{figure}
 
 		\paragraph{}{
-		The main component of the Bluetooth connection system was sending and receiving data. As seen in Figure \ref{code:BTConnectionSend}, a command is sent to the data writer and appended with a return carriage, to inform the ELM327 that the command has terminated. The reader then attempts to read any incoming messages. However, the length of the  message is unknown and can vary for each command. To deal with this the reader reads one character at a time until a '\textgreater' character appears, signifying the end of the message. If the reader cannot read the entire message, for example, if the user walks out of range of the device, or removes it from the vehicle, the connection will time out.
+		The main component of the Bluetooth connection system was sending and receiving data. As seen in Figure \ref{code:BTConnectionSend}, a command is sent to the data writer and appended with a return carriage, to inform the ELM327 that the command has terminated. The reader then attempts to read any incoming messages. However, the length of the  message is unknown and can vary for each command. To deal with this, the reader reads one character at a time until a '\textgreater' character appears, signifying the end of the message. If the reader cannot read the entire message, for example, if the user walks out of range of the device, or removes it from the vehicle, the connection will time out.
 		% Send & Receive, don't know length of response
 		}
 
@@ -256,7 +256,7 @@ return codes;
 		}
 		
 		\paragraph{}{
-		The first stage of the data module is compiling a list of supported pids. The process for acquiring all supported pids is outlined in section \ref{ssec:Data}. However, as seen in Figure \ref{code:SupportedPids}, the data module only acquires the first two sets of supported pids, totalling a maximum of sixty four supported pids. This was due to the potential performance issues that may arise from rendering too many graphs and also due to the limited timeframe of the project, as it would require conversion code to be written for each pid.
+		The first stage of the data module is compiling a list of supported PIDs. The process for acquiring all supported PIDs is outlined in section \ref{ssec:Data}. However, as seen in Figure \ref{code:SupportedPids}, the data module only acquires the first two sets of supported PIDs, totalling a maximum of sixty four supported PIDs. This was due to the potential performance issues that may arise from rendering too many graphs and also due to the limited timeframe of the project, as it would require conversion code to be written for each PID.
 		%Supported pids as outlined in section \ref{ssec:Data}
 		%Get supported pids
 		}
@@ -304,7 +304,7 @@ for (byte i = 0x00; i <= 0x20; i += 0x20)
 		\end{figure}
 		
 		\paragraph{}{
-		When a request is made, the response that is received is in hexadecimal format. This response contains the header and a number of bytes. To convert this data into a human readable value, a the bytes are passed into a conversion equation. This equation varies for each pid. In Figure \ref{code:ConvertingPids}, the engine speed pid is converted by removing the message header, and passing the response bytes into its conversion equation.
+		When a request is made, the response that is received is in hexadecimal format. This response contains the header and a number of bytes. To convert this data into a human readable value, a the bytes are passed into a conversion equation. This equation varies for each PID. In Figure \ref{code:ConvertingPids}, the engine speed PID is converted by removing the message header, and passing the response bytes into its conversion equation.
 		%[Convert data]
 		}
 		
@@ -332,17 +332,17 @@ public static IDataItem ConvertPID(IPid pid, string request)
     return dataItem;
 }
 			\end{lstlisting}
-			\caption{Converting Engine Speed pid to human readable value}
+			\caption{Converting Engine Speed PID to human readable value}
 			\label{code:ConvertingPids}
 		\end{figure}		
 			
 		\paragraph{}{
-		The human readable data values are displayed to the end user in two formats: text and graphs. The text views give a simplified view of each pid, only displaying the current value of a pid. The graph views track all values over a session and plot them so they can be viewed at a later time. The data module also implements controls to play, pause and skip through the values. This allows the user to have full control over what data is presented to them on screen. 
+		The human readable data values are displayed to the end user in two formats: text and graphs. The text views give a simplified view of each PID, only displaying the current value of a PID. The graph views track all values over a session and plot them so they can be viewed at a later time. The data module also implements controls to play, pause and skip through the values. This allows the user to have full control over what data is presented to them on screen. 
 		%[List, Graphs, Play/Pause/Step Controls] 
 		}
 		
 		\paragraph{}{
-		The final feature of the data module is the smart graphing system, which is an extension of the existing graphing system. Smart graphing is a system that uses different colour values to represent whether a data value is normal, potentially dangerous or severely dangerous. This system is currently implemented for a subset of pids, due to time constraints and a lack of technical knowledge. As seen in Figure \ref{code:ValueType}, a smart graphing pid is analysed based on its current value and assigned a type. This type determines the colour that will be displayed on the graph.
+		The final feature of the data module is the smart graphing system, which is an extension of the existing graphing system. Smart graphing is a system that uses different colour values to represent whether a data value is normal, potentially dangerous or severely dangerous. This system is currently implemented for a subset of pids, due to time constraints and a lack of technical knowledge. As seen in Figure \ref{code:ValueType}, a smart graphing PID is analysed based on its current value and assigned a type. This type determines the colour that will be displayed on the graph.
 		%[Smart Graphing]
 		}			
 		
@@ -448,7 +448,7 @@ if (command.StartsWith("01"))
 		\end{figure}
 
 		\paragraph{}{
-		As shown in the code fragment seen  in Figure \ref{code:SimConnectionData}, a small subset of pids are supported, and each of these pids will return data when a request is made. As each pid has a maximum and minimum possible value, a random value between these two will be generated and this will be the value that the user sees on-screen. The value  is passed through a conversion equation, as discussed in section \ref{ssec:DataModuleDesc}, in reverse order to convert it to hexadecimal format. Finally, the response header is prefixed to this hexadecimal message and is returned to the caller.
+		As shown in the code fragment seen  in Figure \ref{code:SimConnectionData}, a small subset of pids are supported, and each of these pids will return data when a request is made. As each PID has a maximum and minimum possible value, a random value between these two will be generated and this will be the value that the user sees on-screen. The value  is passed through a conversion equation, as discussed in section \ref{ssec:DataModuleDesc}, in reverse order to convert it to hexadecimal format. Finally, the response header is prefixed to this hexadecimal message and is returned to the caller.
 		}
 		\paragraph{}{
 		Due to the success of the simulation connection with respect to the data module, it was expanded to work with the DTC module, returning a set of current, pending and permanent DTCs, as seen in Figure \ref{code:SimConnectionDTC}.
@@ -528,7 +528,7 @@ return availableDevices;
 		%[INTRO]
 		}
 		\paragraph{}{
-		As the project was initially developed as a UWP application, the platform specific code had to be separated from the shared code. The shared code corresponds to the host, module and communication layers in the system, where as the platform specific code corresponds to the UI and Bluetooth layers. The core code was put into a Portable Class Library (PCL), a library that can be used across multiple platforms, such as Windows 8 and 8.1 applications, WPF applications and applications developed using Xamarin.
+		As the project was initially developed as a UWP application, the platform specific code had to be separated from the shared code. The shared code corresponds to the host, module and communication layers in the system, whereas the platform specific code corresponds to the UI and Bluetooth layers. The core code was put into a Portable Class Library (PCL), a library that can be used across multiple platforms, such as Windows 8 and 8.1 applications, WPF applications and applications developed using Xamarin.
 		%[PORT PREP + PCL]
 		}
 		
@@ -712,11 +712,11 @@ public static class HelpItemFactory
 
 \section{Email}
 		\paragraph{}{
-		The final feature of the application to be implemented was the email system. This system captures useful data from a module and compiles it into an email so the user can send it to their mechanic. This allows end users to receive a preliminary opinion from a person with technical knowledge before they physically travel to a garage for formal diagnosis.		
+		The final feature of the application to be implemented was the email system. This system captures useful data from a module and compiles it into an email so the user can send it to their mechanic. This allows end users to receive a preliminary diagnosis from a person with technical knowledge before they physically travel to a garage for formal diagnosis.		
 		%[INTRO]
 		}
 		\paragraph{}{
-		The module interface was re-factored to include a formatted message that can be sent by email. Figure \ref{code:EmailCodes} shows the implementation for the DTC module, which iterates through all DTCs that have been found and adds them to the message. The email system was only implemented for the DTC Module as the other non-technical modules do not require aid from a mechanic. The only other technical module, the data module, does require aid from a mechanic, but sending the data values for each pid would not be sufficient information for the mechanic to make a preliminary diagnosis.
+		The module interface was re-factored to include a formatted message that can be sent by email. Figure \ref{code:EmailCodes} shows the implementation for the DTC module, which iterates through all DTCs that have been found and adds them to the message. The email system was only implemented for the DTC Module as the other non-technical modules do not require aid from a mechanic. The only other technical module, the data module, does require aid from a mechanic, but sending the data values for each PID would not be sufficient information for the mechanic to make a preliminary diagnosis.
 		%Codes only, Module refactor
 		}
 
@@ -748,7 +748,7 @@ public string FormatForEmail()
 		\end{figure}	
 		
 		\paragraph{}{
-		Rather than sending an email directly from the application, the emailing system opens the users default email application with a pre-set subject and body for the email, as seen in Figure \ref{code:Email}. This allows the user to select which account to send the email from as well as the recipients of the email. This provides increased security for the application, as the user's email credentials are not stored in the application and they can validate the content of the email.
+		Rather than sending an email directly from the application, the emailing system opens the user's default email application with a pre-set subject and body for the email, as seen in Figure \ref{code:Email}. This allows the user to select which account to send the email from as well as the recipients of the email. This provides increased security for the application, as the user's email credentials are not stored in the application and they can validate the content of the email.
 		%added security as UWP lets user pick their email address and recipient 		
 		}		
 		
@@ -783,19 +783,19 @@ private async void EmailButton_Click(object sender, RoutedEventArgs e)
 				Prototyping & Semester 1, Week 1\\
 				\hline
 				\multirow{2}{*}{Bluetooth Communication} & Semester 1, Week 1 - Semester 1, Week 4\\
-														 & Holiday 1, Week 1 - Holiday 1, Week 3\\
+														 & Holiday, Week 1 - Holiday, Week 3\\
 				\hline
 				DTC Module & Semester 1, Week 5 - Semester 1, Week 9\\
 				\hline
-				\multirow{2}{*}{Data Module} & Holiday 1, Week 1 - Holiday 1, Week 3\\
+				\multirow{2}{*}{Data Module} & Holiday, Week 1 - Holiday, Week 3\\
 											 & Semester 2, Week 1 - Semester 2, Week 2\\
 				\hline				
-				Simulated Communication & Holiday 1, Week 1 - Holiday 1, Week 3\\
+				Simulated Communication & Holiday, Week 1 - Holiday, Week 3\\
 				\hline
-				\multirow{2}{*}{Connection Module} & Holiday 1, Week 3\\
+				\multirow{2}{*}{Connection Module} & Holiday, Week 3\\
 				  								   & Semester 2, Week 4 - Semester 2, Week 4\\
 				\hline
-				\multirow{2}{*}{Android Port} & Holiday 1, Week 2 - Holiday 1, Week 3\\ %4
+				\multirow{2}{*}{Android Port} & Holiday, Week 2 - Holiday, Week 3\\ %4
 											  & Semester 2, Week 1 - Semester 2, Week 4\\
 				\hline
 				Help Information & Semester 2, Week 1\\
@@ -816,7 +816,7 @@ private async void EmailButton_Click(object sender, RoutedEventArgs e)
 	
 \section{Summary of Implementation}
 	\paragraph{}{
-	At the end of the implementation phase, the system consisted of three projects with a total of around 1694 lines of executable code and seventy five classes and interfaces. A more detailed description and statistics relating to these projects is available in section \ref{sec:Quality}. These three projects are:
+	At the end of the implementation phase, the system consisted of three projects with a total of 1694 lines of executable code and seventy five classes and interfaces. A more detailed description and statistics relating to these projects is available in section \ref{sec:Quality}. These three projects are:
 	 	\begin{enumerate}
 			\item Universal Windows Platform application
 				\begin{itemize}
@@ -836,6 +836,6 @@ private async void EmailButton_Click(object sender, RoutedEventArgs e)
 		\end{enumerate}
 	}
 	\paragraph{}{
-	Overall, the implementation phase was a success. The features outlined in this chapter were implemented to a high standard with minimal drift from the project timeline.  Although a number of issues were encountered, a solution was found with minimal disruption to the existing product.
+	Overall, the implementation phase was a success. The features outlined in this chapter were implemented to a high standard with minimal drift from the project timeline.  Although a number of issues were encountered, solutions were found with minimal disruption to the existing product.
 	% Summary
 	}

@@ -30,7 +30,7 @@
 		Due to heavy smog pollution in California, CARB introduced regulations requiring all 1988 and newer vehicles sold in California to be fitted with a system for monitoring the emissions of the vehicle. Unfortunately, this system, later named OBDI, had its shortcomings. While new vehicles allowed for monitoring via diagnostic scan tools, the connection port and its position, as well as the communication protocols, were not standardized, meaning only proprietary scan tools could be used for diagnosis.
 		}
 		\paragraph{}{
-		Prior to the introduction of OBDI, the SAE had proposed a standardised connection port and communication protocols. These changes were taken on board by CARB, and were introduced in OBDII, which was put in force in 1996 in the US. This new system, with it's standardised communication system allowed for generic scan tools to monitor for the vehicle, rather than just proprietary tools.  
+		Prior to the introduction of OBDI, the SAE had proposed a standardised connection port and communication protocols. These changes were taken on board by CARB, and were introduced in OBDII, which was put in force in 1996 in the US. This new system, with it's standardised communication system, allowed for generic scan tools to monitor the vehicle, rather than just proprietary tools.  
 		}	
 		\paragraph{}{
 		Eventually, these regulations reached Europe and European on board diagnostics (EOBD) was introduced. These regulations state that all petrols cars sold in Europe since 2001 and all diesel cars sold in Europe since 2003 must support EOBD. It should be noted that EOBD is the same as OBDII from a technical standpoint.
@@ -41,7 +41,7 @@
 	}	
 	\subsection{Protocols}{
 		\paragraph{}{
-		The OBDII standards were lenient on how data is transmitted from the vehicle to the scan tool. This lead to vehicle manufacturers creating what they felt was the best way to handle communication. There are now five main communication protocols for OBDII systems.
+		The OBDII standards were lenient on how data is transmitted from the vehicle to the scan tool. This lead to vehicle manufacturers creating what they felt was the best way to handle communication. There are now five main communication protocols for OBDII systems, shown in Table \ref{tab:Protocols}.
 		\begin{table}[h]
 			\begin{center}				
 				\begin{tabular}{| l | l |}
@@ -103,7 +103,7 @@
 		Fortunately, most of the differences between these protocols are low level and do not impact how one can retrieve data from a vehicle using the defined commands. However, there are slight variations when using the CAN protocol.
 		}
 		\paragraph{}{
-		 When requesting DTCs using the CAN protocol, response begins with the number of DTCs, followed by the hex values for each DTC. Using the other protocols, the response only contains the hex values for the DTCs. Mode 05 is unavailable using the CAN protocol so mode 06 must be used as an alternative method to access this data.
+		 When requesting Diagnsotic Trouble Codes (DTCs), which are explained in section \ref{ssec:DTC}, using the CAN protocol, response begins with the number of DTCs, followed by the hex values for each DTC. Using the other protocols, the response only contains the hex values for the DTCs. Mode 05 is unavailable using the CAN protocol so mode 06 must be used as an alternative method to access this data.
 		}	
 	}
 	\subsection{Diagnostic Trouble Codes}{
@@ -111,7 +111,7 @@
 		Diagnostic Trouble Codes (DTCs) correspond to faults with a vehicle and are responsible for the illumination of the MIL. Each code begins with an alphabetic letter, indicating the system at fault, followed by four digits specifying the fault. These systems are powertrain, chassis, body and network, represented by the characters P, C, B and U respectively. There are a number of standardized codes, but there are also manufacturer specific codes, which cannot be accessed with generic scan tools.
 		}
 		\paragraph{}{
-		There are three types of DTC: stored, pending and permanent, accessed by mode 03, 07 and 0A respectively. Stored codes represent current issues with the vehicle. These codes can sometimes be fixed by calling the clear codes command on the scan tool. Pending codes represent potential future issues. If there is an irregular data value found by a sensor it may create a pending code. The ECU will continue to monitor this sensor, and if the data value has not returned to the expected value after a certain amount of time, the pending code is converted to a stored code. Otherwise, the pending code will be removed automatically. Permanent codes represent serious issues with the vehicle. These codes are not removed manually by scan tools or automatically by the ECU. In order to remove these codes, the underlying issue that caused the code to appear must be fixed.
+		There are three types of DTC: stored, pending and permanent, accessed by mode 03, 07 and 0A respectively. Stored codes, sometimes referred to as current codes, represent current issues with the vehicle. These codes can sometimes be fixed by calling the clear codes command on the scan tool. Pending codes represent potential future issues. If there is an irregular data value found by a sensor it may create a pending code. The ECU will continue to monitor this sensor, and if the data value has not returned to the expected value after a certain amount of time, the pending code is converted to a stored code. Otherwise, the pending code will be removed automatically. Permanent codes represent serious issues with the vehicle. These codes are not removed manually by scan tools or automatically by the ECU. In order to remove these codes, the underlying issue that caused the code to appear must be fixed.
 		}			
 	}
 	\label{ssec:DTC}
@@ -131,11 +131,11 @@
 						
 		}
 		\paragraph{}{
-		As an example, we call 0120, to request the next 32 supported PIDs from 21 to 40. In this example, we receive the hexadecimal response \textit{1A300100}. When this response has been converted to binary, we get the following string:
+		As an example, the tool calls 0120 to request the next 32 supported PIDs from 21 to 40. In this example, the hexadecimal response \textit{1A300100} is received. When this response has been converted to binary, the following string is received:
 		\begin{center}
 			0001 1010 0011 0000 0000 0001 0000 0000\\
 		\end{center}
-		The most significant bit represents PID 21 and the least significant bit represents PID 40. If we look at the bits that are set to one, we determine that PIDs 24, 25, 27, 2B, 2C and 38 are supported.
+		The most significant bit represents PID 21 and the least significant bit represents PID 40. Looking at the bits that are set to one shows that PIDs 24, 25, 27, 2B, 2C and 38 are supported.
 		}
 		\paragraph{}{
 		Once the list of supported PIDs has been established, the user can request the data for these PIDs. This will return a single data value, so in order for the scan tool to display live data, it must repeat this call. The response must be converted from hexadecimal to the appropriate human readable value, either a string or number. Each PID has a different conversion method, although some PIDs may share them, for example engine coolant temperature and intake air temperature.
@@ -186,7 +186,7 @@
 		Windows is the de facto standard for home users. Most PCs and laptops are sold with Windows pre-installed. Windows 10, the latest iteration of the Windows operating system, is available as a free download to all owners of Windows 7 and Windows 8. Due to it's availability and pricing, it appears that Windows 10 may be a popular choice for home users, and at the time of writing this report there are over 200 million devices running Windows 10 \cite{Win10Nums}.
 		}
 		\paragraph{}{
-		With the release of Windows 10 came the Universal Windows Platform (UWP). This allowed developers to create applications that could be deployed on all Windows 10 devices, without having to create separate code bases. A similar concept was available in Windows 8.1, but it had it's limitations. Deployment was limited to Windows 8.1 phones and Windows 8 tablets/PCs, and there were separate code bases for the phone and desktop/tablet projects, making maintainability and extensibility of the system more complex.
+		With the release of Windows 10 came the Universal Windows Platform (UWP). This allows developers to create applications that can be deployed on all Windows 10 devices, without having to create separate code bases. A similar concept was available in Windows 8.1, but it had it's limitations. Deployment was limited to Windows 8.1 phones and Windows 8 tablets/PCs, and there were separate code bases for the phone and desktop/tablet projects, making maintainability and extensibility of the system more complex.
 		}
 		\paragraph{}{
 		The UWP also includes APIs for features such as Bluetooth, printing and WiFi. There is also extensive documentation available for these APIs, allowing the developer to implement systems that work across all devices with relative ease. Microsoft also provides design guidelines for UWP applications, allowing developers, who may not have an in depth knowledge of user interface and user experience design, to create applications with high usability that are aesthetically pleasing.
