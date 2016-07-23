@@ -6,7 +6,7 @@
 \section{System Design}
 	\paragraph{}{
 	%Intro
-	The goal of the system design is to create an extensible and portable application. Any additional core features or aesthetic changes should plug in to the existing system without affecting its current functionality. This can be achieved by applying Martin Fowler's concept of the three principle layers in the design: the presentation layer, representing the user interface, the domain layer, representing the business logic and the data source layer representing communication with another system such as a database.\cite{Fowler}
+	The goal of the system design is to create an extensible and portable application. Any additional core features or aesthetic changes should plug in to the existing system without affecting its current functionality. This can be achieved by applying Martin Fowler's concept of the three principle layers in the design: the presentation layer, representing the user interface, the domain layer, representing the business logic and the data source layer representing communication with another system such as a database. \cite{Fowler}
 	}
 	\begin{figure}[h]
 		\begin{center}
@@ -112,7 +112,7 @@ public interface IDataConnection : INotifyPropertyChanged
 	%Intro - Created using Pencil
 	}	
 	\paragraph{}{
-	This was achieved by creating a UI shell, as seen in Figure \ref{fig:UIShell}, with unified controls and look and feel that would be displayed regardless of which module is currently selected. The shell acts as a means to select and view the current module as well as configure the application, such as which device is connected. Inside the shell, there is a view that the current module will occupy. Each module UI will match the color scheme, font and layout of the UI shell.
+	This was achieved by creating a UI shell, as seen in Figure \ref{fig:UIShell}, with unified controls and look and feel that would be displayed regardless of which module is currently selected. The shell acts as a means to select and view the current module as well as configure the application, such as which device is connected. Inside the shell, there is a view that the current module will occupy. Each module UI will match the colour scheme, font and layout of the UI shell.
 	%Microsoft UI Guideline?	
 	}
 	
@@ -188,7 +188,7 @@ public interface IDataConnection : INotifyPropertyChanged
 		%[TEXT VIEWS] - Considered dials like similar applications
 		}
 		\paragraph{}{
-		However, this approach would lead to the user interface becoming cluttered if a large number of items were on-screen, leading to decreased usability. Instead, a list format was considered, as seen on the left side of Figure \ref{fig:DataPage1}. This allowed for a minimalistic design that would remain consistent when the number of available pids increased. This approach was eventually selected, as it achieved the same goal of displaying the current value for a pid in a more simplistic and user friendly manner.
+		However, this approach would lead to the user interface becoming cluttered if a large number of items were on-screen, leading to decreased usability. Instead, a list format was considered, as seen on the left side of Figure \ref{fig:DataPage1}. This allowed for a minimalistic design that would remain consistent when the number of available PIDs increased. This approach was eventually selected, as it achieved the same goal of displaying the current value for a PID in a more simplistic and user friendly manner.
 		}
 		\paragraph{}{
 		The key aspect of the data module user interface is the graphing of data values. By graphing the data, the user can track the values throughout the history of the current session. It also provides a more visual representation for the data, allowing the user to identify the maximum, minimum and average values at a glance. As a user may only want to view one particular graph or a subset of graphs, the design allows for user to minimise certain graphs and to set one graph to fullscreen mode for more detailed viewing, as seen in Figure \ref{fig:DataPage2}.

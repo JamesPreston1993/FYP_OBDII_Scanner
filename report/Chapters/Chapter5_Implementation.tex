@@ -52,7 +52,7 @@
 		%Implementation of the Bluetooth communication layer of the application began immediately after the setup of the development environment. The goal of this stage was to implement generic Bluetooth communication, such as establishing a connection with the ELM327 device and configuring it, rather than working on module specific communication, such as converting responses. The configuration steps involved resetting the device, allowing the device to auto-detect the communication protocol, turning off echoing of messages and allowing for long responses.
 		}
 		\paragraph{}{
-		Due to these issues, the Bluetooth connection code had to be fully rewritten. This provided some benefits, as the new API is not as low level as the previous one only the device ID is required to establish a connection, rather than the address of the device and the PC. Another key difference with this API is that the developer can not pair devices through the application. Instead, the user has to pair the device manually before using the application. While this was initially viewed as a limitation, it improved the security of the application, as harmful or incompatible devices cannot be paired with the user's PC. Figure \ref{code:BTConnectionInit} shows the connection process, where the Bluetooth service is instantiated using the device ID, which is then used to create a socket to establish communication. A cancellation token is used to timeout the connection attempt after five seconds.
+		Due to these issues, the Bluetooth connection code had to be fully rewritten. This provided some benefits, as the new API is not as low level as the previous one only the device ID is required to establish a connection, rather than the address of the device and the PC. Another key difference with this API is that the developer cannot pair devices through the application. Instead, the user has to pair the device manually before using the application. While this was initially viewed as a limitation, it improved the security of the application, as harmful or incompatible devices cannot be paired with the user's PC. Figure \ref{code:BTConnectionInit} shows the connection process, where the Bluetooth service is instantiated using the device ID, which is then used to create a socket to establish communication. A cancellation token is used to timeout the connection attempt after five seconds.
 		%not as low level as the previous API, More secure
 		}
 		
@@ -299,12 +299,12 @@ for (byte i = 0x00; i <= 0x20; i += 0x20)
 	}
 }
 			\end{lstlisting}
-			\caption{Get supported pids - Only supports 1000 and 1020}
+			\caption{Get supported PIDs - Only supports 1000 and 1020}
 			\label{code:SupportedPids}
 		\end{figure}
 		
 		\paragraph{}{
-		When a request is made, the response that is received is in hexadecimal format. This response contains the header and a number of bytes. To convert this data into a human readable value, a the bytes are passed into a conversion equation. This equation varies for each PID. In Figure \ref{code:ConvertingPids}, the engine speed PID is converted by removing the message header, and passing the response bytes into its conversion equation.
+		When a request is made, the response that is received is in hexadecimal format. This response contains the header and a number of bytes. To convert this data into a human readable value, the bytes are passed into a conversion equation. This equation varies for each PID. In Figure \ref{code:ConvertingPids}, the engine speed PID is converted by removing the message header, and passing the response bytes into its conversion equation.
 		%[Convert data]
 		}
 		
@@ -332,7 +332,7 @@ public static IDataItem ConvertPID(IPid pid, string request)
     return dataItem;
 }
 			\end{lstlisting}
-			\caption{Converting Engine Speed PID to human readable value}
+			\caption{Converting Engine Speed PID to a human readable value}
 			\label{code:ConvertingPids}
 		\end{figure}		
 			
@@ -342,7 +342,7 @@ public static IDataItem ConvertPID(IPid pid, string request)
 		}
 		
 		\paragraph{}{
-		The final feature of the data module is the smart graphing system, which is an extension of the existing graphing system. Smart graphing is a system that uses different colour values to represent whether a data value is normal, potentially dangerous or severely dangerous. This system is currently implemented for a subset of pids, due to time constraints and a lack of technical knowledge. As seen in Figure \ref{code:ValueType}, a smart graphing PID is analysed based on its current value and assigned a type. This type determines the colour that will be displayed on the graph.
+		The final feature of the data module is the smart graphing system, which is an extension of the existing graphing system. Smart graphing is a system that uses different colour values to represent whether a data value is normal, potentially dangerous or severely dangerous. This system is currently implemented for a subset of PIDs, due to time constraints and a lack of technical knowledge. As seen in Figure \ref{code:ValueType}, a smart graphing PID is analysed based on its current value and assigned a type. This type determines the colour that will be displayed on the graph.
 		%[Smart Graphing]
 		}			
 		
@@ -378,7 +378,7 @@ private static ValueType GetValueType(IPid pid, IDataItem item)
 	\subsection{Issues}{		
 		\subsubsection{Issue 1: Data collection speed}{
 			\paragraph{Description:}
-			When gathering data samples, it was discovered that the time taken to send a request and receive a response was around 300 milliseconds per request. When a large number of pids are requested, it took around seven seconds per sample.
+			When gathering data samples, it was discovered that the time taken to send a request and receive a response was around 300 milliseconds per request. When a large number of PIDs are requested, it took around seven seconds per sample.
 			\paragraph{Occurred during:}
 			Holiday period, Week 1
 			\paragraph{Time taken to resolve:}
@@ -387,7 +387,7 @@ private static ValueType GetValueType(IPid pid, IDataItem item)
 			The application was tested with other ECUs and vehicle protocols to see if the issue was with the test bench. A number of attempts were also made to re-factor the Bluetooth communication system. However, these attempts did not see any improvement in performance.
 			%[NUM PIDS LIMITED]
 			\paragraph{Solution:}
-			A solution was found after more research was conducted on the ELM327 device. By default, the device will wait 200 milliseconds before returning a response. To bypass this, the user can pass a numerical parameter with each request, that denotes how many bytes are expected in the response. Once the device has collected this number of bytes, it will skip the waiting period and return the response immediately. This decreased the response time from 300 milliseconds to 170 milliseconds, which was a huge improvement, but the data collection was still slow.
+			A solution was found after more research was conducted on the ELM327 device. By default, the device will wait 200 milliseconds before returning a response. To bypass this, the user can pass a numerical parameter with each request that denotes how many bytes are expected in the response. Once the device has collected this number of bytes, it will skip the waiting period and return the response immediately. This decreased the response time from 300 milliseconds to 170 milliseconds, which was a huge improvement, but the data collection was still slow.
 		\subsubsection{Issue 2: Graph blurring}{
 			\paragraph{Description:}
 			When gathering data samples, the graph plot line started to blur. This blurring became more severe as the number of samples increased. This affected the readability of the data graphs.
@@ -448,7 +448,7 @@ if (command.StartsWith("01"))
 		\end{figure}
 
 		\paragraph{}{
-		As shown in the code fragment seen  in Figure \ref{code:SimConnectionData}, a small subset of pids are supported, and each of these pids will return data when a request is made. As each PID has a maximum and minimum possible value, a random value between these two will be generated and this will be the value that the user sees on-screen. The value  is passed through a conversion equation, as discussed in section \ref{ssec:DataModuleDesc}, in reverse order to convert it to hexadecimal format. Finally, the response header is prefixed to this hexadecimal message and is returned to the caller.
+		As shown in the code fragment seen  in Figure \ref{code:SimConnectionData}, a small subset of PIDs are supported, and each of these PIDs will return data when a request is made. As each PID has a maximum and minimum possible value, a random value between these two will be generated and this will be the value that the user sees on-screen. The value  is passed through a conversion equation, as discussed in section \ref{ssec:DataModuleDesc}, in reverse order to convert it to hexadecimal format. Finally, the response header is prefixed to this hexadecimal message and is returned to the caller.
 		}
 		\paragraph{}{
 		Due to the success of the simulation connection with respect to the data module, it was expanded to work with the DTC module, returning a set of current, pending and permanent DTCs, as seen in Figure \ref{code:SimConnectionDTC}.
@@ -568,7 +568,7 @@ public async Task<bool> Initialize()
 		\end{figure}		
 
 		\paragraph{}{
-		There are subtle differences in the Android Bluetooth API, that required more significant changes in the Bluetooth layer during the port. When sending requests and receiving responses, the messages must be sent as byte arrays. This is seen in Figure \ref{code:AndroidBluetoothSend}, where the outgoing string message is converted into a byte array before being sent to the ELM327 device. While it was believed that the new API may be faster and therefore fix the data collection speed issue outlined in \ref{ssec:DataModuleIssues}, this was not the case, as the data collection speed was approximately the same.
+		There are subtle differences in the Android Bluetooth API that required more significant changes in the Bluetooth layer during the port. When sending requests and receiving responses, the messages must be sent as byte arrays. This is seen in Figure \ref{code:AndroidBluetoothSend}, where the outgoing string message is converted into a byte array before being sent to the ELM327 device. While it was believed that the new API may be faster and therefore fix the data collection speed issue outlined in \ref{ssec:DataModuleIssues}, this was not the case, as the data collection speed was approximately the same.
 		%[BLUETOOTH SEND + CODE]
 		}
 
@@ -806,7 +806,7 @@ private async void EmailButton_Click(object sender, RoutedEventArgs e)
 				\hline
 				\multirow{3}{*}{Report Writing} & Semester 1, Week 9 - Semester 1, Week 13 \\
 												& Semester 2, Week 6 - Semester 2, Week 7\\
-												& Semester 2, Week 9 - Semester 1, Week 13 \\
+												& Semester 2, Week 9 - Semester 2, Week 13 \\
 				\hline
 				\end{tabularx}
 				\caption{Project Timeline}

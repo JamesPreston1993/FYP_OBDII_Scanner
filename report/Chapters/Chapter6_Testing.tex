@@ -63,7 +63,7 @@
 				\hline
 				The vehicle communication protocol is correctly identified & Pass\\
 				\hline
-				All supported pids are returned & Pass\\
+				All supported PIDs are returned & Pass\\
 				\hline
 				Engine speed data value increases when accelerator is pressed & Pass\\
 				\hline				
@@ -189,7 +189,7 @@
 	Code metrics were gathered as a means of determining the overall software quality. While the code metrics that were gathered are only a snapshot of the software quality at a single point in time, in this case at the end of the development process, if the code metrics are gathered periodically throughout the development process, they can track the increase or decrease in quality over time.
 	}
 	\paragraph{}{
-	The main tool used to capture the code metrics was Visual Studio. The metrics that are available are lines of code, maintainability index, class coupling, cyclomatic complexity and depth of inheritance. The metrics were run on each project: the Android application, the UWP application and the the core library. The results for each can be found in Tables \ref{tab:AndroidApp}, \ref{tab:UWPApp} and \ref{tab:CoreLib} respectively.
+	The main tool used to capture the code metrics was Visual Studio. The metrics that are available are lines of code, maintainability index, class coupling, cyclomatic complexity and depth of inheritance. The metrics were run on each project: the Android application, the UWP application and the core library. The results for each can be found in Tables \ref{tab:AndroidApp}, \ref{tab:UWPApp} and \ref{tab:CoreLib} respectively.
 	% Tools used to capture metrics
 	% Currently give a snaphot of software quality, but by capturing metrics over time we see quality throughout a project	
 	}
@@ -226,7 +226,7 @@
 		Cyclomatic complexity is the measure of "the structural complexity of the code" \cite{CodeMetrics}. Code that has a complex control, or a higher cyclomatic complexity value, may require more tests to achieve good code coverage, making it less maintainable.
 		}
 		\paragraph{}{
-		Overall, the cyclomatic complexity values in the core library was significantly greater than those of the UWP and Android projects. This can be attributed to the fact that all of the business logic is found in the core library. For this reason, there are more conditions to be tested, for example in the DataConverter class, which checks the pid name and the current value, leading to an insurmountable number of paths. Much like the maintainability index, a solution to this would be to create a database or local file and send a single query, rather than using conditional statements.
+		Overall, the cyclomatic complexity values in the core library was significantly greater than those of the UWP and Android projects. This can be attributed to the fact that all of the business logic is found in the core library. For this reason, there are more conditions to be tested, for example in the DataConverter class, which checks the PID name and the current value, leading to an insurmountable number of paths. Much like the maintainability index, a solution to this would be to create a database or local file and send a single query, rather than using conditional statements.
 		%Interpretation
 		}
 	

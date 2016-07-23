@@ -30,10 +30,10 @@
 		Due to heavy smog pollution in California, CARB introduced regulations requiring all 1988 and newer vehicles sold in California to be fitted with a system for monitoring the emissions of the vehicle. Unfortunately, this system, later named OBDI, had its shortcomings. While new vehicles allowed for monitoring via diagnostic scan tools, the connection port and its position, as well as the communication protocols, were not standardized, meaning only proprietary scan tools could be used for diagnosis.
 		}
 		\paragraph{}{
-		Prior to the introduction of OBDI, the SAE had proposed a standardised connection port and communication protocols. These changes were taken on board by CARB, and were introduced in OBDII, which was put in force in 1996 in the US. This new system, with it's standardised communication system, allowed for generic scan tools to monitor the vehicle, rather than just proprietary tools.  
+		Prior to the introduction of OBDI, the SAE had proposed a standardised connection port and communication protocols. These changes were taken on board by CARB, and were introduced in OBDII, which was put in force in 1996 in the US. This new system, with its standardised communication system, allowed for generic scan tools to monitor the vehicle, rather than just proprietary tools.  
 		}	
 		\paragraph{}{
-		Eventually, these regulations reached Europe and European on board diagnostics (EOBD) was introduced. These regulations state that all petrols cars sold in Europe since 2001 and all diesel cars sold in Europe since 2003 must support EOBD. It should be noted that EOBD is the same as OBDII from a technical standpoint.
+		Eventually, these regulations reached Europe and European on board diagnostics (EOBD) was introduced. These regulations state that all petrol cars sold in Europe since 2001 and all diesel cars sold in Europe since 2003 must support EOBD. It should be noted that EOBD is the same as OBDII from a technical standpoint.
 		}
 		\paragraph{}{
 		In 2008, regulations were introduced stating that all cars sold in the US must use the ISO 15765 Control Area Network (CAN) communication protocol. A communication protocol defines how data is transferred from the vehicle to the scan tool. This regulation will establish a standard method of communication for all future vehicles.
@@ -103,7 +103,7 @@
 		Fortunately, most of the differences between these protocols are low level and do not impact how one can retrieve data from a vehicle using the defined commands. However, there are slight variations when using the CAN protocol.
 		}
 		\paragraph{}{
-		 When requesting Diagnsotic Trouble Codes (DTCs), which are explained in section \ref{ssec:DTC}, using the CAN protocol, response begins with the number of DTCs, followed by the hex values for each DTC. Using the other protocols, the response only contains the hex values for the DTCs. Mode 05 is unavailable using the CAN protocol so mode 06 must be used as an alternative method to access this data.
+		 When requesting Diagnostic Trouble Codes (DTCs), which are explained in section \ref{ssec:DTC}, using the CAN protocol, response begins with the number of DTCs, followed by the hex values for each DTC. Using the other protocols, the response only contains the hex values for the DTCs. Mode 05 is unavailable using the CAN protocol so mode 06 must be used as an alternative method to access this data.
 		}	
 	}
 	\subsection{Diagnostic Trouble Codes}{
@@ -127,11 +127,11 @@
 		Emission related data can be accessed via mode 01. This data is retrieved from the sensors and subsystems of the vehicle. In this mode, the user must specify a PID in order to display a certain data item, for example, the PID 0C returns the engine speed.
 		}
 		\paragraph{}{
-		The first step when requesting data is to find the PIDs that are supported for this vehicle, as some vehicles may only support a subset of PIDs. This can be achieved by using PIDs 00, 20, 40, 60 and 80, each of which represent the next 32 PIDs. This will return a hexadecimal value that, when converted to binary, denotes which PIDs are supported. Each bit in the binary string represents a PID. If the bit is 1, the PID is supported and if it is 0 the PID is unsupported.
+		The first step when requesting data is to find the PIDs that are supported for this vehicle, as some vehicles may only support a subset of PIDs. This can be achieved by using PIDs 00, 20, 40, 60 and 80, each of which represent the next thirty two PIDs. This will return a hexadecimal value that, when converted to binary, denotes which PIDs are supported. Each bit in the binary string represents a PID. If the bit is 1, the PID is supported and if it is 0 the PID is unsupported.
 						
 		}
 		\paragraph{}{
-		As an example, the tool calls 0120 to request the next 32 supported PIDs from 21 to 40. In this example, the hexadecimal response \textit{1A300100} is received. When this response has been converted to binary, the following string is received:
+		As an example, the tool calls 0120 to request the next thirty two supported PIDs from 21 to 40. In this example, the hexadecimal response \textit{1A300100} is received. When this response has been converted to binary, the following string is received:
 		\begin{center}
 			0001 1010 0011 0000 0000 0001 0000 0000\\
 		\end{center}
@@ -183,10 +183,10 @@
 		This project will be deployed on Windows 10 using Microsoft's Universal Windows Platform (UWP). This will allow the application to be deployed on all Windows 10 devices, such as phones, tablets and laptops, using a single code base.
 		}
 		\paragraph{}{
-		Windows is the de facto standard for home users. Most PCs and laptops are sold with Windows pre-installed. Windows 10, the latest iteration of the Windows operating system, is available as a free download to all owners of Windows 7 and Windows 8. Due to it's availability and pricing, it appears that Windows 10 may be a popular choice for home users, and at the time of writing this report there are over 200 million devices running Windows 10 \cite{Win10Nums}.
+		Windows is the de facto standard for home users. Most PCs and laptops are sold with Windows pre-installed. Windows 10, the latest iteration of the Windows operating system, is available as a free download to all owners of Windows 7 and Windows 8. Due to its availability and pricing, it appears that Windows 10 may be a popular choice for home users, and at the time of writing this report there are over 200 million devices running Windows 10 \cite{Win10Nums}.
 		}
 		\paragraph{}{
-		With the release of Windows 10 came the Universal Windows Platform (UWP). This allows developers to create applications that can be deployed on all Windows 10 devices, without having to create separate code bases. A similar concept was available in Windows 8.1, but it had it's limitations. Deployment was limited to Windows 8.1 phones and Windows 8 tablets/PCs, and there were separate code bases for the phone and desktop/tablet projects, making maintainability and extensibility of the system more complex.
+		With the release of Windows 10 came the Universal Windows Platform (UWP). This allows developers to create applications that can be deployed on all Windows 10 devices, without having to create separate code bases. A similar concept was available in Windows 8.1, but it had its limitations. Deployment was limited to Windows 8.1 phones and Windows 8 tablets/PCs, and there were separate code bases for the phone and desktop/tablet projects, making maintainability and extensibility of the system more complex.
 		}
 		\paragraph{}{
 		The UWP also includes APIs for features such as Bluetooth, printing and WiFi. There is also extensive documentation available for these APIs, allowing the developer to implement systems that work across all devices with relative ease. Microsoft also provides design guidelines for UWP applications, allowing developers, who may not have an in depth knowledge of user interface and user experience design, to create applications with high usability that are aesthetically pleasing.
@@ -194,7 +194,7 @@
 		\paragraph{}{
 		UWP applications can be published through the Windows Store that is accessible on all Windows 10 devices. This allows developers to reach a large user base without concerning themselves with the distribution of the application through multiple markets. Software updates can also be released through the Windows Store, ensuring new features and defect fixes can be deployed to the end user frequently and discreetly.
 		}	
-		
+\newpage		
 	\subsection{Xamarin}
 		\paragraph{}{
 		Xamarin is a framework that can be used for creating native applications for Android, iOS and Mac using the C{\#} programming language. This allows for native Windows applications to be ported to other operating systems, with minimal changes to the code base, creating a portable, extensible and maintainable system.
@@ -206,7 +206,7 @@
 		Xamarin can be downloaded through the Visual Studio IDE, allowing Xamarin applications to be developed in the same IDE as the original C{\#} code. This benefits the developer, who does not have to track multiple projects over multiple IDEs. It also means any updates to the Xamarin framework can be downloaded seamlessly, without having to manually check if an update is available and downloading it from an external source. 
 		}
 		\paragraph{}{
-		Xamarin has a developer community on their website, that provides assistance with the development of Xamarin applications. There are a number of guides ranging from the initial setup to performance best practises. Developers can also view Xamarin API documentation and sample applications on how to best use Xamarin and leverage the platform and device specific elements, such as the accelerometer and touch gestures. The website community also has a forum to post questions and find answers from other users, adding more support for the developer.
+		Xamarin has a developer community on their website that provides assistance with the development of Xamarin applications. There are a number of guides ranging from the initial setup to performance best practises. Developers can also view Xamarin API documentation and sample applications on how to best use Xamarin and leverage the platform and device specific elements, such as the accelerometer and touch gestures. The website community also has a forum to post questions and find answers from other users, adding more support for the developer.
 		}	
 %\newpage
 \section{Similar Applications}
@@ -227,7 +227,7 @@
 		Diagnose your car allows access to DTCs and diagnostic data in the paid version. In the free version, diagnostic data is omitted and DTCs are displayed without their description. The diagnostic data that is provided is limited to a few generic PIDs, such as engine speed, vehicle speed and engine oil temperature. The data only displays the current value, so it does not track the data values over the period of communication. The application can also display DTCs, run the clear codes command and display the vehicle's VIN and the on/off status of the MIL.		
 		}
 		\paragraph{}{
-		The application attempts to restrict its use of technical terms. For example, the DTCs option is named "Read Defects" and it's icon is that of the MIL, implying that this option correlates to turning off the MIL. However, when the user selects an option, the technical terms begin to appear, with defects now being called stored, pending and permanent DTCs, without an explanation of each type. 
+		The application attempts to restrict its use of technical terms. For example, the DTCs option is named "Read Defects" and i's icon is that of the MIL, implying that this option correlates to turning off the MIL. However, when the user selects an option, the technical terms begin to appear, with defects now being called stored, pending and permanent DTCs, without an explanation of each type. 
 		}		
 	\subsection{OBD dash}
 		\paragraph{}{
@@ -280,7 +280,7 @@
 \newpage
 \section{Architectural Patterns}
 	\paragraph{}{
-	When considering architectural patterns for the project, it made sense to utilise the model-view-viewmodel (MVVM) architectural pattern. The MVVM architectural pattern is based on Martin Fowler's presentation model design pattern and abstracts the user interface's state from it's behaviour. It was introduced by Microsoft in 2005 to be used with the Windows Presentation Foundation (WPF) platform and is used in UWP development.
+	When considering architectural patterns for the project, it made sense to utilise the model-view-viewmodel (MVVM) architectural pattern. The MVVM architectural pattern is based on Martin Fowler's presentation model design pattern and abstracts the user interface's state from its behaviour. It was introduced by Microsoft in 2005 to be used with the Windows Presentation Foundation (WPF) platform and is used in UWP development.
 			\begin{figure}[h]
 				\begin{center}											
 					\includegraphics[width=0.75\textwidth]{MVVM.png}
